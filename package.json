@@ -10,5 +10,8 @@
 	"license": "ISC",
 	"devDependencies": {
 		"electron": "^8.3.0"
+	},
+	"dependencies": {
+		"nouislider": "^14.5.0"
 	}
 }

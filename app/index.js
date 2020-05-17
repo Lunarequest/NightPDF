@@ -1,9 +1,18 @@
 const nightPDF = (function() {
 	const { ipcRenderer, remote } = require('electron');
+	let noUiSlider = require('nouislider');
+	window.noUiSlider = noUiSlider;
+
 	const path = require('path');
 
-	let _pdfElement;
-	let _headerElement;
+	var _pdfElement;
+	var _headerElement;
+	var _titleElement;
+	var _menuElement;
+	var _darkConfiguratorElement;
+	var _darkCSSElement;
+	var _brightnessSliderElement;
+	var _grayscaleSliderElement;
 
 	function main() {
 		_pdfElement = document.getElementById('pdfjs');
@@ -12,6 +21,8 @@ const nightPDF = (function() {
 		_menuElement = document.getElementById('menu');
 		_darkConfiguratorElement = document.getElementById('darkConfigurator');
 		_darkCSSElement = document.getElementById('darkCSS');
+		_brightnessSliderElement = document.getElementById('brightnessSlider');
+		_grayscaleSliderElement = document.getElementById('grayscaleSlider');
 
 		//setup listeners
 		ipcRenderer.removeAllListeners('file-open');
@@ -36,6 +47,24 @@ const nightPDF = (function() {
 		_darkCSSElement.addEventListener('input', (event) => {
 			_updateDarkSettings(event.target.value);
 		});
+
+		//setup slider
+		const sliders = [ _brightnessSliderElement, _grayscaleSliderElement ];
+		sliders.map((slider) => {
+			noUiSlider.create(slider, {
+				start: 50,
+				connect: 'lower',
+				range: {
+					min: 0,
+					max: 100
+				}
+			});
+			const namespace = slider.id;
+			const eventName = 'update.' + namespace;
+			slider.noUiSlider.on(eventName, (e, h, u, t, p, n) => {
+				updateCSS(n);
+			});
+		});
 	}
 
 	const _openFile = (file) => {
@@ -44,7 +73,7 @@ const nightPDF = (function() {
 			console.log('opening in new window');
 			ipcRenderer.send('newWindow', file);
 		} else {
-			_pdfElement.src = 'pdfjs/web/viewer.html?file=' + encodeURIComponent(file);
+			_pdfElement.src = 'libs/pdfjs/web/viewer.html?file=' + encodeURIComponent(file);
 			_pdfElement.onload = _fileDidLoad;
 			_updateTitle(file);
 		}
@@ -76,6 +105,13 @@ const nightPDF = (function() {
 		cssRule += '}';
 
 		currentStyle.innerHTML = cssRule;
+	};
+
+	updateCSS = (nouislider) => {
+		const target = nouislider.target.id;
+		const value = nouislider.target.noUiSlider.get();
+
+		console.log(target, value);
 	};
 
 	_updateTitle = (filePath) => {
