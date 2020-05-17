@@ -1,4 +1,4 @@
-const app = (function() {
+const nightPDF = (function() {
 	const { ipcRenderer, remote } = require('electron');
 	const path = require('path');
 
@@ -93,4 +93,4 @@ const app = (function() {
 	};
 })();
 
-app.run();
+nightPDF.run();

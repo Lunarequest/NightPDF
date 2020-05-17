@@ -2,7 +2,7 @@
 	"name": "NightPDF",
 	"version": "1.0.0",
 	"description": "Dark Mode for PDFs",
-	"main": "main.js",
+	"main": "app.js",
 	"scripts": {
 		"start": "electron ."
 	},
