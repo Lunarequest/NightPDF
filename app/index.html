@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>NightPDF</title>
+    <style>
+      body{
+        background-color: #1e1e1e;
+        color: #CCCCCC;
+        box-sizing: border-box;
+        overflow: hidden;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      #splash{
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        margin: auto;
+        display: block;
+        font-family: Helvetica;
+        font-size: 18px;  
+        user-select: none;
+        text-align: center;
+      }
+      #appContainer {
+        position: absolute;
+        width: 100%;
+        top: 35px;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+      iframe {
+        position: absolute;
+        border: none;
+        width: 100%;
+        height: 100%;
+      }
+      #header{
+        position: absolute;
+	      background: rgb(45,45,45);
+	      top: 0;
+	      left: 0;
+	      right: 0;
+	      height: 35px;
+	      display: flex;
+	      flex-direction: row;
+	      visibility: hidden;
+      }
+      #title{
+        float: left;
+	      height: 35px;
+	      padding-left: 14px;
+        padding-right: 16px;
+        padding-top: 8px;
+      	user-select: none;
+        background: #1e1e1e;
+	      border-left: 0.5px solid #252525;
+	      border-right: 0.5px solid #252525;
+	      color: #cccccc;
+        max-width: 85%;
+        box-sizing: border-box;
+        white-space: nowrap;
+        overflow: hidden;
+	      text-overflow: ellipsis;
+      }
+      #menu{
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 35px;
+        padding-left: 12px;
+        padding-right: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+        box-sizing: border-box;
+      }
+      #menu:hover{
+        text-decoration: underline;
+        cursor: pointer
+      }
+      #darkConfigurator{
+        position: absolute;
+        top: 35px;
+        right: 63px;
+        height: 300px;
+        z-index: 999;
+        background: rgb(45,45,45);
+	      border: 1px solid #666666;
+        color: white;
+        display: flex;
+        flex-direction: column;
+      	justify-content: flex-start;
+        align-items: flex-start;
+        padding: 16px;
+        box-sizing: border-box;
+        visibility: hidden;
+      }
+      textarea{
+        height: 75px;
+      }
+      #darkConfigurator h3{
+        margin-top: 0px;
+        margin-bottom: 8px;
+      }
+    </style>
+    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+  </head>
+  <body>
+    <div id='header'>
+      <span id="title">
+      </span>
+      <div id="menu">
+        DARK
+      </div>
+    </div>
+    <div id='darkConfigurator'>
+      <h3>Custom CSS</h3>
+      <textarea id="darkCSS">filter: brightness(0.91) grayscale(0.95) invert(0.95) sepia(0.55) hue-rotate(180deg);</textarea>
+    </div>
+    <div id="splash">Open a file from the menu or using Ctrl + O</div>
+    <div id='appContainer'>
+      <iframe id='pdfjs'></iframe>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

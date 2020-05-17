@@ -1,0 +1,14 @@
+{
+	"name": "NightPDF",
+	"version": "1.0.0",
+	"description": "Dark Mode for PDFs",
+	"main": "main.js",
+	"scripts": {
+		"start": "electron ."
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"electron": "^8.3.0"
+	}
+}
