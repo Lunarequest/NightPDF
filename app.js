@@ -6,8 +6,8 @@ let menuIsConfigured = false;
 function createWindow(filename = null) {
 	// Create the browser window.
 	let win = new BrowserWindow({
-		width: 1200,
-		height: 800,
+		width: 800,
+		height: 650,
 		minWidth: 500,
 		minHeight: 200,
 		resizable: true,
@@ -56,7 +56,9 @@ function createWindow(filename = null) {
 		accelerator: 'CmdOrCtrl+P',
 		enabled: false,
 		click() {
-			win.webContents.send('file-print');
+			//figure out which is the active one
+			const focusedWin = BrowserWindow.getFocusedWindow();
+			focusedWin.webContents.send('file-print');
 		}
 	});
 

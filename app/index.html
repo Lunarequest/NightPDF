@@ -13,14 +13,20 @@
       }
       #splash{
         position: absolute;
-        top: 50%;
+        height: 90%;
         width: 100%;
-        margin: auto;
-        display: block;
+        top: 35px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         font-family: Helvetica;
         font-size: 18px;  
         user-select: none;
         text-align: center;
+      }
+      #splash img{
+        margin-bottom: 20px;
       }
       #appContainer {
         position: absolute;
@@ -63,29 +69,38 @@
         white-space: nowrap;
         overflow: hidden;
 	      text-overflow: ellipsis;
+        font-size: 14px;
       }
       #menu{
         position: absolute;
         top: 0;
         right: 0;
-        height: 35px;
-        padding-left: 12px;
-        padding-right: 16px;
+        height: 28px;
+        padding-left: 4px;
+        padding-right: 1px;
+        padding-bottom: 2px;
+        width: 35px;
         display: flex;
         justify-content: center;
         align-items: center;
         user-select: none;
         box-sizing: border-box;
+        text-align: center;
+        margin-right: 8px;
+        margin-top: 2px;
+        border-radius: 4px;
       }
-      #menu:hover{
-        text-decoration: underline;
-        cursor: pointer
+      #menu:hover, #menu:active{
+        cursor: pointer;
+        border: 1px solid #666666;
+        box-sizing: border-box;
       }
       #darkConfigurator{
         position: absolute;
-        top: 35px;
-        right: 63px;
-        height: 300px;
+        top: 28px;
+        right: 42px;
+        height: 550px;
+        width: 200px;
         z-index: 999;
         background: rgb(45,45,45);
 	      border: 1px solid #666666;
@@ -96,26 +111,34 @@
         align-items: flex-start;
         padding: 16px 24px;
         box-sizing: border-box;
+        border-radius: 4px;
+        -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.6);
+        -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.6);
+        box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.6);
         visibility: hidden;
       }
+      #slides label{
+        font-size: 14px;
+      }
       #slides{
+        margin-top: 12px;
         width: 100%;
         height: 200px;
       }
       #darkConfigurator h3{
         margin-top: 0px;
-        margin-bottom: 8px;
+        margin-bottom: 0px;
       }
       #slides > div {
         margin-top: 4px;
-        margin-bottom: 12px;
+        margin-bottom: 34px;
       }
       #darkConfigurator div .noUi-handle{
         width: 25px;
         height: 25px;
         border-radius: 25px;
-        left: 0;
-        right: 0;
+        left: 2px;
+        right: 2px;
         top: -4px;
       }
       #darkConfigurator div .noUi-active{
@@ -132,17 +155,71 @@
       }
       #darkConfigurator *:active{
         outline: none;
-        box-shadow: none;
       }
-
+      #darkConfigurator .noUi-tooltip {
+        bottom: -108%;
+        font-size: 13px;
+        padding: 2px;
+        padding-left: 3px;
+        padding-right: 3px;
+        font-family: Helvetica, sans-serif;
+        background-color: black;
+        border: 2px solid rgb(24, 24, 24);
+        color: #DDDDDD;
+      }
+      #darkConfigurator .noUi-tooltip::before {
+        content: '';
+        position: absolute;
+        display: block;    
+        width: 0px;        
+        left: 50%;
+        top: 10px;
+        border: 7px solid transparent;
+        border-top: 0;
+        border-bottom: 12px solid black;
+        transform: translate(-50%, calc(-100% - 5px));
+      }
+      #darkConfigurator .noUi-target{
+        border: none;
+        border-radius: 15px;
+        background: transparent;
+      }
+      #darkConfigurator .noUi-connects {
+        background-color: rgb(45,45,45);
+        box-shadow: rgba(7, 7, 6, 0.9) 0px 1px 3px inset;
+        border-radius: 15px;
+      }
+      #darkConfigurator .noUi-connect{
+        background: rgb(144, 165, 130);
+        box-shadow: rgba(7, 7, 6, 0.3) 0px 1px 3px inset;
+      }
+      #darkConfigurator div .noUi-handle{
+        background-color: rgb(34, 33, 32);
+        border-top-color: rgb(72, 70, 66);
+        border-right-color: rgb(72, 70, 66);
+        border-bottom-color: rgb(72, 70, 66);
+        border-left-color: rgb(72, 70, 66);
+        background-image: linear-gradient(rgba(34, 33, 32, 0), rgba(7, 7, 6, 0.1));
+        box-shadow: rgba(7, 7, 6, 0.3) 0px 0px 8px;
+      }
       #darkConfigurator div .noUi-handle:before{
         left: 0;
         background: none;
       }
-
       #darkConfigurator div .noUi-handle:after{
         left: 0;
         background: none;
+      }
+      #darkConfigurator select{
+        margin-top: 8px;
+        width: 100%;
+        height: 25px;
+        font-size: 14px;
+        color: rgb(144, 165, 130);
+        background-color: rgb(45,45,45);
+      }
+      #darkConfigurator .noUi-horizontal {
+        height: 14px;
       }
     </style>
     <link href="libs/nouislider/nouislider.min.css" rel="stylesheet">
@@ -153,27 +230,40 @@
     <div id='header'>
       <span id="title">
       </span>
-      <div id="menu">
-        DARK
-      </div>
+      <div id="menu">🔆</div>
     </div>
     <div id='darkConfigurator'>
-      <h3>Custom CSS</h3>
+      <h3>Settings</h3>
       <div id="slides">
-      <label>Initial Brightness</label>
-      <div id="brightnessSlider"></div>
-      <label>Grayscale</label>
-      <div id="grayscaleSlider"></div>
+        <label>Darkness</label>
+        <div id="brightnessSlider"></div>
+        <label>Grayscale</label>
+        <div id="grayscaleSlider"></div>
+        <label>Inversion</label>
+        <div id="invertSlider"></div>
+        <label>Sepia</label>
+        <div id="sepiaSlider"></div>
+        <label>Hue</label>
+        <div id="hueSlider"></div>
+        <label>Brightness</label>
+        <div id="extraBrightnessSlider"></div>
+        <label class="presetLabel">Preset</label>
+        <select id="presets">
+          <option value="default">Default</option>
+          <option value="crimson">Crimson</option>
+          <option value="papyro">Papyus</option>
+          <option value="original">Original</option>
+        </select>
       </div>
-      <textarea id="darkCSS">filter: brightness(0.91) grayscale(0.95) invert(0.95) sepia(0.55) hue-rotate(180deg);</textarea>
     </div>
     <div id="splash">
+      <img src="icon.png" width="100px"/>
       Open a file from the menu or using Ctrl + O
     </div>
     <div id='appContainer'>
       <iframe id='pdfjs'></iframe>
     </div>
-    <script src="libs/nouislider/nouislider.min.js"></script>
+    <script src="libs/nouislider/nouislider.js"></script>
     <script src="index.js"></script>
   </body>
 </html>
