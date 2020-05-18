@@ -71,7 +71,12 @@ function createWindow(filename = null) {
 		fileMenu.submenu.insert(1, separator);
 		fileMenu.submenu.append(separator);
 		fileMenu.submenu.append(printOption);
-		Menu.setApplicationMenu(menu);
+
+		filteredMenu = menu.items.filter((item) => item.label !== 'Help');
+
+		const newMenu = Menu.buildFromTemplate(filteredMenu);
+
+		Menu.setApplicationMenu(newMenu);
 		menuIsConfigured = true;
 	}
 
