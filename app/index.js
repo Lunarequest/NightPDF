@@ -132,7 +132,7 @@ const nightPDF = (function() {
 			console.log('opening in new window');
 			ipcRenderer.send('newWindow', file);
 		} else {
-			_pdfElement.src = 'libs/pdfjs/web/viewer.html?file=' + encodeURIComponent(file);
+			_pdfElement.src = 'libs/pdfjs/web/viewer.html?file=' + encodeURIComponent(file) + '#pagemode=none';
 			_pdfElement.onload = _fileDidLoad;
 			_updateTitle(file);
 		}

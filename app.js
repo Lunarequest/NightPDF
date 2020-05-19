@@ -111,7 +111,34 @@ function createWindow(filename = null) {
 	});
 }
 
-app.whenReady().then(createWindow);
+let fileToOpen = '';
+
+const args = process.argv;
+const argsLength = args.length;
+if (argsLength > 1 && args[argsLength - 1].endsWith('.pdf')) {
+	fileToOpen = args[argsLength - 1];
+}
+
+app.on('open-file', (event, path) => {
+	event.preventDefault();
+	if (app.isReady()) {
+		if (wins.length === 0) {
+			createWindow(path.toString());
+		} else {
+			const focusedWin = BrowserWindow.getFocusedWindow();
+			focusedWin.webContents.send('file-open', path.toString());
+		}
+	}
+	fileToOpen = path.toString();
+});
+
+app.whenReady().then(() => {
+	if (fileToOpen) {
+		createWindow(fileToOpen);
+	} else {
+		createWindow();
+	}
+});
 
 app.on('window-all-closed', () => {
 	// On macOS it is common for applications and their menu bar
