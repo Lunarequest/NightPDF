@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="232" viewBox="0 0 300 232">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke-width: 3px;
+        stroke-dasharray: 6 6;
+        stroke: url(#linear-gradient);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="156.079" y1="232" x2="143.921" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#29c0ea"/>
+      <stop offset="0.683" stop-color="#d773e9"/>
+      <stop offset="1" stop-color="#fc515d"/>
+    </linearGradient>
+  </defs>
+  <rect class="cls-1" width="300" height="232"/>
+</svg>

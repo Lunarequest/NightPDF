@@ -6,8 +6,8 @@ let menuIsConfigured = false;
 function createWindow(filename = null) {
 	// Create the browser window.
 	let win = new BrowserWindow({
-		width: 800,
-		height: 650,
+		width: 550,
+		height: 420,
 		minWidth: 500,
 		minHeight: 200,
 		resizable: true,
@@ -82,22 +82,27 @@ function createWindow(filename = null) {
 
 	// El tema es que este siempre esta ligado a la ultima ventana
 	menu.getMenuItemById('file-open').click = () => {
-		dialog
-			.showOpenDialog(null, {
-				properties: [ 'openFile' ],
-				filters: [ { name: 'PDF Files', extensions: [ 'pdf' ] } ]
-			})
-			.then((dialogReturn) => {
-				const filename = dialogReturn['filePaths'][0];
-				if (filename) {
-					if (wins.length === 0) {
-						createWindow(filename.toString());
-					} else {
-						win.webContents.send('file-open', filename.toString());
-					}
-				}
-			});
+		openNewPDF();
 	};
+
+	const openNewPDF = () => {
+		dialog
+		.showOpenDialog(null, {
+			properties: [ 'openFile' ],
+			filters: [ { name: 'PDF Files', extensions: [ 'pdf' ] } ]
+		})
+		.then((dialogReturn) => {
+			const filename = dialogReturn['filePaths'][0];
+			if (filename) {
+				if (wins.length === 0) {
+					createWindow(filename.toString());
+				} else {
+					const focusedWin = BrowserWindow.getFocusedWindow();
+					focusedWin.webContents.send('file-open', filename.toString());
+				}
+			}
+		});
+	}
 
 	ipcMain.removeAllListeners('togglePrinting');
 	ipcMain.once('togglePrinting', (e, msg) => {
@@ -108,6 +113,20 @@ function createWindow(filename = null) {
 	ipcMain.once('newWindow', (e, msg) => {
 		console.log('opening ', msg, ' in new window');
 		createWindow(msg);
+	});
+
+	ipcMain.removeAllListeners('resizeWindow');
+	ipcMain.once('resizeWindow', (e, msg) => {
+		const { width, height } = win.getBounds();
+		if (width < 1000 || height < 650) {
+			win.setSize(1000, 650);
+			win.center();
+		}
+	});
+
+	ipcMain.removeAllListeners('openNewPDF');
+	ipcMain.once('openNewPDF', (e, msg) => {
+		openNewPDF();
 	});
 }
 

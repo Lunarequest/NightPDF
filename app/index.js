@@ -47,6 +47,9 @@ const nightPDF = (function() {
 	var _hueSliderElement;
 	var _extraBrightnessSliderElement;
 	var _presetsElement;
+	var _splashElement;
+	var _splashExtraElement;
+
 
 	function main() {
 		_appContainerElement = document.getElementById('appContainer');
@@ -62,7 +65,10 @@ const nightPDF = (function() {
 		_hueSliderElement = document.getElementById('hueSlider');
 		_extraBrightnessSliderElement = document.getElementById('extraBrightnessSlider');
 		_presetsElement = document.getElementById('presets');
-		//setup listeners
+		_splashElement = document.getElementById('splash');
+		_splashExtraElement = document.getElementById('splash-extra');
+
+		//setup electron listeners
 		ipcRenderer.removeAllListeners('file-open');
 		ipcRenderer.on('file-open', (e, msg) => {
 			console.log('que pex ' + Math.random());
@@ -75,7 +81,7 @@ const nightPDF = (function() {
 			_pdfElement.contentDocument.getElementById('print').dispatchEvent(new Event('click'));
 		});
 
-		//setup header
+		//setup dom listeners
 		_menuElement.addEventListener('click', (e) => {
 			_toggleDarkConfigurator();
 			e.stopPropagation();
@@ -85,14 +91,19 @@ const nightPDF = (function() {
 			_hideDarkConfigurator();
 		});
 
-		_pdfElement.addEventListener(
-			'click',
-			(e) => {
+		_pdfElement.addEventListener('click', (e) => {
 				_hideDarkConfigurator();
 				e.stopPropagation();
-			},
-			true
+			},true
 		);
+
+		_splashElement.addEventListener('click', (e) => {
+			ipcRenderer.send('openNewPDF', null);
+		});
+
+		_splashExtraElement.addEventListener('click', (e) => {
+			ipcRenderer.send('openNewPDF', null);
+		})
 
 		window.addEventListener('blur', function() {
 			if (document.activeElement.id == 'pdfjs') {
@@ -106,9 +117,30 @@ const nightPDF = (function() {
 			_handlePresetChange(event.target.value);
 		});
 
+		_splashElement.ondrop = (e) => {
+			console.log('files dropped');
+			e.preventDefault();
+			e.stopPropagation();
+
+			const files = e.dataTransfer.files;
+
+			if (!files || files.length === 0) {
+				return;
+			}
+
+			const fileToOpen = files[0];
+			_openFile(fileToOpen.path);
+		};
+		_splashElement.ondragover = (e) => {
+			console.log('file dragged');
+			e.preventDefault();
+			e.stopPropagation();
+		};
+
 		if (navigator.userAgent.toLowerCase().indexOf(' electron/') == -1) {
-			_openFile('/Users/jllcabrera/Archive/Research Papers/junior08.pdf');
+			//_openFile('/Users/jllcabrera/Archive/Research Papers/junior08.pdf');
 		}
+
 	}
 
 	const _toggleDarkConfigurator = () => {
@@ -120,7 +152,6 @@ const nightPDF = (function() {
 	};
 
 	const _hideDarkConfigurator = () => {
-		console.log('bith');
 		if (_darkConfiguratorElement.style.visibility === 'visible') {
 			_darkConfiguratorElement.style.visibility = 'hidden';
 		}
@@ -132,9 +163,12 @@ const nightPDF = (function() {
 			console.log('opening in new window');
 			ipcRenderer.send('newWindow', file);
 		} else {
+			_appContainerElement.style.zIndex = '1';
 			_pdfElement.src = 'libs/pdfjs/web/viewer.html?file=' + encodeURIComponent(file) + '#pagemode=none';
 			_pdfElement.onload = _fileDidLoad;
 			_updateTitle(file);
+			//send message to update window size
+			ipcRenderer.send('resizeWindow', null);
 		}
 	};
 

@@ -1951,10 +1951,10 @@
 						return;
 					}
 
-					/*PDFViewerApplication.eventBus.dispatch("fileinputchange", {
-      source: this,
-      fileInput: evt.dataTransfer
-    });*/
+					PDFViewerApplication.eventBus.dispatch('fileinputchange', {
+						source: this,
+						fileInput: evt.dataTransfer
+					});
 				});
 
 				if (!PDFViewerApplication.supportsDocumentFonts) {

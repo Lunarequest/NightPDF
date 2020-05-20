@@ -13,20 +13,46 @@
       }
       #splash{
         position: absolute;
-        height: 90%;
-        width: 100%;
-        top: 35px;
+        height: 232px;
+        width: 300px;
+        top: 60px;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         font-family: Helvetica;
         font-size: 18px;  
-        user-select: none;
         text-align: center;
+        background-image: url("gradient3.svg");
+        border-radius: 4px;
+        padding-bottom: 32px;
+        padding-top: 32px;
+        box-sizing: border-box;
+        user-select: none;
       }
       #splash img{
         margin-bottom: 20px;
+      }
+      #splash h3{
+        margin-bottom: 0px;
+      }
+      #splash-extra{
+        position: absolute; 
+        top: 316px;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #BBBBBB;
+        user-select: none;
+      }
+      #splash-extra h3{
+        font-size: 16.64px;
       }
       #appContainer {
         position: absolute;
@@ -256,27 +282,17 @@
         </select>
       </div>
     </div>
-    <div id="splash">
-      <img src="icon.png" width="100px"/>
-      Open a file from the menu or using Ctrl + O
-    </div>
     <div id='appContainer'>
       <iframe id='pdfjs'></iframe>
     </div>
+    <div id="splash">
+      <img src="icon2.png" width="100px"/>
+      <h3>Drop PDF here</h3>
+    </div>
+    <div id="splash-extra">
+      <h3>Open File with CMD+O</h3>
+    </div>
     <script src="libs/nouislider/nouislider.js"></script>
     <script src="index.js"></script>
-    <script>
-      document.addEventListener('drop', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }, false);
-      document.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }, false);
-      webview.addEventListener('dragover', function(e) {
-        e.preventDefault();
-      }, false);
-    </script>    
   </body>
 </html>
