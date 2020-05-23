@@ -57,7 +57,7 @@
       #appContainer {
         position: absolute;
         width: 100%;
-        top: 35px;
+        top: 40px;
         left: 0;
         bottom: 0;
         right: 0;
@@ -74,14 +74,14 @@
 	      top: 0;
 	      left: 0;
 	      right: 0;
-	      height: 35px;
+	      height: 40px;
 	      display: flex;
 	      flex-direction: row;
 	      visibility: hidden;
       }
       #title{
         float: left;
-	      height: 35px;
+	      height: 40px;
 	      padding-left: 14px;
         padding-right: 16px;
         padding-top: 8px;
@@ -90,7 +90,7 @@
 	      border-left: 0.5px solid #252525;
 	      border-right: 0.5px solid #252525;
 	      color: #cccccc;
-        max-width: 85%;
+        max-width: 50%;
         box-sizing: border-box;
         white-space: nowrap;
         overflow: hidden;
@@ -101,25 +101,54 @@
         position: absolute;
         top: 0;
         right: 0;
-        height: 28px;
+        height: 40px;
         padding-left: 4px;
         padding-right: 1px;
-        padding-bottom: 2px;
-        width: 35px;
+        max-width: 50%;
         display: flex;
         justify-content: center;
         align-items: center;
         user-select: none;
         box-sizing: border-box;
         text-align: center;
-        margin-right: 8px;
-        margin-top: 2px;
+        margin-right: 6px;
         border-radius: 4px;
       }
-      #menu:hover, #menu:active{
+      .button {
+        margin-left: 8px;
+        border: 2px solid rgb(30,30,30);
+        font-size: 14px;
+        padding: 4px;
+        padding-left: 8px;
+        padding-right: 8px;
+        border-radius: 6px;
+        font-weight: 600;
+      }
+      .button:hover{
         cursor: pointer;
-        border: 1px solid #666666;
+        border: 2px solid rgb(121,121,121);
         box-sizing: border-box;
+      }
+      .button.active{
+        border: 2px solid rgb(121,121,121);
+      }
+      #default-button {
+        background-color: rgb(30,32,36);
+        color: rgb(251,251,255);
+      }
+      #sepia-button{
+        background-color: rgb(158,145,116);
+        color: rgb(64,57,45);
+      }
+      #redeye-button{
+        background-color: rgb(54,39,43);
+        color: rgb(188,139,150);
+      }
+      #custom-button{
+        background-color: rgb(193,193,193);
+        color: rgb(35,35,35);
+        padding-left: 3.5px;
+        padding-right: 3.5px;
       }
       #darkConfigurator{
         position: absolute;
@@ -256,7 +285,12 @@
     <div id='header'>
       <span id="title">
       </span>
-      <div id="menu">🔆</div>
+      <div id="menu">
+        <div id="default-button" class="button active">Default</div>
+        <div id="sepia-button" class="button">Sepia</div>
+        <div id="redeye-button" class="button">Redeye</div>
+        <div id="custom-button" class="button">Custom</div>
+      </div>
     </div>
     <div id='darkConfigurator'>
       <h3>Settings</h3>
@@ -273,13 +307,6 @@
         <div id="hueSlider"></div>
         <label>Brightness</label>
         <div id="extraBrightnessSlider"></div>
-        <label class="presetLabel">Preset</label>
-        <select id="presets">
-          <option value="default">Default</option>
-          <option value="crimson">Crimson</option>
-          <option value="papyro">Papyus</option>
-          <option value="original">Original</option>
-        </select>
       </div>
     </div>
     <div id='appContainer'>

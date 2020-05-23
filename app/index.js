@@ -46,7 +46,6 @@ const nightPDF = (function() {
 	var _sepiaSliderElement;
 	var _hueSliderElement;
 	var _extraBrightnessSliderElement;
-	var _presetsElement;
 	var _splashElement;
 	var _splashExtraElement;
 
@@ -57,6 +56,10 @@ const nightPDF = (function() {
 		_headerElement = document.getElementById('header');
 		_titleElement = document.getElementById('title');
 		_menuElement = document.getElementById('menu');
+		_defaultButton = document.getElementById('default-button');
+		_sepiaButton = document.getElementById('sepia-button');
+		_redeyeButton = document.getElementById('redeye-button');
+		_customButton = document.getElementById('custom-button');
 		_darkConfiguratorElement = document.getElementById('darkConfigurator');
 		_brightnessSliderElement = document.getElementById('brightnessSlider');
 		_grayscaleSliderElement = document.getElementById('grayscaleSlider');
@@ -64,7 +67,6 @@ const nightPDF = (function() {
 		_sepiaSliderElement = document.getElementById('sepiaSlider');
 		_hueSliderElement = document.getElementById('hueSlider');
 		_extraBrightnessSliderElement = document.getElementById('extraBrightnessSlider');
-		_presetsElement = document.getElementById('presets');
 		_splashElement = document.getElementById('splash');
 		_splashExtraElement = document.getElementById('splash-extra');
 
@@ -72,7 +74,6 @@ const nightPDF = (function() {
 		ipcRenderer.removeAllListeners('file-open');
 		ipcRenderer.on('file-open', (e, msg) => {
 			console.log('que pex ' + Math.random());
-			ipcRenderer.send('togglePrinting', true);
 			_openFile(msg);
 		});
 
@@ -81,8 +82,60 @@ const nightPDF = (function() {
 			_pdfElement.contentDocument.getElementById('print').dispatchEvent(new Event('click'));
 		});
 
-		//setup dom listeners
-		_menuElement.addEventListener('click', (e) => {
+		// setup dom listeners
+		_defaultButton.addEventListener('click', (e)=> {
+			// do default styling
+
+			if (_defaultButton.className.includes('active')){
+				_toggleDarkConfigurator();
+			}else{
+				_defaultButton.className = "button active";
+				_sepiaButton.className = "button";
+				_redeyeButton.className = "button";
+				_customButton.className = "button";				
+				_handlePresetChange('default');
+			}
+
+			e.stopPropagation();
+		});
+		_sepiaButton.addEventListener('click', (e)=> {
+			// do default styling
+			if (_sepiaButton.className.includes('active')){
+				_toggleDarkConfigurator();
+			}else{
+				_defaultButton.className = "button";
+				_sepiaButton.className = "button active";
+				_redeyeButton.className = "button";
+				_customButton.className = "button";
+				_handlePresetChange('sepia');
+			}
+			e.stopPropagation();
+		});
+		_redeyeButton.addEventListener('click', (e)=> {
+			// do default styling
+			// only display menu if active
+			if (_redeyeButton.className.includes('active')){
+				_toggleDarkConfigurator();
+			}else{
+				_defaultButton.className = "button";
+				_sepiaButton.className = "button";
+				_redeyeButton.className = "button active";
+				_customButton.className = "button";
+				_handlePresetChange('redeye');
+			}
+			e.stopPropagation();
+		});
+
+		_customButton.addEventListener('click', (e)=> {
+			// do default styling
+			// always display menu
+			if (!_customButton.className.includes('active')){
+				_defaultButton.className = "button";
+				_sepiaButton.className = "button";
+				_redeyeButton.className = "button";
+				_customButton.className = "button active";
+				_handlePresetChange('original');
+			}
 			_toggleDarkConfigurator();
 			e.stopPropagation();
 		});
@@ -109,12 +162,6 @@ const nightPDF = (function() {
 			if (document.activeElement.id == 'pdfjs') {
 				_hideDarkConfigurator();
 			}
-		});
-
-		_presetsElement.addEventListener('change', (event) => {
-			const result = document.querySelector('.result');
-			console.log('mm');
-			_handlePresetChange(event.target.value);
 		});
 
 		_splashElement.ondrop = (e) => {
@@ -168,13 +215,14 @@ const nightPDF = (function() {
 			_pdfElement.onload = _fileDidLoad;
 			_updateTitle(file);
 			//send message to update window size
-			ipcRenderer.send('resizeWindow', null);
 		}
 	};
 
 	const _fileDidLoad = () => {
 		console.log('Loaded PDF');
 		_headerElement.style.visibility = 'visible';
+		ipcRenderer.send('togglePrinting', true);
+		ipcRenderer.send('resizeWindow', null);
 		_setupDarkMode();
 		_setupSliders();
 	};
@@ -204,7 +252,7 @@ const nightPDF = (function() {
 				hue.set(0);
 				extraBrightness.set(0);
 				break;
-			case 'crimson':
+			case 'redeye':
 				brightness.set(8);
 				grayness.set(100);
 				inversion.set(92);
@@ -212,7 +260,7 @@ const nightPDF = (function() {
 				hue.set(295);
 				extraBrightness.set(-6);
 				break;
-			case 'papyro':
+			case 'sepia':
 				brightness.set(0);
 				grayness.set(0);
 				inversion.set(25);

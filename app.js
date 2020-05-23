@@ -1,5 +1,5 @@
 const { app, BrowserWindow, Menu, dialog, MenuItem, ipcMain } = require('electron');
-
+const {menuTemplate} = require("./app/menutemplate");
 let wins = [];
 let menuIsConfigured = false;
 
@@ -8,9 +8,9 @@ function createWindow(filename = null) {
 	let win = new BrowserWindow({
 		width: 550,
 		height: 420,
-		minWidth: 500,
+		minWidth: 565,
 		minHeight: 200,
-		resizable: true,
+		resizable: false,
 		webPreferences: {
 			plugins: true,
 			nodeIntegration: true
@@ -41,49 +41,22 @@ function createWindow(filename = null) {
 		}
 	});
 
-	const menu = Menu.getApplicationMenu();
-	fileMenu = menu.items.find((item) => item.label === 'File');
-
-	const openOption = new MenuItem({
-		label: 'Open...',
-		id: 'file-open',
-		accelerator: 'CmdOrCtrl+O'
-	});
-
-	const printOption = new MenuItem({
-		label: 'Print',
-		id: 'file-print',
-		accelerator: 'CmdOrCtrl+P',
-		enabled: false,
-		click() {
-			//figure out which is the active one
-			const focusedWin = BrowserWindow.getFocusedWindow();
-			focusedWin.webContents.send('file-print');
-		}
-	});
-
-	const separator = new MenuItem({
-		type: 'separator'
-	});
 
 	if (!menuIsConfigured) {
-		fileMenu.submenu.insert(0, openOption);
-		fileMenu.submenu.insert(1, separator);
-		fileMenu.submenu.append(separator);
-		fileMenu.submenu.append(printOption);
+		const menu = Menu.buildFromTemplate(menuTemplate);
 
-		filteredMenu = menu.items.filter((item) => item.label !== 'Help');
+		menu.getMenuItemById('file-open').click = () => {
+			openNewPDF();
+		};
 
-		const newMenu = Menu.buildFromTemplate(filteredMenu);
+		menu.getMenuItemById('file-print').click = () => {
+			const focusedWin = BrowserWindow.getFocusedWindow();
+			focusedWin.webContents.send('file-print');
+		};
 
-		Menu.setApplicationMenu(newMenu);
+		Menu.setApplicationMenu(menu);
 		menuIsConfigured = true;
 	}
-
-	// El tema es que este siempre esta ligado a la ultima ventana
-	menu.getMenuItemById('file-open').click = () => {
-		openNewPDF();
-	};
 
 	const openNewPDF = () => {
 		dialog
@@ -106,6 +79,7 @@ function createWindow(filename = null) {
 
 	ipcMain.removeAllListeners('togglePrinting');
 	ipcMain.once('togglePrinting', (e, msg) => {
+		const menu = Menu.getApplicationMenu();
 		menu.getMenuItemById('file-print').enabled = Boolean(msg);
 	});
 
@@ -119,6 +93,7 @@ function createWindow(filename = null) {
 	ipcMain.once('resizeWindow', (e, msg) => {
 		const { width, height } = win.getBounds();
 		if (width < 1000 || height < 650) {
+			win.setResizable(true);
 			win.setSize(1000, 650);
 			win.center();
 		}
