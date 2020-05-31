@@ -1,8 +1,12 @@
 # NightPDF
+![NightPDF logo](docs/nightpdf.png?raw=true)
 
 ## Dark Mode PDF reader
 
 It uses Electron but my eyes dont care.
+
+![NightPDF screencast](docs/nightpdf.gif?raw=true)
+
 
 ## Licenses
 - [NightPDF](https://github.com/joeloya/NightPDF) is under [ISC](readme.license)
