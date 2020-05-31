@@ -1,7 +1,7 @@
 # NightPDF
 ![NightPDF logo](docs/nightpdf_small.png?raw=true)
 
-## Dark Mode PDF reader
+Dark Mode PDF reader
 
 It uses Electron but my eyes dont care.
 
