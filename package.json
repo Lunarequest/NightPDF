@@ -25,7 +25,7 @@
 		"fileAssociations": [
 			{
 				"ext": "pdf",
-				"icon": "icon.icns",
+				"icon": "build/icon.icns",
 				"role": "viewer",
 				"isPackage": false
 			}
@@ -34,10 +34,10 @@
 			"target": [
 				"portable"
 			],
-			"icon": "icon.ico"
+			"icon": "build/icon.ico"
 		},
 		"mac": {
-			"icon": "icon.iconset",
+			"icon": "build/icon.iconset",
 			"category": "public.app-category.productivity",
 			"target": [
 				"dmg",
