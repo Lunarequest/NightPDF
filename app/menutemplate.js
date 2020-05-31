@@ -180,7 +180,7 @@ exports.menuTemplate = [
           label: 'Learn More',
           click: async () => {
             const { shell } = require('electron')
-            await shell.openExternal('https://elesoft.io/')
+            await shell.openExternal('https://elesoft.io/#nightpdf')
           }
         }
       ]
