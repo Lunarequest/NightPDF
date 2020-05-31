@@ -1,5 +1,5 @@
 # NightPDF
-![NightPDF logo](docs/nightpdf.png?raw=true)
+![NightPDF logo](docs/nightpdf.png?raw=true  | width=95 )
 
 ## Dark Mode PDF reader
 
