@@ -30,6 +30,12 @@
 				"isPackage": false
 			}
 		],
+		"win": {
+			"target": [
+				"portable"
+			],
+			"icon": "icon.ico"
+		},
 		"mac": {
 			"icon": "icon.iconset",
 			"category": "public.app-category.productivity",
