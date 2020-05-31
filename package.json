@@ -11,14 +11,17 @@
 	"license": "ISC",
 	"devDependencies": {
 		"electron": "^8.3.0",
-		"electron-builder": "^22.6.0"
+		"electron-builder": "^22.6.0",
+		"electron-notarize": "^0.3.0"
 	},
 	"dependencies": {
+		"dotenv": "^8.2.0",
 		"nouislider": "^14.5.0"
 	},
 	"build": {
-		"appId": "com.elesoft.NightPDF",
+		"appId": "io.elesoft.NightPDF",
 		"productName": "NightPDF",
+		"afterSign": "build/notarize.js",
 		"fileAssociations": [
 			{
 				"ext": "pdf",
@@ -28,9 +31,29 @@
 			}
 		],
 		"mac": {
-			"identity": null,
 			"icon": "icon.iconset",
-			"category": "public.app-category.productivity"
+			"category": "public.app-category.productivity",
+			"target": [
+				"dmg",
+				"zip",
+				"mas"
+			],
+			"bundleVersion": "1",
+			"artifactName": "NightPDF-${version}.${ext}",
+			"darkModeSupport": true,
+			"hardenedRuntime": true,
+			"gatekeeperAssess": false,
+			"provisioningProfile": "./build/nightpdf.provisionprofile",
+			"type": "distribution"
+		},
+		"mas": {
+			"entitlements": "./build/entitlements.mas.plist",
+			"entitlementsInherit": "./build/entitlements.mas.inherit.plist",
+			"hardenedRuntime": true,
+			"asarUnpack": [
+				"node_modules"
+			],
+			"artifactName": "rocketchat-${version}-mas.${ext}"
 		}
 	}
 }
