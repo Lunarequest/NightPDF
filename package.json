@@ -7,7 +7,10 @@
 		"start": "electron .",
 		"dist": "electron-builder"
 	},
-	"author": "",
+	"author": {
+		"name": "",
+		"email": "joe@whatever.com"
+	},
 	"license": "ISC",
 	"devDependencies": {
 		"electron": "^8.5.2",
@@ -31,7 +34,7 @@
 			}
 		],
 		"linux": {
-			"icon": "build/icon.ico",
+			"icon": "build/icon.icoset/icon_256x256.png",
 			"desktop": {
 				"Name": "NightPdf",
 				"Comment": "Dark Mode PDF reader"
@@ -49,7 +52,7 @@
 			"target": [
 				"portable"
 			],
-			"icon": "build/icons256x256/icon.ico"
+			"icon": "build/icon.ico"
 		},
 		"mac": {
 			"icon": "build/icon.iconset",
