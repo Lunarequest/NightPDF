@@ -13,9 +13,9 @@
 	},
 	"license": "ISC",
 	"devDependencies": {
-		"electron": "^8.5.2",
+		"electron": "^10.1.5",
 		"electron-builder": "^22.9.1",
-		"electron-notarize": "^0.3.0"
+		"electron-notarize": "^1.0.0"
 	},
 	"dependencies": {
 		"dotenv": "^8.2.0",
