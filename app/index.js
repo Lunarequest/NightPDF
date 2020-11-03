@@ -51,12 +51,6 @@ const nightPDF = (function () {
 
 
 	function main() {
-		document.body.addEventListener('click', event => {
-			if (event.target.tagName.toLowerCase() === 'a') {
-				event.preventDefault();
-				require("electron").shell.openExternal(event.target.href);
-			}
-		});
 		_appContainerElement = document.getElementById('appContainer');
 		_pdfElement = document.getElementById('pdfjs');
 		_headerElement = document.getElementById('header');
