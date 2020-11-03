@@ -1,6 +1,6 @@
 {
 	"name": "NightPDF",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"description": "Dark Mode for PDFs",
 	"main": "app.js",
 	"scripts": {
