@@ -24,7 +24,7 @@ function createWindow(filename = null) {
 
 	// and load the index.html of the app.
 	win.loadFile('app/index.html');
-	win.openDevTools();
+	//win.openDevTools();
 	let wc = win.webContents
 	wc.on('will-navigate', function (e, url) {
 		if (url != wc.getURL()) {
