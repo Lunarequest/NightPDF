@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Menu, dialog, MenuItem, ipcMain } = require('electron');
-const {menuTemplate} = require("./app/menutemplate");
+const { menuTemplate } = require("./app/menutemplate");
 let wins = [];
+var open = require('open');
 let menuIsConfigured = false;
 
 function createWindow(filename = null) {
@@ -18,11 +19,19 @@ function createWindow(filename = null) {
 		titleBarStyle: 'default',
 		show: false
 	});
+
 	wins.push(win);
 
 	// and load the index.html of the app.
 	win.loadFile('app/index.html');
 	//win.openDevTools();
+	let wc = win.webContents
+	wc.on('will-navigate', function (e, url) {
+		if (url != wc.getURL()) {
+			e.preventDefault()
+			require('electron').shell.openExternal(url)
+		}
+	})
 
 	win.once('closed', () => {
 		// Dereference the window object, usually you would store windows
@@ -60,21 +69,23 @@ function createWindow(filename = null) {
 
 	const openNewPDF = () => {
 		dialog
-		.showOpenDialog(null, {
-			properties: [ 'openFile' ],
-			filters: [ { name: 'PDF Files', extensions: [ 'pdf' ] } ]
-		})
-		.then((dialogReturn) => {
-			const filename = dialogReturn['filePaths'][0];
-			if (filename) {
-				if (wins.length === 0) {
-					createWindow(filename.toString());
-				} else {
-					const focusedWin = BrowserWindow.getFocusedWindow();
-					focusedWin.webContents.send('file-open', filename.toString());
+			.showOpenDialog(null, {
+				properties: ['openFile'],
+				filters: [{ name: 'PDF Files', extensions: ['pdf'] }]
+			})
+			.then((dialogReturn) => {
+				const filename = dialogReturn['filePaths'][0];
+				if (filename) {
+					if (wins.length === 0) {
+						createWindow(filename.toString());
+					} else {
+						const focusedWin = BrowserWindow.getFocusedWindow();
+						focusedWin.webContents.send('file-open', filename.toString());
+
+
+					}
 				}
-			}
-		});
+			});
 	}
 
 	ipcMain.removeAllListeners('togglePrinting');
@@ -133,6 +144,7 @@ app.whenReady().then(() => {
 		createWindow();
 	}
 });
+
 
 app.on('window-all-closed', () => {
 	// On macOS it is common for applications and their menu bar

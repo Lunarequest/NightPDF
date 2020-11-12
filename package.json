@@ -1,22 +1,26 @@
 {
 	"name": "NightPDF",
-	"version": "0.2.1",
+	"version": "0.2.3",
 	"description": "Dark Mode for PDFs",
 	"main": "app.js",
 	"scripts": {
 		"start": "electron .",
 		"dist": "electron-builder"
 	},
-	"author": "",
+	"author": {
+		"name": "",
+		"email": "joe@whatever.com"
+	},
 	"license": "ISC",
 	"devDependencies": {
-		"electron": "^8.3.0",
-		"electron-builder": "^22.6.0",
-		"electron-notarize": "^0.3.0"
+		"electron": "^10.1.5",
+		"electron-builder": "^22.9.1",
+		"electron-notarize": "^1.0.0"
 	},
 	"dependencies": {
 		"dotenv": "^8.2.0",
-		"nouislider": "^14.5.0"
+		"nouislider": "^14.6.2",
+		"open": "^7.3.0"
 	},
 	"build": {
 		"appId": "io.elesoft.NightPDF",
@@ -30,6 +34,21 @@
 				"isPackage": false
 			}
 		],
+		"linux": {
+			"icon": "build/icon.icoset/icon_256x256.png",
+			"desktop": {
+				"Name": "NightPdf",
+				"Comment": "Dark Mode PDF reader"
+			},
+			"target": [
+				"AppImage",
+				"deb",
+				"rpm",
+				"tar.gz",
+				"snap"
+			],
+			"category": "Utilty"
+		},
 		"win": {
 			"target": [
 				"portable"

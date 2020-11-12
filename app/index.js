@@ -9,7 +9,7 @@ function _try(func, fallbackValue) {
 	}
 }
 
-const nightPDF = (function() {
+const nightPDF = (function () {
 	let ipcRenderer;
 	let remote;
 	let path;
@@ -17,8 +17,8 @@ const nightPDF = (function() {
 	if (isBrowser) {
 		//stubs for testing in browser directly
 		ipcRenderer = {
-			removeAllListeners: () => {},
-			on: () => {}
+			removeAllListeners: () => { },
+			on: () => { }
 		};
 		remote = {};
 		path = {
@@ -83,26 +83,26 @@ const nightPDF = (function() {
 		});
 
 		// setup dom listeners
-		_defaultButton.addEventListener('click', (e)=> {
+		_defaultButton.addEventListener('click', (e) => {
 			// do default styling
 
-			if (_defaultButton.className.includes('active')){
+			if (_defaultButton.className.includes('active')) {
 				_toggleDarkConfigurator();
-			}else{
+			} else {
 				_defaultButton.className = "button active";
 				_sepiaButton.className = "button";
 				_redeyeButton.className = "button";
-				_customButton.className = "button";				
+				_customButton.className = "button";
 				_handlePresetChange('default');
 			}
 
 			e.stopPropagation();
 		});
-		_sepiaButton.addEventListener('click', (e)=> {
+		_sepiaButton.addEventListener('click', (e) => {
 			// do default styling
-			if (_sepiaButton.className.includes('active')){
+			if (_sepiaButton.className.includes('active')) {
 				_toggleDarkConfigurator();
-			}else{
+			} else {
 				_defaultButton.className = "button";
 				_sepiaButton.className = "button active";
 				_redeyeButton.className = "button";
@@ -111,12 +111,12 @@ const nightPDF = (function() {
 			}
 			e.stopPropagation();
 		});
-		_redeyeButton.addEventListener('click', (e)=> {
+		_redeyeButton.addEventListener('click', (e) => {
 			// do default styling
 			// only display menu if active
-			if (_redeyeButton.className.includes('active')){
+			if (_redeyeButton.className.includes('active')) {
 				_toggleDarkConfigurator();
-			}else{
+			} else {
 				_defaultButton.className = "button";
 				_sepiaButton.className = "button";
 				_redeyeButton.className = "button active";
@@ -126,10 +126,10 @@ const nightPDF = (function() {
 			e.stopPropagation();
 		});
 
-		_customButton.addEventListener('click', (e)=> {
+		_customButton.addEventListener('click', (e) => {
 			// do default styling
 			// always display menu
-			if (!_customButton.className.includes('active')){
+			if (!_customButton.className.includes('active')) {
 				_defaultButton.className = "button";
 				_sepiaButton.className = "button";
 				_redeyeButton.className = "button";
@@ -145,9 +145,9 @@ const nightPDF = (function() {
 		});
 
 		_pdfElement.addEventListener('click', (e) => {
-				_hideDarkConfigurator();
-				e.stopPropagation();
-			},true
+			_hideDarkConfigurator();
+			e.stopPropagation();
+		}, true
 		);
 
 		_splashElement.addEventListener('click', (e) => {
@@ -158,7 +158,7 @@ const nightPDF = (function() {
 			ipcRenderer.send('openNewPDF', null);
 		})
 
-		window.addEventListener('blur', function() {
+		window.addEventListener('blur', function () {
 			if (document.activeElement.id == 'pdfjs') {
 				_hideDarkConfigurator();
 			}
@@ -287,12 +287,12 @@ const nightPDF = (function() {
 			tooltips: [
 				{
 					// 'to' the formatted value. Receives a number.
-					to: function(value) {
+					to: function (value) {
 						return Math.round(value) + '%';
 					},
 					// 'from' the formatted value.
 					// Receives a string, should return a number.
-					from: function(value) {
+					from: function (value) {
 						return Number(value.replace('%', ''));
 					}
 				}
@@ -310,12 +310,12 @@ const nightPDF = (function() {
 			tooltips: [
 				{
 					// 'to' the formatted value. Receives a number.
-					to: function(value) {
+					to: function (value) {
 						return Math.round(value) + '%';
 					},
 					// 'from' the formatted value.
 					// Receives a string, should return a number.
-					from: function(value) {
+					from: function (value) {
 						return Number(value.replace('%', ''));
 					}
 				}
@@ -333,12 +333,12 @@ const nightPDF = (function() {
 			tooltips: [
 				{
 					// 'to' the formatted value. Receives a number.
-					to: function(value) {
+					to: function (value) {
 						return Math.round(value) + '%';
 					},
 					// 'from' the formatted value.
 					// Receives a string, should return a number.
-					from: function(value) {
+					from: function (value) {
 						return Number(value.replace('%', ''));
 					}
 				}
@@ -356,12 +356,12 @@ const nightPDF = (function() {
 			tooltips: [
 				{
 					// 'to' the formatted value. Receives a number.
-					to: function(value) {
+					to: function (value) {
 						return Math.round(value) + '%';
 					},
 					// 'from' the formatted value.
 					// Receives a string, should return a number.
-					from: function(value) {
+					from: function (value) {
 						return Number(value.replace('%', ''));
 					}
 				}
@@ -379,12 +379,12 @@ const nightPDF = (function() {
 			tooltips: [
 				{
 					// 'to' the formatted value. Receives a number.
-					to: function(value) {
+					to: function (value) {
 						return Math.round(value) + '°';
 					},
 					// 'from' the formatted value.
 					// Receives a string, should return a number.
-					from: function(value) {
+					from: function (value) {
 						return Number(value.replace('°', ''));
 					}
 				}
@@ -402,12 +402,12 @@ const nightPDF = (function() {
 			tooltips: [
 				{
 					// 'to' the formatted value. Receives a number.
-					to: function(value) {
+					to: function (value) {
 						return Math.round(value) + '%';
 					},
 					// 'from' the formatted value.
 					// Receives a string, should return a number.
-					from: function(value) {
+					from: function (value) {
 						return Number(value.replace('%', ''));
 					}
 				}
