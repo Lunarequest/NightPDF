@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>NightPDF</title>
+    <style>
+      body{
+        background-color: #1e1e1e;
+        color: #CCCCCC;
+        box-sizing: border-box;
+        overflow: hidden;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      #splash{
+        position: absolute;
+        height: 232px;
+        width: 300px;
+        top: 60px;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-family: Helvetica;
+        font-size: 18px;  
+        text-align: center;
+        background-image: url("gradient3.svg");
+        border-radius: 4px;
+        padding-bottom: 32px;
+        padding-top: 32px;
+        box-sizing: border-box;
+        user-select: none;
+      }
+      #splash img{
+        margin-bottom: 20px;
+      }
+      #splash h3{
+        margin-bottom: 0px;
+      }
+      #splash-extra{
+        position: absolute; 
+        top: 316px;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #BBBBBB;
+        user-select: none;
+      }
+      #splash-extra h3{
+        font-size: 16.64px;
+      }
+      #appContainer {
+        position: absolute;
+        width: 100%;
+        top: 40px;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+      iframe {
+        position: absolute;
+        border: none;
+        width: 100%;
+        height: 100%;
+      }
+      #header{
+        position: absolute;
+	      background: rgb(45,45,45);
+	      top: 0;
+	      left: 0;
+	      right: 0;
+	      height: 40px;
+	      display: flex;
+	      flex-direction: row;
+	      visibility: hidden;
+      }
+      #title{
+        float: left;
+	      height: 40px;
+	      padding-left: 14px;
+        padding-right: 16px;
+        padding-top: 8px;
+      	user-select: none;
+        background: #1e1e1e;
+	      border-left: 0.5px solid #252525;
+	      border-right: 0.5px solid #252525;
+	      color: #cccccc;
+        max-width: 50%;
+        box-sizing: border-box;
+        white-space: nowrap;
+        overflow: hidden;
+	      text-overflow: ellipsis;
+        font-size: 14px;
+      }
+      #menu{
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 40px;
+        padding-left: 4px;
+        padding-right: 1px;
+        max-width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+        box-sizing: border-box;
+        text-align: center;
+        margin-right: 6px;
+        border-radius: 4px;
+      }
+      .button {
+        margin-left: 8px;
+        border: 2px solid rgb(30,30,30);
+        font-size: 14px;
+        padding: 4px;
+        padding-left: 8px;
+        padding-right: 8px;
+        border-radius: 6px;
+        font-weight: 600;
+      }
+      .button:hover{
+        cursor: pointer;
+        border: 2px solid rgb(121,121,121);
+        box-sizing: border-box;
+      }
+      .button.active{
+        border: 2px solid rgb(121,121,121);
+      }
+      #default-button {
+        background-color: rgb(30,32,36);
+        color: rgb(251,251,255);
+      }
+      #sepia-button{
+        background-color: rgb(158,145,116);
+        color: rgb(64,57,45);
+      }
+      #redeye-button{
+        background-color: rgb(54,39,43);
+        color: rgb(188,139,150);
+      }
+      #custom-button{
+        background-color: rgb(193,193,193);
+        color: rgb(35,35,35);
+        padding-left: 3.5px;
+        padding-right: 3.5px;
+      }
+      #darkConfigurator{
+        position: absolute;
+        top: 28px;
+        right: 42px;
+        height: 550px;
+        width: 200px;
+        z-index: 999;
+        background: rgb(45,45,45);
+	      border: 1px solid #666666;
+        color: white;
+        display: flex;
+        flex-direction: column;
+      	justify-content: flex-start;
+        align-items: flex-start;
+        padding: 16px 24px;
+        box-sizing: border-box;
+        border-radius: 4px;
+        -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.6);
+        -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.6);
+        box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.6);
+        visibility: hidden;
+      }
+      #slides label{
+        font-size: 14px;
+      }
+      #slides{
+        margin-top: 12px;
+        width: 100%;
+        height: 200px;
+      }
+      #darkConfigurator h3{
+        margin-top: 0px;
+        margin-bottom: 0px;
+      }
+      #slides > div {
+        margin-top: 4px;
+        margin-bottom: 34px;
+      }
+      #darkConfigurator div .noUi-handle{
+        width: 25px;
+        height: 25px;
+        border-radius: 25px;
+        left: 2px;
+        right: 2px;
+        top: -4px;
+      }
+      #darkConfigurator div .noUi-active{
+        box-shadow: none;
+        outline: none;
+      }
+      #darkConfigurator div .noUi-active:focus{
+        outline: none;
+        box-shadow: none;
+      }
+      #darkConfigurator *:focus{
+        outline: none;
+        box-shadow: none;
+      }
+      #darkConfigurator *:active{
+        outline: none;
+      }
+      #darkConfigurator .noUi-tooltip {
+        bottom: -108%;
+        font-size: 13px;
+        padding: 2px;
+        padding-left: 3px;
+        padding-right: 3px;
+        font-family: Helvetica, sans-serif;
+        background-color: black;
+        border: 2px solid rgb(24, 24, 24);
+        color: #DDDDDD;
+      }
+      #darkConfigurator .noUi-tooltip::before {
+        content: '';
+        position: absolute;
+        display: block;    
+        width: 0px;        
+        left: 50%;
+        top: 10px;
+        border: 7px solid transparent;
+        border-top: 0;
+        border-bottom: 12px solid black;
+        transform: translate(-50%, calc(-100% - 5px));
+      }
+      #darkConfigurator .noUi-target{
+        border: none;
+        border-radius: 15px;
+        background: transparent;
+      }
+      #darkConfigurator .noUi-connects {
+        background-color: rgb(45,45,45);
+        box-shadow: rgba(7, 7, 6, 0.9) 0px 1px 3px inset;
+        border-radius: 15px;
+      }
+      #darkConfigurator .noUi-connect{
+        background: rgb(144, 165, 130);
+        box-shadow: rgba(7, 7, 6, 0.3) 0px 1px 3px inset;
+      }
+      #darkConfigurator div .noUi-handle{
+        background-color: rgb(34, 33, 32);
+        border-top-color: rgb(72, 70, 66);
+        border-right-color: rgb(72, 70, 66);
+        border-bottom-color: rgb(72, 70, 66);
+        border-left-color: rgb(72, 70, 66);
+        background-image: linear-gradient(rgba(34, 33, 32, 0), rgba(7, 7, 6, 0.1));
+        box-shadow: rgba(7, 7, 6, 0.3) 0px 0px 8px;
+      }
+      #darkConfigurator div .noUi-handle:before{
+        left: 0;
+        background: none;
+      }
+      #darkConfigurator div .noUi-handle:after{
+        left: 0;
+        background: none;
+      }
+      #darkConfigurator select{
+        margin-top: 8px;
+        width: 100%;
+        height: 25px;
+        font-size: 14px;
+        color: rgb(144, 165, 130);
+        background-color: rgb(45,45,45);
+      }
+      #darkConfigurator .noUi-horizontal {
+        height: 14px;
+      }
+    </style>
+    <link href="libs/nouislider/nouislider.min.css" rel="stylesheet">
+    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+  </head>
+  <body>
+    <div id='header'>
+      <span id="title">
+      </span>
+      <div id="menu">
+        <div id="default-button" class="button active">Default</div>
+        <div id="sepia-button" class="button">Sepia</div>
+        <div id="redeye-button" class="button">Redeye</div>
+        <div id="custom-button" class="button">Custom</div>
+      </div>
+    </div>
+    <div id='darkConfigurator'>
+      <h3>Settings</h3>
+      <div id="slides">
+        <label>Darkness</label>
+        <div id="brightnessSlider"></div>
+        <label>Grayscale</label>
+        <div id="grayscaleSlider"></div>
+        <label>Inversion</label>
+        <div id="invertSlider"></div>
+        <label>Sepia</label>
+        <div id="sepiaSlider"></div>
+        <label>Hue</label>
+        <div id="hueSlider"></div>
+        <label>Brightness</label>
+        <div id="extraBrightnessSlider"></div>
+      </div>
+    </div>
+    <div id='appContainer'>
+      <iframe id='pdfjs'></iframe>
+    </div>
+    <div id="splash">
+      <img src="icon2.png" width="100px"/>
+      <h3>Drop PDF here</h3>
+    </div>
+    <div id="splash-extra">
+      <h3>Open File with CTRL+O</h3>
+    </div>
+    <script src="libs/nouislider/nouislider.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

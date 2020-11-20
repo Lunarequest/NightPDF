@@ -20,7 +20,8 @@
 	"dependencies": {
 		"dotenv": "^8.2.0",
 		"nouislider": "^14.6.2",
-		"open": "^7.3.0"
+		"open": "^7.3.0",
+		"os": "^0.1.1"
 	},
 	"build": {
 		"appId": "io.elesoft.NightPDF",

@@ -1,5 +1,6 @@
 const { app, BrowserWindow, Menu, dialog, MenuItem, ipcMain } = require('electron');
 const { menuTemplate } = require("./app/menutemplate");
+const os = require("os")
 let wins = [];
 var open = require('open');
 let menuIsConfigured = false;
@@ -19,11 +20,16 @@ function createWindow(filename = null) {
 		titleBarStyle: 'default',
 		show: false
 	});
-
+  
 	wins.push(win);
 
 	// and load the index.html of the app.
-	win.loadFile('app/index.html');
+
+  if (os.platform()==="darwin"){
+    win.loadFile('app/index_mac.html');
+  }else{
+    win.loadFile('app/index_non_mac.html');
+  }
 	//win.openDevTools();
 	let wc = win.webContents
 	wc.on('will-navigate', function (e, url) {
