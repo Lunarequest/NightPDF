@@ -15,21 +15,18 @@ function createWindow(filename = null) {
 		resizable: false,
 		webPreferences: {
 			plugins: true,
-			nodeIntegration: true
+			nodeIntegration: true,
+			contextIsolation: false
 		},
 		titleBarStyle: 'default',
 		show: false
 	});
-  
+
 	wins.push(win);
 
 	// and load the index.html of the app.
 
-  if (os.platform()==="darwin"){
-    win.loadFile('app/index_mac.html');
-  }else{
-    win.loadFile('app/index_non_mac.html');
-  }
+	win.loadFile('app/index.html');
 	//win.openDevTools();
 	let wc = win.webContents
 	wc.on('will-navigate', function (e, url) {

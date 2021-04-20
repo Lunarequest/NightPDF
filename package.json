@@ -8,19 +8,19 @@
 		"dist": "electron-builder"
 	},
 	"author": {
-		"name": "",
-		"email": "joe@whatever.com"
+		"name": "Nullrequest",
+		"email": "nullrequest@vivaldi.net"
 	},
 	"license": "ISC",
 	"devDependencies": {
-		"electron": "^11.0.0",
-		"electron-builder": "^22.9.1",
+		"electron": "^12.0.4",
+		"electron-builder": "^22.10.5",
 		"electron-notarize": "^1.0.0"
 	},
 	"dependencies": {
 		"dotenv": "^8.2.0",
-		"nouislider": "^14.6.2",
-		"open": "^7.3.0",
+		"nouislider": "^14.7.0",
+		"open": "^7.4.2",
 		"os": "^0.1.1"
 	},
 	"build": {
@@ -45,8 +45,7 @@
 				"AppImage",
 				"deb",
 				"rpm",
-				"tar.gz",
-				"snap"
+				"tar.gz"
 			],
 			"category": "Utilty"
 		},
@@ -79,7 +78,7 @@
 			"asarUnpack": [
 				"node_modules"
 			],
-			"artifactName": "rocketchat-${version}-mas.${ext}"
+			"artifactName": "nightpdf-${version}-mas.${ext}"
 		}
 	}
 }
