@@ -24,7 +24,7 @@
 		"os": "^0.1.1"
 	},
 	"build": {
-		"appId": "io.elesoft.NightPDF",
+		"appId": "io.nullrequest.NightPDF",
 		"productName": "NightPDF",
 		"afterSign": "build/notarize.js",
 		"fileAssociations": [
