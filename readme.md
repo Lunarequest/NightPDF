@@ -55,6 +55,6 @@ npm run dist
 
 ## Licenses
 
-- [NightPDF](https://github.com/advaithm/NightPDF) is under [MIT](LICENSE)
+- [NightPDF](https://github.com/advaithm/NightPDF) is under [GPLv2](LICENSE)
 - [Electron](https://github.com/electron/electron) is under [MIT](https://github.com/electron/electron/blob/master/LICENSE)
 - [PDF.js](https://mozilla.github.io/pdf.js/) is under [Apache License 2.0](https://github.com/mozilla/pdf.js/blob/master/LICENSE)
