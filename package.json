@@ -31,7 +31,6 @@
 	"build": {
 		"appId": "io.nullrequest.NightPDF",
 		"productName": "NightPDF",
-		"afterSign": "build/notarize.js",
 		"fileAssociations": [
 			{
 				"ext": "pdf",
@@ -56,34 +55,10 @@
 		},
 		"win": {
 			"target": [
+				"nsis",
 				"portable"
 			],
 			"icon": "build/icon.ico"
-		},
-		"mac": {
-			"icon": "build/icon.iconset",
-			"category": "public.app-category.productivity",
-			"target": [
-				"dmg",
-				"zip",
-				"mas"
-			],
-			"bundleVersion": "1",
-			"artifactName": "NightPDF-${version}.${ext}",
-			"darkModeSupport": true,
-			"hardenedRuntime": true,
-			"gatekeeperAssess": false,
-			"provisioningProfile": "./build/nightpdf.provisionprofile",
-			"type": "distribution"
-		},
-		"mas": {
-			"entitlements": "./build/entitlements.mas.plist",
-			"entitlementsInherit": "./build/entitlements.mas.inherit.plist",
-			"hardenedRuntime": true,
-			"asarUnpack": [
-				"node_modules"
-			],
-			"artifactName": "nightpdf-${version}-mas.${ext}"
 		}
 	}
 }

@@ -34,7 +34,7 @@ const nightPDF = (function () {
 		remote = _remote;
 		path = require('path');
 	}
-
+	console.log("loading")
 	var _pdfElement;
 	var _headerElement;
 	var _titleElement;

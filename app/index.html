@@ -356,18 +356,8 @@
     <h3>Drop PDF here</h3>
   </div>
   <div id="splash-extra">
-    <h3 id="prompt"></h3>
+    <h3 id="prompt">Open File with CTRL+O</h3>
   </div>
-  <script>
-    // prompt based on os
-    var os = require('os');
-    prompt = document.getElementById("prompt")
-    if (os.platform() === "darwin") {
-      prompt.innerHTML = "Open File with CMD+O"
-    } else {
-      prompt.innerHTML = "Open File with CTRL+O"
-    }
-  </script>
   <script src="libs/nouislider/nouislider.js"></script>
   <script src="index.js"></script>
 </body>

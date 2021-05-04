@@ -4,7 +4,7 @@ Dark Mode PDF reader
 
 It uses Electron but my eyes dont care.
 
-This is a fork of [eleloya/NightPDF](https://github.com/eleloya/NightPDF) which is no longer maintained by eleloya. I sadly can not build or support Mac os directly. All prs realated to Macos will be accepted
+This is a fork of [eleloya/NightPDF](https://github.com/eleloya/NightPDF) which is no longer maintained by eleloya. Due to not being able to build or develop mac os support, I've stripped out mac os support
 
 
 ![NightPDF screencast](docs/nightpdf.gif?raw=true)
@@ -26,7 +26,7 @@ As soon as pdf.js supports this(hopefully the next stable release) NightPDF will
 ### Requirements
 
 This software was developed using
-- node: v15.14.0
+- node: v14.16.0
 - npm: 7.10.0
 - Arch Linux Rolling
 
