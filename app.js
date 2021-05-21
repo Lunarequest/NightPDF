@@ -1,4 +1,5 @@
 const { app, BrowserWindow, Menu, dialog, MenuItem, ipcMain } = require('electron');
+const path = require('path')
 const { menuTemplate } = require("./app/menutemplate");
 const os = require("os")
 let wins = [];
@@ -7,21 +8,22 @@ let menuIsConfigured = false;
 
 function createWindow(filename = null) {
 	// Create the browser window.
+	console.log(path.resolve(app.getAppPath(), 'app/preload.js'))
 	let win = new BrowserWindow({
 		width: 550,
 		height: 420,
 		minWidth: 565,
 		minHeight: 200,
-		resizable: false,
+		preload: path.resolve(app.getAppPath(), 'app/preload.js'),
+		resizable: true,
 		webPreferences: {
 			plugins: true,
 			nodeIntegration: true,
-			contextIsolation: false
+			contextIsolation: true
 		},
 		titleBarStyle: 'default',
 		show: false
 	});
-
 	wins.push(win);
 
 	// and load the index.html of the app.
