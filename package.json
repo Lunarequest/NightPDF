@@ -16,7 +16,7 @@
 		"name": "Nullrequest",
 		"email": "nullrequest@vivaldi.net"
 	},
-	"license": "GPLv2-only",
+	"license": "GPL-2.0-only",
 	"devDependencies": {
 		"electron": "^12.0.4",
 		"electron-builder": "^22.10.5",

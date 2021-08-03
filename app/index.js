@@ -10,30 +10,7 @@ function _try(func, fallbackValue) {
 }
 
 const nightPDF = (function () {
-	let ipcRenderer;
-	let remote;
-	let path;
-
-	if (isBrowser) {
-		//stubs for testing in browser directly
-		ipcRenderer = {
-			removeAllListeners: () => { },
-			on: () => { }
-		};
-		remote = {};
-		path = {
-			parse: (file) => {
-				return {
-					base: file
-				};
-			}
-		};
-	} else {
-		const { ipcRenderer: _ipcrenderer, remote: _remote } = require('electron');
-		ipcRenderer = _ipcrenderer;
-		remote = _remote;
-		path = require('path');
-	}
+	const { ipcRenderer } = require('electron');
 	console.log("loading")
 	var _pdfElement;
 	var _headerElement;
@@ -71,13 +48,13 @@ const nightPDF = (function () {
 		_splashExtraElement = document.getElementById('splash-extra');
 
 		//setup electron listeners
-		ipcRenderer.removeAllListeners('file-open');
+		window.Listeners.removeAllListeners('file-open');
 		ipcRenderer.on('file-open', (e, msg) => {
 			console.log('que pex ' + Math.random());
 			_openFile(msg);
 		});
 
-		ipcRenderer.removeAllListeners('file-print');
+		window.Listeners.removeAllListeners('file-print');
 		ipcRenderer.on('file-print', (e, msg) => {
 			_pdfElement.contentDocument.getElementById('print').dispatchEvent(new Event('click'));
 		});
@@ -151,11 +128,11 @@ const nightPDF = (function () {
 		);
 
 		_splashElement.addEventListener('click', (e) => {
-			ipcRenderer.send('openNewPDF', null);
+			window.Send.openNewPDF(null);
 		});
 
 		_splashExtraElement.addEventListener('click', (e) => {
-			ipcRenderer.send('openNewPDF', null);
+			window.Send.openNewPDF(null);
 		})
 
 		window.addEventListener('blur', function () {
@@ -208,7 +185,7 @@ const nightPDF = (function () {
 		console.log('opening ', file);
 		if (_pdfElement.src) {
 			console.log('opening in new window');
-			ipcRenderer.send('newWindow', file);
+			window.Send.newWindow(file);
 		} else {
 			_appContainerElement.style.zIndex = '1';
 			_pdfElement.src = 'libs/pdfjs/web/viewer.html?file=' + encodeURIComponent(file) + '#pagemode=none';
@@ -221,8 +198,8 @@ const nightPDF = (function () {
 	const _fileDidLoad = () => {
 		console.log('Loaded PDF');
 		_headerElement.style.visibility = 'visible';
-		ipcRenderer.send('togglePrinting', true);
-		ipcRenderer.send('resizeWindow', null);
+		window.toggle.togglePrinting(true);
+		window.toggle.resizeWindow(null);
 		_setupDarkMode();
 		_setupSliders();
 	};
@@ -479,7 +456,7 @@ const nightPDF = (function () {
 	};
 
 	_updateTitle = (filePath) => {
-		const fileName = path.parse(filePath).base;
+		const fileName = window.Path.getPath(filePath);
 		if (fileName) {
 			_titleElement.innerHTML = fileName;
 			document.title = fileName;

@@ -8,7 +8,6 @@ let menuIsConfigured = false;
 
 function createWindow(filename = null) {
 	// Create the browser window.
-	console.log(path.resolve(app.getAppPath(), 'app/preload.js'))
 	let win = new BrowserWindow({
 		width: 550,
 		height: 420,
@@ -19,7 +18,7 @@ function createWindow(filename = null) {
 		webPreferences: {
 			plugins: true,
 			nodeIntegration: true,
-			contextIsolation: true
+			contextIsolation: false
 		},
 		titleBarStyle: 'default',
 		show: false
@@ -85,9 +84,9 @@ function createWindow(filename = null) {
 						createWindow(filename.toString());
 					} else {
 						const focusedWin = BrowserWindow.getFocusedWindow();
-						focusedWin.webContents.send('file-open', filename.toString());
-
-
+						if (focusedWin) {
+							focusedWin.webContents.send('file-open', filename.toString());
+						}
 					}
 				}
 			});
