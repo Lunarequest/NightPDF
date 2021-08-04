@@ -9,8 +9,10 @@
 		"email": "nullrequest@vivaldi.net"
 	},
 	"scripts": {
+		"pack": "electron-builder --dir",
 		"start": "electron .",
-		"dist": "electron-builder"
+		"dist": "electron-builder",
+		"dist-win": "electron-builder --win"
 	},
 	"author": {
 		"name": "Nullrequest",
