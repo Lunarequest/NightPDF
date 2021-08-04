@@ -2,7 +2,7 @@
 	"name": "nightpdf",
 	"version": "0.4.0",
 	"description": "Dark Mode for PDFs",
-	"main": "app.js",
+	"main": "./build/app.js",
 	"homepage": "https://github.com/advaithm/NightPDF#readme",
 	"bugs": {
 		"url": "https://github.com/advaithm/NightPDF/issues",
@@ -10,9 +10,10 @@
 	},
 	"scripts": {
 		"pack": "electron-builder --dir",
-		"start": "electron .",
+		"start": "electron ./build/app.js",
 		"dist": "electron-builder",
-		"dist-win": "electron-builder --win"
+		"dist-win": "electron-builder --win",
+		"build": "tsc"
 	},
 	"author": {
 		"name": "Nullrequest",
@@ -26,7 +27,8 @@
 	},
 	"dependencies": {
 		"dotenv": "^8.2.0",
-		"nouislider": "^14.7.0"
+		"nouislider": "^14.7.0",
+		"typescript": "^4.3.5"
 	},
 	"build": {
 		"appId": "io.nullrequest.NightPDF",
