@@ -1,32 +1,29 @@
 const { contextBridge, ipcRenderer } = require('electron');
 const { path } = require('path')
 
-contextBridge.exposeInMainWorld('Path',{
-    getPath(filePath){
+contextBridge.exposeInMainWorld('api',{
+    getPath: (filePath) => {
         return path.parse(filePath).base;
-    }
-})
+    },
 
-contextBridge.exposeInMainWorld('Listeners', {
-    removeAllListeners(ListenerType) {
+    removeAllListeners: (ListenerType) => {
         ipcRenderer.removeAllListeners(ListenerType);
-    }
-})
+    },
 
-contextBridge.exposeInMainWorld('Send', {
-    openNewPDF(pdf) {
+    openNewPDF: (pdf) => {
         ipcRenderer.send('openNewPDF',pdf);
     },
-    newWindow(file){
+    newWindow: (file) => {
         ipcRenderer.send('newWindow',file);
-    }
-})
-
-contextBridge.exposeInMainWorld('toggle', {
-    togglePrinting(value){
+    },
+    togglePrinting: (value) => {
         ipcRenderer.send('togglePrinting',value)
     },
-    resizeWindow(value){
+    resizeWindow: (value) => {
         ipcRenderer.send('resizeWindow', value)
     }
-})
+});
+    // TODO: this is insecure af need to fix it
+contextBridge.exposeInMainWorld('App',{
+        ipcRenderer: ipcRenderer 
+});

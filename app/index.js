@@ -10,7 +10,6 @@ function _try(func, fallbackValue) {
 }
 
 const nightPDF = (function () {
-	const { ipcRenderer } = require('electron');
 	console.log("loading")
 	var _pdfElement;
 	var _headerElement;
@@ -25,7 +24,7 @@ const nightPDF = (function () {
 	var _extraBrightnessSliderElement;
 	var _splashElement;
 	var _splashExtraElement;
-
+	console.log(window.api)
 
 	function main() {
 		_appContainerElement = document.getElementById('appContainer');
@@ -48,14 +47,14 @@ const nightPDF = (function () {
 		_splashExtraElement = document.getElementById('splash-extra');
 
 		//setup electron listeners
-		window.Listeners.removeAllListeners('file-open');
-		ipcRenderer.on('file-open', (e, msg) => {
+		window.api.removeAllListeners('file-open');
+		window.ipcRenderer.on('file-open', (e, msg) => {
 			console.log('que pex ' + Math.random());
 			_openFile(msg);
 		});
 
-		window.Listeners.removeAllListeners('file-print');
-		ipcRenderer.on('file-print', (e, msg) => {
+		window.api.removeAllListeners('file-print');
+		window.ipcRenderer.on('file-print', (e, msg) => {
 			_pdfElement.contentDocument.getElementById('print').dispatchEvent(new Event('click'));
 		});
 
@@ -198,8 +197,8 @@ const nightPDF = (function () {
 	const _fileDidLoad = () => {
 		console.log('Loaded PDF');
 		_headerElement.style.visibility = 'visible';
-		window.toggle.togglePrinting(true);
-		window.toggle.resizeWindow(null);
+		window.api.togglePrinting(true);
+		window.api.resizeWindow(null);
 		_setupDarkMode();
 		_setupSliders();
 	};
@@ -456,7 +455,7 @@ const nightPDF = (function () {
 	};
 
 	_updateTitle = (filePath) => {
-		const fileName = window.Path.getPath(filePath);
+		const fileName = window.api.getPath(filePath);
 		if (fileName) {
 			_titleElement.innerHTML = fileName;
 			document.title = fileName;

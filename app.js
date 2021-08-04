@@ -1,9 +1,7 @@
-const { app, BrowserWindow, Menu, dialog, MenuItem, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, dialog, ipcMain, shell } = require('electron');
 const path = require('path')
 const { menuTemplate } = require("./app/menutemplate");
-const os = require("os")
 let wins = [];
-var open = require('open');
 let menuIsConfigured = false;
 
 function createWindow(filename = null) {
@@ -13,13 +11,8 @@ function createWindow(filename = null) {
 		height: 420,
 		minWidth: 565,
 		minHeight: 200,
-		preload: path.resolve(app.getAppPath(), 'app/preload.js'),
+		preload: path.resolve(path.join(__dirname, 'app/preload.js')),
 		resizable: true,
-		webPreferences: {
-			plugins: true,
-			nodeIntegration: true,
-			contextIsolation: false
-		},
 		titleBarStyle: 'default',
 		show: false
 	});
@@ -28,12 +21,14 @@ function createWindow(filename = null) {
 	// and load the index.html of the app.
 
 	win.loadFile('app/index.html');
-	win.openDevTools();
+	if (process.env.DEBUG) {
+		win.openDevTools();
+	}
 	let wc = win.webContents
 	wc.on('will-navigate', function (e, url) {
 		if (url != wc.getURL()) {
 			e.preventDefault()
-			require('electron').shell.openExternal(url)
+			shell.openExternal(url)
 		}
 	})
 
