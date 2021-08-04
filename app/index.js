@@ -24,7 +24,6 @@ const nightPDF = (function () {
 	var _extraBrightnessSliderElement;
 	var _splashElement;
 	var _splashExtraElement;
-	console.log(window.api)
 
 	function main() {
 		_appContainerElement = document.getElementById('appContainer');
@@ -48,13 +47,12 @@ const nightPDF = (function () {
 
 		//setup electron listeners
 		window.api.removeAllListeners('file-open');
-		window.ipcRenderer.on('file-open', (e, msg) => {
-			console.log('que pex ' + Math.random());
+		window.api.on('file-open', (e, msg) => {
 			_openFile(msg);
 		});
 
 		window.api.removeAllListeners('file-print');
-		window.ipcRenderer.on('file-print', (e, msg) => {
+		window.api.on('file-print', (e, msg) => {
 			_pdfElement.contentDocument.getElementById('print').dispatchEvent(new Event('click'));
 		});
 
@@ -127,11 +125,11 @@ const nightPDF = (function () {
 		);
 
 		_splashElement.addEventListener('click', (e) => {
-			window.Send.openNewPDF(null);
+			window.api.openNewPDF(null);
 		});
 
 		_splashExtraElement.addEventListener('click', (e) => {
-			window.Send.openNewPDF(null);
+			window.api.openNewPDF(null);
 		})
 
 		window.addEventListener('blur', function () {

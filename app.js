@@ -11,7 +11,9 @@ function createWindow(filename = null) {
 		height: 420,
 		minWidth: 565,
 		minHeight: 200,
-		preload: path.resolve(path.join(__dirname, 'app/preload.js')),
+		webPreferences: {
+			preload: path.resolve(path.join(__dirname, 'app/preload.js'))
+		},
 		resizable: true,
 		titleBarStyle: 'default',
 		show: false

@@ -1,5 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron');
-const { path } = require('path')
+const { path } = require('path');
 
 contextBridge.exposeInMainWorld('api',{
     getPath: (filePath) => {
@@ -21,9 +21,8 @@ contextBridge.exposeInMainWorld('api',{
     },
     resizeWindow: (value) => {
         ipcRenderer.send('resizeWindow', value)
+    },
+    on: (eventName, callback) => {
+        ipcRenderer.on(eventName, callback)
     }
-});
-    // TODO: this is insecure af need to fix it
-contextBridge.exposeInMainWorld('App',{
-        ipcRenderer: ipcRenderer 
-});
+}); 

@@ -24,9 +24,7 @@
 	},
 	"dependencies": {
 		"dotenv": "^8.2.0",
-		"nouislider": "^14.7.0",
-		"open": "^7.4.2",
-		"os": "^0.1.1"
+		"nouislider": "^14.7.0"
 	},
 	"build": {
 		"appId": "io.nullrequest.NightPDF",
