@@ -5,7 +5,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./build"
+    "outDir": "./dist"
   },
   "exclude": [ "node_modules" ]
 }

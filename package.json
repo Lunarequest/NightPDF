@@ -2,7 +2,7 @@
 	"name": "nightpdf",
 	"version": "0.4.0",
 	"description": "Dark Mode for PDFs",
-	"main": "./build/app.js",
+	"main": "./dist/app.js",
 	"homepage": "https://github.com/advaithm/NightPDF#readme",
 	"bugs": {
 		"url": "https://github.com/advaithm/NightPDF/issues",
@@ -10,7 +10,7 @@
 	},
 	"scripts": {
 		"pack": "electron-builder --dir",
-		"start": "electron ./build/app.js",
+		"start": "electron ./dist/app.js",
 		"dist": "electron-builder",
 		"dist-win": "electron-builder --win",
 		"build": "tsc"
