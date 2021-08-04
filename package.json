@@ -14,7 +14,8 @@
 		"dist": "electron-builder",
 		"dist-win": "electron-builder --win",
 		"build": "tsc",
-		"lint": "eslint . --ext .ts"
+		"lint": "eslint . --ext .ts",
+		"prettier": "prettier --config .prettierrc '**/*.ts' --write"
 	},
 	"author": {
 		"name": "Nullrequest",
@@ -27,7 +28,10 @@
 		"electron": "^13.1.8",
 		"electron-builder": "^22.10.5",
 		"electron-notarize": "^1.0.0",
-		"eslint": "^7.32.0"
+		"eslint": "^7.32.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^3.4.0",
+		"prettier": "^2.3.2"
 	},
 	"dependencies": {
 		"dotenv": "^8.2.0",
