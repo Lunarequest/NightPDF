@@ -13,7 +13,8 @@
 		"start": "electron ./dist/app.js",
 		"dist": "electron-builder",
 		"dist-win": "electron-builder --win",
-		"build": "tsc"
+		"build": "tsc",
+		"lint": "eslint . --ext .ts"
 	},
 	"author": {
 		"name": "Nullrequest",
@@ -21,9 +22,12 @@
 	},
 	"license": "GPL-2.0-only",
 	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^4.29.0",
+		"@typescript-eslint/parser": "^4.29.0",
 		"electron": "^13.1.8",
 		"electron-builder": "^22.10.5",
-		"electron-notarize": "^1.0.0"
+		"electron-notarize": "^1.0.0",
+		"eslint": "^7.32.0"
 	},
 	"dependencies": {
 		"dotenv": "^8.2.0",
