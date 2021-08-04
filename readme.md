@@ -6,7 +6,6 @@ It uses Electron but my eyes dont care.
 
 This is a fork of [eleloya/NightPDF](https://github.com/eleloya/NightPDF) which is no longer maintained by eleloya. Due to not being able to build or develop mac os support, I've stripped out mac os support
 
-
 ![NightPDF screencast](docs/nightpdf.gif?raw=true)
 
 ## Download Binaries
@@ -18,6 +17,7 @@ Binaries for Linux and Windows
 - [Latest release](https://github.com/advaithm/NightPDF/releases/latest)
 
 ## Limitations
+
 Currently NightPDF does not support javascript forms in pdfs. if you attempt to load one it will not render.</br>
 As soon as pdf.js supports this(hopefully the next stable release) NightPDF will support this
 
@@ -26,32 +26,38 @@ As soon as pdf.js supports this(hopefully the next stable release) NightPDF will
 ### Requirements
 
 This software was developed using
-- node: v14.16.0
-- npm: 7.10.0
+
+- node: v16.6.1
+- yarn: v1.22.11
 - Arch Linux Rolling
 
 ## Instructions
 
 1. Install dependencies
+
 ```bash
 npm install
 ```
+
 2. Run
+
 ```bash
 npm start
 ```
+
 ### Building Release Version
 
 1. Install dependencies
+
 ```bash
 npm install
 ```
 
 2. Build release
+
 ```bash
 npm run dist
 ```
-
 
 ## Licenses
 
