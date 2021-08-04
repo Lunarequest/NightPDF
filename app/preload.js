@@ -1,5 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron');
-const { path } = require('path');
+const path  = require('path');
 
 contextBridge.exposeInMainWorld('api',{
     getPath: (filePath) => {
