@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint no-unused-vars: [ "error", { "argsIgnorePattern": "^_" } ] */
 /*eslint-env browser*/
+'use strict';
 function _try(func, fallbackValue) {
     try {
         let value = func();

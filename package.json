@@ -23,16 +23,14 @@
     "license": "GPL-2.0-only",
     "devDependencies": {
         "electron": "^13.1.8",
-        "electron-builder": "^22.10.5",
-        "electron-notarize": "^1.0.0",
+        "electron-builder": "^22.11.7",
         "eslint": "^7.32.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^3.4.0",
         "prettier": "^2.3.2"
     },
     "dependencies": {
-        "dotenv": "^8.2.0",
-        "nouislider": "^14.7.0"
+        "nouislider": "^15.2.0"
     },
     "build": {
         "appId": "io.nullrequest.NightPDF",
