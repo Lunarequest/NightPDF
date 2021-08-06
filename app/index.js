@@ -193,7 +193,7 @@ const nightPDF = (function () {
         console.log('opening ', file);
         if (_pdfElement.src) {
             console.log('opening in new window');
-            window.Send.newWindow(file);
+            window.api.newWindow(file);
         } else {
             _appContainerElement.style.zIndex = '1';
             _pdfElement.src =

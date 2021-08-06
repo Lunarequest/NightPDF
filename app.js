@@ -1,3 +1,4 @@
+/* eslint no-unused-vars: [ "error", { "argsIgnorePattern": "^_" } ] */
 'use strict';
 const {
     app,
@@ -27,6 +28,9 @@ function createWindow(filename = null) {
         show: false,
     });
     wins.push(win);
+    if (filename) {
+        win.maximize();
+    }
 
     // and load the index.html of the app.
 
@@ -35,6 +39,8 @@ function createWindow(filename = null) {
         win.openDevTools();
     }
     let wc = win.webContents;
+    // if the window url changes from the inital one,
+    // block the change and use xdg-open to open it
     wc.on('will-navigate', function (e, url) {
         if (url != wc.getURL()) {
             e.preventDefault();
@@ -113,8 +119,7 @@ function createWindow(filename = null) {
     });
 
     ipcMain.removeAllListeners('resizeWindow');
-    // eslint-disable-next-line no-unused-vars
-    ipcMain.once('resizeWindow', (e, msg) => {
+    ipcMain.once('resizeWindow', (_e, _msg) => {
         const { width, height } = win.getBounds();
         if (width < 1000 || height < 650) {
             win.setResizable(true);
