@@ -16,8 +16,6 @@ const nightPDF = (function () {
     let _pdfElement;
     let _headerElement;
     let _titleElement;
-    // eslint-disable-next-line no-unused-vars
-    let _menuElement;
     let _darkConfiguratorElement;
     let _brightnessSliderElement;
     let _grayscaleSliderElement;
@@ -38,7 +36,6 @@ const nightPDF = (function () {
         _pdfElement = document.getElementById('pdfjs');
         _headerElement = document.getElementById('header');
         _titleElement = document.getElementById('title');
-        _menuElement = document.getElementById('menu');
         _defaultButton = document.getElementById('default-button');
         _sepiaButton = document.getElementById('sepia-button');
         _redeyeButton = document.getElementById('redeye-button');
