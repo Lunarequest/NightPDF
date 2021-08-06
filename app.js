@@ -87,13 +87,13 @@ function createWindow(filename = null) {
                         createWindow(filename.toString());
                     } else {
                         const focusedWin = BrowserWindow.getFocusedWindow();
-                        focusedWin?.maximize();
                         if (focusedWin) {
                             focusedWin.webContents.send(
                                 'file-open',
                                 filename.toString()
                             );
                         }
+                        focusedWin?.maximize();
                     }
                 }
             });
