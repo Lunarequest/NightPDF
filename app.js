@@ -92,8 +92,8 @@ function createWindow(filename = null) {
                                 'file-open',
                                 filename.toString()
                             );
+                            focusedWin.maximize();
                         }
-                        focusedWin?.maximize();
                     }
                 }
             });
@@ -112,6 +112,7 @@ function createWindow(filename = null) {
     });
 
     ipcMain.removeAllListeners('resizeWindow');
+    // eslint-disable-next-line no-unused-vars
     ipcMain.once('resizeWindow', (e, msg) => {
         const { width, height } = win.getBounds();
         if (width < 1000 || height < 650) {
@@ -122,6 +123,7 @@ function createWindow(filename = null) {
     });
 
     ipcMain.removeAllListeners('openNewPDF');
+    // eslint-disable-next-line no-unused-vars
     ipcMain.once('openNewPDF', (e, msg) => {
         openNewPDF();
     });

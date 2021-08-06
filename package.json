@@ -1,6 +1,6 @@
 {
     "name": "nightpdf",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "Dark Mode for PDFs",
     "main": "app.js",
     "homepage": "https://github.com/advaithm/NightPDF#readme",
@@ -24,7 +24,11 @@
     "devDependencies": {
         "electron": "^13.1.8",
         "electron-builder": "^22.10.5",
-        "electron-notarize": "^1.0.0"
+        "electron-notarize": "^1.0.0",
+        "eslint": "^7.32.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-prettier": "^3.4.0",
+        "prettier": "^2.3.2"
     },
     "dependencies": {
         "dotenv": "^8.2.0",

@@ -1,8 +1,9 @@
-var isBrowser = navigator.userAgent.toLowerCase().indexOf(' electron/') == -1;
-
+/* eslint-disable no-undef */
+/* eslint no-unused-vars: [ "error", { "argsIgnorePattern": "^_" } ] */
+/*eslint-env browser*/
 function _try(func, fallbackValue) {
     try {
-        var value = func();
+        let value = func();
         return value === null || value === undefined ? fallbackValue : value;
     } catch (e) {
         return fallbackValue;
@@ -11,19 +12,25 @@ function _try(func, fallbackValue) {
 
 const nightPDF = (function () {
     console.log('loading');
-    var _pdfElement;
-    var _headerElement;
-    var _titleElement;
-    var _menuElement;
-    var _darkConfiguratorElement;
-    var _brightnessSliderElement;
-    var _grayscaleSliderElement;
-    var _invertSliderElement;
-    var _sepiaSliderElement;
-    var _hueSliderElement;
-    var _extraBrightnessSliderElement;
-    var _splashElement;
-    var _splashExtraElement;
+    let _pdfElement;
+    let _headerElement;
+    let _titleElement;
+    // eslint-disable-next-line no-unused-vars
+    let _menuElement;
+    let _darkConfiguratorElement;
+    let _brightnessSliderElement;
+    let _grayscaleSliderElement;
+    let _invertSliderElement;
+    let _sepiaSliderElement;
+    let _hueSliderElement;
+    let _extraBrightnessSliderElement;
+    let _splashElement;
+    let _splashExtraElement;
+    let _appContainerElement;
+    let _defaultButton;
+    let _sepiaButton;
+    let _redeyeButton;
+    let _customButton;
 
     function main() {
         _appContainerElement = document.getElementById('appContainer');
@@ -49,12 +56,12 @@ const nightPDF = (function () {
 
         //setup electron listeners
         window.api.removeAllListeners('file-open');
-        window.api.on('file-open', (e, msg) => {
+        window.api.on('file-open', (_e, msg) => {
             _openFile(msg);
         });
 
         window.api.removeAllListeners('file-print');
-        window.api.on('file-print', (e, msg) => {
+        window.api.on('file-print', (_e, _msg) => {
             _pdfElement.contentDocument
                 .getElementById('print')
                 .dispatchEvent(new Event('click'));
@@ -118,7 +125,7 @@ const nightPDF = (function () {
             e.stopPropagation();
         });
 
-        _headerElement.addEventListener('click', (e) => {
+        _headerElement.addEventListener('click', (_e) => {
             _hideDarkConfigurator();
         });
 
@@ -131,11 +138,11 @@ const nightPDF = (function () {
             true
         );
 
-        _splashElement.addEventListener('click', (e) => {
+        _splashElement.addEventListener('click', (_e) => {
             window.api.openNewPDF(null);
         });
 
-        _splashExtraElement.addEventListener('click', (e) => {
+        _splashExtraElement.addEventListener('click', (_e) => {
             window.api.openNewPDF(null);
         });
 
@@ -415,7 +422,7 @@ const nightPDF = (function () {
     };
 
     const _setupDarkMode = () => {
-        var style = document.createElement('style');
+        let style = document.createElement('style');
         style.setAttribute('id', 'pageStyle');
         style.textContent = 'div#viewer .page {';
         style.textContent +=
@@ -425,7 +432,7 @@ const nightPDF = (function () {
         _pdfElement.contentDocument.head.appendChild(style);
     };
 
-    _updateDarkSettings = (cssFilter) => {
+    const _updateDarkSettings = (cssFilter) => {
         const currentStyle =
             _pdfElement.contentDocument.getElementById('pageStyle');
 
@@ -440,7 +447,7 @@ const nightPDF = (function () {
         }
     };
 
-    updateCSS = () => {
+    const updateCSS = () => {
         const brightness = _try(
             () => _brightnessSliderElement.noUiSlider.get(),
             0
@@ -473,7 +480,7 @@ const nightPDF = (function () {
         _updateDarkSettings(cssRule);
     };
 
-    _updateTitle = (filePath) => {
+    const _updateTitle = (filePath) => {
         const fileName = window.api.getPath(filePath);
         if (fileName) {
             _titleElement.innerHTML = fileName;

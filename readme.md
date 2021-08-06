@@ -18,8 +18,7 @@ Binaries for Linux and Windows
 
 ## Limitations
 
-Currently NightPDF does not support javascript forms in pdfs. if you attempt to load one it will not render.</br>
-As soon as pdf.js supports this(hopefully the next stable release) NightPDF will support this
+There is limited support for xfa forms, and saving forms with filled in data. This will be worked on with coming releases.
 
 ## Development
 
