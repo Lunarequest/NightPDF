@@ -14,7 +14,7 @@ This is a fork of [eleloya/NightPDF](https://github.com/eleloya/NightPDF) which 
 
 Binaries for Linux and Windows
 
-- [Latest release](https://github.com/advaithm/NightPDF/releases/latest)
+-   [Latest release](https://github.com/advaithm/NightPDF/releases/latest)
 
 ## Limitations
 
@@ -27,9 +27,9 @@ As soon as pdf.js supports this(hopefully the next stable release) NightPDF will
 
 This software was developed using
 
-- node: v16.6.1
-- yarn: v1.22.11
-- Arch Linux Rolling
+-   node: v16.6.1
+-   yarn: v1.22.11
+-   Arch Linux Rolling
 
 ## Instructions
 
@@ -61,6 +61,6 @@ npm run dist
 
 ## Licenses
 
-- [NightPDF](https://github.com/advaithm/NightPDF) is under [GPLv2 only](LICENSE)
-- [Electron](https://github.com/electron/electron) is under [MIT](https://github.com/electron/electron/blob/master/LICENSE)
-- [PDF.js](https://mozilla.github.io/pdf.js/) is under [Apache License 2.0](https://github.com/mozilla/pdf.js/blob/master/LICENSE)
+-   [NightPDF](https://github.com/advaithm/NightPDF) is under [GPLv2 only](LICENSE)
+-   [Electron](https://github.com/electron/electron) is under [MIT](https://github.com/electron/electron/blob/master/LICENSE)
+-   [PDF.js](https://mozilla.github.io/pdf.js/) is under [Apache License 2.0](https://github.com/mozilla/pdf.js/blob/master/LICENSE)

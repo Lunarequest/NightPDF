@@ -1,64 +1,66 @@
 {
-	"name": "nightpdf",
-	"version": "0.4.0",
-	"description": "Dark Mode for PDFs",
-	"main": "app.js",
-	"homepage": "https://github.com/advaithm/NightPDF#readme",
-	"bugs": {
-		"url": "https://github.com/advaithm/NightPDF/issues",
-		"email": "nullrequest@vivaldi.net"
-	},
-	"scripts": {
-		"pack": "electron-builder --dir",
-		"start": "electron .",
-		"dist": "electron-builder",
-		"dist-win": "electron-builder --win"
-	},
-	"author": {
-		"name": "Nullrequest",
-		"email": "nullrequest@vivaldi.net"
-	},
-	"license": "GPL-2.0-only",
-	"devDependencies": {
-		"electron": "^13.1.8",
-		"electron-builder": "^22.10.5",
-		"electron-notarize": "^1.0.0"
-	},
-	"dependencies": {
-		"dotenv": "^8.2.0",
-		"nouislider": "^14.7.0"
-	},
-	"build": {
-		"appId": "io.nullrequest.NightPDF",
-		"productName": "NightPDF",
-		"fileAssociations": [
-			{
-				"ext": "pdf",
-				"icon": "build/icon.icns",
-				"role": "viewer",
-				"isPackage": false
-			}
-		],
-		"linux": {
-			"icon": "build/icon.icoset/icon_256x256.png",
-			"desktop": {
-				"Name": "NightPdf",
-				"Comment": "Dark Mode PDF reader"
-			},
-			"target": [
-				"AppImage",
-				"deb",
-				"rpm",
-				"tar.gz"
-			],
-			"category": "Utilty"
-		},
-		"win": {
-			"target": [
-				"nsis",
-				"portable"
-			],
-			"icon": "build/icon.ico"
-		}
-	}
+    "name": "nightpdf",
+    "version": "0.4.0",
+    "description": "Dark Mode for PDFs",
+    "main": "app.js",
+    "homepage": "https://github.com/advaithm/NightPDF#readme",
+    "bugs": {
+        "url": "https://github.com/advaithm/NightPDF/issues",
+        "email": "nullrequest@vivaldi.net"
+    },
+    "scripts": {
+        "pack": "electron-builder --dir",
+        "start": "electron .",
+        "dist": "electron-builder",
+        "dist-win": "electron-builder --win",
+        "lint": "eslint .",
+        "prettier": "prettier --config .prettierrc --write ."
+    },
+    "author": {
+        "name": "Nullrequest",
+        "email": "nullrequest@vivaldi.net"
+    },
+    "license": "GPL-2.0-only",
+    "devDependencies": {
+        "electron": "^13.1.8",
+        "electron-builder": "^22.10.5",
+        "electron-notarize": "^1.0.0"
+    },
+    "dependencies": {
+        "dotenv": "^8.2.0",
+        "nouislider": "^14.7.0"
+    },
+    "build": {
+        "appId": "io.nullrequest.NightPDF",
+        "productName": "NightPDF",
+        "fileAssociations": [
+            {
+                "ext": "pdf",
+                "icon": "build/icon.icns",
+                "role": "viewer",
+                "isPackage": false
+            }
+        ],
+        "linux": {
+            "icon": "build/icon.icoset/icon_256x256.png",
+            "desktop": {
+                "Name": "NightPdf",
+                "Comment": "Dark Mode PDF reader"
+            },
+            "target": [
+                "AppImage",
+                "deb",
+                "rpm",
+                "tar.gz"
+            ],
+            "category": "Utilty"
+        },
+        "win": {
+            "target": [
+                "nsis",
+                "portable"
+            ],
+            "icon": "build/icon.ico"
+        }
+    }
 }
