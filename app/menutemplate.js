@@ -59,6 +59,14 @@ exports.menuTemplate = [
                     );
                 },
             },
+            {
+                label: 'License',
+                click: async () => {
+                    await shell.openExternal(
+                        'https://github.com/advaithm/NightPDF/blob/mistress/LICENSE'
+                    );
+                },
+            },
         ],
     },
 ];

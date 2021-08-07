@@ -1,5 +1,5 @@
 /*
-Night pdf Dark mode for Pdfs    
+NightPDF Dark mode for Pdfs    
 Copyright (C) 2021  Advaith Madhukar
 
 This program is free software; you can redistribute it and/or
