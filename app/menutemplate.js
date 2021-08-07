@@ -4,31 +4,9 @@
  *  Licensed under the MIT License.
  *  See License in the project root for license information.
  *----------------------------------------------------------------------------*/
-
-const { app } = require('electron');
-
-const isMac = process.platform === 'darwin';
+const { shell } = require('electron');
 
 exports.menuTemplate = [
-    // { role: 'appMenu' }
-    ...(isMac
-        ? [
-              {
-                  label: app.name,
-                  submenu: [
-                      { role: 'about' },
-                      { type: 'separator' },
-                      { role: 'services' },
-                      { type: 'separator' },
-                      { role: 'hide' },
-                      { role: 'hideothers' },
-                      { role: 'unhide' },
-                      { type: 'separator' },
-                      { role: 'quit' },
-                  ],
-              },
-          ]
-        : []),
     // { role: 'fileMenu' }
     {
         label: 'File',
@@ -52,25 +30,6 @@ exports.menuTemplate = [
             { role: 'cut' },
             { role: 'copy' },
             { role: 'paste' },
-            ...(isMac
-                ? [
-                      { role: 'pasteAndMatchStyle' },
-                      { role: 'delete' },
-                      { role: 'selectAll' },
-                      { type: 'separator' },
-                      {
-                          label: 'Speech',
-                          submenu: [
-                              { role: 'startspeaking' },
-                              { role: 'stopspeaking' },
-                          ],
-                      },
-                  ]
-                : [
-                      { role: 'delete' },
-                      { type: 'separator' },
-                      { role: 'selectAll' },
-                  ]),
         ],
     },
     // { role: 'viewMenu' }
@@ -95,7 +54,6 @@ exports.menuTemplate = [
             {
                 label: 'Learn More',
                 click: async () => {
-                    const { shell } = require('electron');
                     await shell.openExternal(
                         'https://github.com/advaithm/NightPDF#readme'
                     );
