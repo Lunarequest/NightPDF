@@ -122,13 +122,13 @@ function createWindow(filename = null) {
     };
 
     ipcMain.removeAllListeners('togglePrinting');
-    ipcMain.once('togglePrinting', (e, msg) => {
+    ipcMain.once('togglePrinting', (_e, msg) => {
         const menu = Menu.getApplicationMenu();
         menu.getMenuItemById('file-print').enabled = Boolean(msg);
     });
 
     ipcMain.removeAllListeners('newWindow');
-    ipcMain.once('newWindow', (e, msg) => {
+    ipcMain.once('newWindow', (_e, msg) => {
         console.log('opening ', msg, ' in new window');
         createWindow(msg);
     });
@@ -144,8 +144,7 @@ function createWindow(filename = null) {
     });
 
     ipcMain.removeAllListeners('openNewPDF');
-    // eslint-disable-next-line no-unused-vars
-    ipcMain.once('openNewPDF', (e, msg) => {
+    ipcMain.once('openNewPDF', (_e, _msg) => {
         openNewPDF();
     });
 }

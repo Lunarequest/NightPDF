@@ -187,10 +187,6 @@ const nightPDF = (function () {
             e.preventDefault();
             e.stopPropagation();
         };
-
-        if (navigator.userAgent.toLowerCase().indexOf(' electron/') == -1) {
-            //_openFile('/Users/jllcabrera/Archive/Research Papers/junior08.pdf');
-        }
     }
 
     const _toggleDarkConfigurator = () => {
