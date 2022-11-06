@@ -10,7 +10,7 @@
     },
     "scripts": {
         "pack": "electron-builder --dir",
-        "start": "electron .",
+        "dev": "electron .",
         "dist": "electron-builder",
         "dist-win": "electron-builder --win",
         "lint": "eslint .",
@@ -22,7 +22,7 @@
     },
     "license": "GPL-2.0-only",
     "devDependencies": {
-        "electron": "^18.2.0",
+        "electron": "^21.2.2",
         "electron-builder": "^22.11.7",
         "eslint": "^7.32.0",
         "eslint-config-prettier": "^8.3.0",

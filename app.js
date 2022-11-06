@@ -31,12 +31,16 @@ const { menuTemplate } = require('./app/menutemplate');
 let wins = [];
 let menuIsConfigured = false;
 
+async function getpath(filePath) {
+    return path.parse(filePath).base;
+}
+
 function createWindow(filename = null) {
     // Create the browser window.
     let win = new BrowserWindow({
         width: 550,
         height: 420,
-        minWidth: 565,
+        minWidth: 565,        
         minHeight: 200,
         webPreferences: {
             preload: path.resolve(path.join(__dirname, 'app/preload.js')),
@@ -147,6 +151,10 @@ function createWindow(filename = null) {
     ipcMain.once('openNewPDF', (_e, _msg) => {
         openNewPDF();
     });
+    
+    ipcMain.handle('path', (_event,path)=> {
+        getpath(path)
+    })
 }
 
 let fileToOpen = '';
