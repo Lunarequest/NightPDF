@@ -63,6 +63,20 @@
                 "portable"
             ],
             "icon": "build/icon.ico"
-        }
+        },
+        "mac": {
+			"icon": "build/icon.iconset",
+			"category": "public.app-category.productivity",
+			"target": [
+				"dmg",
+                "zip"
+			],
+			"bundleVersion": "1",
+			"artifactName": "NightPDF-${version}.${ext}",
+			"darkModeSupport": true,
+			"hardenedRuntime": true,
+			"gatekeeperAssess": false,
+			"type": "distribution"
+		}
     }
 }
