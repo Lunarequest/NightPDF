@@ -4,7 +4,7 @@ Dark Mode PDF reader
 
 It uses Electron but my eyes dont care.
 
-This is a fork of [eleloya/NightPDF](https://github.com/eleloya/NightPDF) which is no longer maintained by eleloya. Due to not being able to build or develop mac os support, I've stripped out mac os support
+This is a fork of [eleloya/NightPDF](https://github.com/eleloya/NightPDF) which is no longer maintained by eleloya.
 
 ![NightPDF screencast](docs/nightpdf.gif?raw=true)
 
@@ -14,7 +14,7 @@ This is a fork of [eleloya/NightPDF](https://github.com/eleloya/NightPDF) which 
 
 Binaries for Linux and Windows
 
--   [Latest release](https://github.com/advaithm/NightPDF/releases/latest)
+-   [Latest release](https://github.com/Lunarequest/NightPDF/releases/latest)
 
 ## Limitations
 
