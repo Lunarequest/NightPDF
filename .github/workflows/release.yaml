@@ -1,5 +1,5 @@
 name: Release
-on: [tag]
+on: push
 jobs:
   build:
     name: '${{ matrix.os }} NightPDF'
