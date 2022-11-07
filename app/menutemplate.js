@@ -43,11 +43,6 @@ exports.menuTemplate = [
             { role: 'togglefullscreen' },
         ],
     },
-    // { role: 'windowMenu' }
-    {
-        label: 'Window',
-        submenu: [{ role: 'minimize' }, { role: 'maximize' }],
-    },
     {
         role: 'help',
         submenu: [
@@ -55,7 +50,7 @@ exports.menuTemplate = [
                 label: 'Learn More',
                 click: async () => {
                     await shell.openExternal(
-                        'https://github.com/advaithm/NightPDF#readme'
+                        'https://github.com/Lunarequest/NightPDF#readme'
                     );
                 },
             },
@@ -63,7 +58,7 @@ exports.menuTemplate = [
                 label: 'License',
                 click: async () => {
                     await shell.openExternal(
-                        'https://github.com/advaithm/NightPDF/blob/mistress/LICENSE'
+                        'https://github.com/Lunarequest/NightPDF/blob/mistress/LICENSE'
                     );
                 },
             },
