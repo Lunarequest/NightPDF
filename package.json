@@ -23,10 +23,10 @@
     "license": "GPL-2.0-only",
     "devDependencies": {
         "electron": "^21.2.2",
-        "electron-builder": "^22.11.7",
-        "eslint": "^7.32.0",
+        "electron-builder": "^23.6.0",
+        "eslint": "^8.26.0",
         "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-prettier": "^3.4.0",
+        "eslint-plugin-prettier": "^4.2.1",
         "prettier": "^2.3.2"
     },
     "dependencies": {
@@ -65,18 +65,18 @@
             "icon": "build/icon.ico"
         },
         "mac": {
-			"icon": "build/icon.iconset",
-			"category": "public.app-category.productivity",
-			"target": [
-				"dmg",
+            "icon": "build/icon.iconset",
+            "category": "public.app-category.productivity",
+            "target": [
+                "dmg",
                 "zip"
-			],
-			"bundleVersion": "1",
-			"artifactName": "NightPDF-${version}.${ext}",
-			"darkModeSupport": true,
-			"hardenedRuntime": true,
-			"gatekeeperAssess": false,
-			"type": "distribution"
-		}
+            ],
+            "bundleVersion": "1",
+            "artifactName": "NightPDF-${version}.${ext}",
+            "darkModeSupport": true,
+            "hardenedRuntime": true,
+            "gatekeeperAssess": false,
+            "type": "distribution"
+        }
     }
 }

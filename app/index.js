@@ -203,7 +203,7 @@ const nightPDF = (function () {
         }
     };
 
-    const _openFile = (file) => {
+    const _openFile = async (file) => {
         console.log('opening ', file);
         if (_pdfElement.src) {
             console.log('opening in new window');
@@ -215,7 +215,7 @@ const nightPDF = (function () {
                 encodeURIComponent(file) +
                 '#pagemode=none';
             _pdfElement.onload = _fileDidLoad;
-            _updateTitle(file);
+            await _updateTitle(file);
             //send message to update window size
         }
     };
@@ -492,8 +492,9 @@ const nightPDF = (function () {
         _updateDarkSettings(cssRule);
     };
 
-    const _updateTitle = (filePath) => {
-        const fileName = window.api.getPath(filePath);
+    const _updateTitle = async (filePath) => {
+        let fileName = await window.api.getPath(filePath);
+        console.log(fileName);
         if (fileName) {
             _titleElement.innerHTML = fileName;
             document.title = fileName;
