@@ -22,7 +22,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {
     getPath: async (filePath) => {
-        return await ipcRenderer.invoke("getPath",filePath);
+        return await ipcRenderer.invoke('getPath', filePath);
     },
 
     removeAllListeners: (ListenerType) => {

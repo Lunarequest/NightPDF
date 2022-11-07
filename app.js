@@ -27,7 +27,7 @@ const {
     shell,
 } = require('electron');
 const path = require('path');
-const { menuTemplate} = require('./app/menutemplate');
+const { menuTemplate } = require('./app/menutemplate');
 let wins = [];
 let menuIsConfigured = false;
 
