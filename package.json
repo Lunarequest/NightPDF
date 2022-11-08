@@ -67,7 +67,6 @@
         },
         "mac": {
             "publish": ["github"],
-            "icon": "build/icon.icns",
             "category": "public.app-category.productivity",
             "target": [
                 "dmg",
