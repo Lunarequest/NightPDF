@@ -44,7 +44,6 @@
             }
         ],
         "linux": {
-            "icon": "build/icon.icoset/icon_256x256.png",
             "desktop": {
                 "Name": "NightPdf",
                 "Comment": "Dark Mode PDF reader"
@@ -68,7 +67,7 @@
         },
         "mac": {
             "publish": ["github"],
-            "icon": "build/icon.iconset",
+            "icon": "build/icon.icns",
             "category": "public.app-category.productivity",
             "target": [
                 "dmg",

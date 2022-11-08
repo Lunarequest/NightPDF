@@ -33,12 +33,10 @@ jobs:
         with:
           node-version: 16
 
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
+      - name: Build Electron app
+        uses: actions/setup-node@v1
         with:
-          build_script_name: dist --universal -c.mac.identity=null
-          github_token: ${{ secrets.github_token }}
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          node-version: 16
   
   build-windows:
     name: 'Build for Windows NightPDF'
