@@ -48,7 +48,9 @@
                 "Name": "NightPdf",
                 "Comment": "Dark Mode PDF reader"
             },
-            "publish": ["github"],
+            "publish": [
+                "github"
+            ],
             "target": [
                 "AppImage",
                 "deb",
@@ -58,7 +60,9 @@
             "category": "Utilty"
         },
         "win": {
-            "publish": ["github"],
+            "publish": [
+                "github"
+            ],
             "target": [
                 "nsis",
                 "portable"
@@ -66,7 +70,9 @@
             "icon": "build/icon.ico"
         },
         "mac": {
-            "publish": ["github"],
+            "publish": [
+                "github"
+            ],
             "category": "public.app-category.productivity",
             "target": [
                 "dmg",
