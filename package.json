@@ -33,7 +33,7 @@
         "nouislider": "^15.2.0"
     },
     "build": {
-        "appId": "io.nullrequest.NightPDF",
+        "appId": "io.github.lunarequest.NightPDF",
         "productName": "NightPDF",
         "fileAssociations": [
             {
