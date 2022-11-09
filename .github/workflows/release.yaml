@@ -80,7 +80,7 @@ jobs:
             dist/*.txt
           draft: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Create Release for windows
         uses: softprops/action-gh-release@v1
@@ -92,7 +92,7 @@ jobs:
             dist/*.exe
           draft: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Create Release for macos
         uses: softprops/action-gh-release@v1
@@ -104,4 +104,4 @@ jobs:
             dist/*.dmg
           draft: true
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
