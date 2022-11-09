@@ -30,6 +30,7 @@ jobs:
           - os: ubuntu-18.04
             arch: arm64
     steps:
+      
       - name: Check out Git repository
         uses: actions/checkout@v1
 
@@ -52,12 +53,14 @@ jobs:
             ${{ runner.os }}-yarn-
       
       - name: Install and build dependencies
+        id: deps
         run: yarn
         env:
           npm_config_arch: ${{ matrix.arch }}
           TARGET_ARCH: ${{ matrix.arch }}
 
       - name: Package application(Macos Hack)
+        id: macos_packageing
         env:
           USE_HARD_LINKS: 'false' 
         run: yarn dist --universal -c.mac.identity=null
@@ -66,41 +69,21 @@ jobs:
           'refs/tags/') }}
       
       - name: Package application
+        id: macos_packageing
         run: yarn dist
         if:
           ${{ matrix.os != 'macos-11' && startsWith(github.ref,
           'refs/tags/') }}
 
-      - name: Create Release for Linux
+      - name: Publish
         uses: softprops/action-gh-release@v1
-        if:
-          ${{ matrix.os == 'ubuntu-18.04' && startsWith(github.ref,
-          'refs/tags/') }}
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: |
-            dist/*.AppImage
-            dist/*.deb
-            dist/*.rpm
-            dist/*.txt
-          draft: true
-
-      - name: Create Release for windows
-        uses: softprops/action-gh-release@v1
-        if:
-          ${{ matrix.os == 'windows-2019' && startsWith(github.ref,
-          'refs/tags/') }}
-        with:
-          files: |
-            dist/*.exe
-          draft: true
-
-      - name: Create Release for macos
-        uses: softprops/action-gh-release@v1
-        if:
-          ${{ matrix.os == 'macos-11' && startsWith(github.ref,
-          'refs/tags/') }}
-        with:
-          files: |
-            dist/*.dmg
-            dist/*.zip
+          files: \
+            dist/NightPDF*.exe
+            dist/NightPDF*.dmg
+            dist/NightPDF*.tar.gz
+            dist/NightPDF*.AppImage
+            dist/NightPDF*.rpm
+            dist/NightPDF*.deb
           draft: true
