@@ -54,8 +54,7 @@
             "target": [
                 "AppImage",
                 "deb",
-                "rpm",
-                "tar.gz"
+                "rpm"
             ],
             "category": "Utilty"
         },

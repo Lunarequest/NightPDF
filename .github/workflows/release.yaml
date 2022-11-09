@@ -78,8 +78,7 @@ jobs:
           files: \
             dist/NightPDF*.exe
             dist/NightPDF*.dmg
-            dist//NightPDF*.AppImage
-            dist/nightpdf*.tar.gz
-            dist/nightpdf*.deb
-            dist/nightpdf*.rpm
+            dist/*.AppImage
+            dist/*.deb
+            dist/*.rpm
           draft: true
