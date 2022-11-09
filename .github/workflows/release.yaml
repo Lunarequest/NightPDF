@@ -69,13 +69,14 @@ jobs:
           'refs/tags/') }}
       
       - name: Package application
-        id: macos_packageing
+        id: packageing
         run: yarn dist
         if:
           ${{ matrix.os != 'macos-11' && startsWith(github.ref,
           'refs/tags/') }}
 
       - name: Publish
+        id: publishing
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
