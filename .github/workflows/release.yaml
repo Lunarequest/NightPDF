@@ -16,7 +16,7 @@ jobs:
       matrix:
         node: ['16.x']
         os: [macos-11, windows-2019, ubuntu-18.04]
-        arch: [x64, arm64]
+        arch: [x64]
         include:
           - os: macos-11
             friendlyName: macOS
@@ -24,9 +24,6 @@ jobs:
             friendlyName: Windows
           - os: ubuntu-18.04
             friendlyName: Ubuntu
-        exclude:
-          - os: macos-latest
-            arch: x64
     steps:
       
       - name: Check out Git repository
@@ -71,13 +68,6 @@ jobs:
         run: yarn dist
         if:
           ${{ matrix.os != 'macos-11' && startsWith(github.ref,
-          'refs/tags/') }}
-      
-      - name: temp
-        id: temp
-        run: ls && ls-dist
-        if:
-          ${{ matrix.os == 'ubuntun-18.04' && startsWith(github.ref,
           'refs/tags/') }}
 
       - name: Publish
