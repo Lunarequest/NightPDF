@@ -54,6 +54,8 @@ jobs:
           TARGET_ARCH: ${{ matrix.arch }}
 
       - name: Package application(Macos Hack)
+        env:
+          USE_HARD_LINKS: 'false' 
         run: yarn dist --universal -c.mac.identity=null
         if:
           ${{ matrix.os == 'macos-11' && startsWith(github.ref,
