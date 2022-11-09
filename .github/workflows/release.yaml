@@ -18,17 +18,15 @@ jobs:
         os: [macos-11, windows-2019, ubuntu-18.04]
         arch: [x64, arm64]
         include:
-          - os: macos-11
+          - os: macos-latest
             friendlyName: macOS
-          - os: windows-2019
+          - os: windows-latest
             friendlyName: Windows
-          - os: ubuntu-18.04
+          - os: ubuntu-20.04
             friendlyName: Ubuntu
         exclude:
-          - os: macos-11
+          - os: macos-latest
             arch: x64
-          - os: ubuntu-18.04
-            arch: arm64
     steps:
       
       - name: Check out Git repository
@@ -83,8 +81,8 @@ jobs:
           files: \
             dist/NightPDF*.exe
             dist/NightPDF*.dmg
-            dist/NightPDF*.tar.gz
+            file=dist/nightpdf*.tar.gz
             dist/NightPDF*.AppImage
-            dist/NightPDF*.rpm
-            dist/NightPDF*.deb
+            dist/nightpdf*.deb
+            dist/nightpdf*.rpm
           draft: true
