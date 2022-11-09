@@ -88,8 +88,8 @@ jobs:
           files: \
             dist/NightPDF*.exe
             dist/NightPDF*.dmg
-            dist/*AppImage
-            dist/*tar.gz
-            dist/*deb
-            dist/*rpm
+            dist//NightPDF*.AppImage
+            dist/nightpdf*.tar.gz
+            dist/nightpdf*.deb
+            dist/nightpdf*.rpm
           draft: true
