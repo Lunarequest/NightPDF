@@ -18,9 +18,9 @@ jobs:
         os: [macos-11, windows-2019, ubuntu-18.04]
         arch: [x64, arm64]
         include:
-          - os: macos-latest
+          - os: macos-11
             friendlyName: macOS
-          - os: windows-latest
+          - os: windows-2019
             friendlyName: Windows
           - os: ubuntu-18.04
             friendlyName: Ubuntu
