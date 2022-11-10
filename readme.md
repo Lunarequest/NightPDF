@@ -4,7 +4,6 @@ Dark Mode PDF reader
 
 It uses Electron but my eyes dont care.
 
-This is a fork of [eleloya/NightPDF](https://github.com/eleloya/NightPDF) which is no longer maintained by eleloya.
 
 ![NightPDF screencast](docs/nightpdf.gif?raw=true)
 
@@ -26,8 +25,8 @@ There is limited support for xfa forms, and saving forms with filled in data. Th
 
 This software was developed using
 
--   node: v16.6.1
--   yarn: v1.22.11
+-   node: v16.x
+-   yarn: v1.x
 -   Arch Linux Rolling
 
 ## Instructions
@@ -35,13 +34,13 @@ This software was developed using
 1. Install dependencies
 
 ```bash
-npm install
+yar
 ```
 
 2. Run
 
 ```bash
-npm start
+yarn dev
 ```
 
 ### Building Release Version
@@ -49,13 +48,13 @@ npm start
 1. Install dependencies
 
 ```bash
-npm install
+yarn
 ```
 
 2. Build release
 
 ```bash
-npm run dist
+yarn dist
 ```
 
 ## Licenses
