@@ -81,4 +81,5 @@ jobs:
             dist/*.AppImage
             dist/*.deb
             dist/*.rpm
+            dist/latest*.yml
           draft: true

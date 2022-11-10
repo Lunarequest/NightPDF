@@ -25,6 +25,7 @@ const {
     dialog,
     ipcMain,
     shell,
+    nativeTheme
 } = require('electron');
 const path = require('path');
 const { menuTemplate } = require('./app/menutemplate');
@@ -36,6 +37,7 @@ function getpath(filePath) {
 }
 
 function createWindow(filename = null) {
+    nativeTheme.themeSource = 'dark';
     // Create the browser window.
     let win = new BrowserWindow({
         width: 550,
