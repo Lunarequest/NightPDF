@@ -37,6 +37,8 @@ function getpath(filePath) {
 }
 
 function createWindow(filename = null) {
+    //force dark theme irespective of os theme
+    //useful for linux since we don't have a standardised way of detecting dark theme
     nativeTheme.themeSource = 'dark';
     // Create the browser window.
     let win = new BrowserWindow({
