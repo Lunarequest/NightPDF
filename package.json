@@ -22,7 +22,7 @@
     },
     "license": "GPL-2.0-only",
     "devDependencies": {
-        "electron": "^21.2.2",
+        "electron": "^23.0.0",
         "electron-builder": "^23.6.0",
         "eslint": "^8.27.0",
         "eslint-config-prettier": "^8.3.0",
