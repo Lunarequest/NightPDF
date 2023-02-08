@@ -25,16 +25,16 @@ There is limited support for xfa forms, and saving forms with filled in data. Th
 
 This software was developed using
 
--   node: v16.x
+-   node: v19.x
 -   yarn: v1.x
--   Arch Linux Rolling
+-   Arch Linux Rolling/OpenSUSE Tumbleweed
 
 ## Instructions
 
 1. Install dependencies
 
 ```bash
-yar
+yarn
 ```
 
 2. Run
