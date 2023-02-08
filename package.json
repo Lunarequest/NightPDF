@@ -1,6 +1,6 @@
 {
     "name": "nightpdf",
-    "version": "0.4.5",
+    "version": "0.4.6",
     "description": "Dark Mode for PDFs",
     "main": "app.js",
     "homepage": "https://github.com/advaithm/NightPDF#readme",
