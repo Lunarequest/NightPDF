@@ -22,7 +22,7 @@ jobs:
             friendlyName: macOS
           - os: windows-2019
             friendlyName: Windows
-          - os: ubuntu-18.04
+          - os: ubuntu-20.04
             friendlyName: Ubuntu
     steps:
       
