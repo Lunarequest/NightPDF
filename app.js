@@ -25,7 +25,7 @@ const {
     dialog,
     ipcMain,
     shell,
-    nativeTheme
+    nativeTheme,
 } = require('electron');
 const path = require('path');
 const { menuTemplate } = require('./app/menutemplate');
