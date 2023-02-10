@@ -29,8 +29,11 @@ const {
 } = require('electron');
 const path = require('path');
 const { menuTemplate } = require('./app/menutemplate');
+const { autoUpdater } = require('electron-updater')
 let wins = [];
 let menuIsConfigured = false;
+
+const DEBUG = process.env.DEBUG;
 
 function getpath(filePath) {
     return path.parse(filePath).base;
@@ -53,12 +56,21 @@ function createWindow(filename = null) {
         titleBarStyle: 'default',
         show: false,
     });
+
+    try {
+        autoUpdater.checkForUpdatesAndNotify();
+    } catch (e) {
+        if(DEBUG) {
+            console.log(e)
+        }
+    }
+
     wins.push(win);
 
     // and load the index.html of the app.
 
     win.loadFile('app/index.html');
-    if (process.env.DEBUG) {
+    if (DEBUG) {
         win.openDevTools();
     }
     let wc = win.webContents;
