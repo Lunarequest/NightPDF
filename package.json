@@ -4,9 +4,10 @@
     "description": "Dark Mode for PDFs",
     "main": "app.js",
     "packageManager": "yarn@3.4.1",
-    "homepage": "https://github.com/advaithm/NightPDF#readme",
+    "repository": "https://github.com/Lunarequest/NightPDF",
+    "homepage": "https://github.com/Lunarequest/NightPDF#readme",
     "bugs": {
-        "url": "https://github.com/advaithm/NightPDF/issues",
+        "url": "https://github.com/Lunarequest/NightPDF/issues",
         "email": "nullrequest@vivaldi.net"
     },
     "scripts": {
