@@ -2,7 +2,7 @@
     "name": "nightpdf",
     "version": "0.4.7",
     "description": "Dark Mode for PDFs",
-    "main": "app.js",
+    "main": "out/app.js",
     "packageManager": "yarn@3.4.1",
     "repository": "https://github.com/Lunarequest/NightPDF",
     "homepage": "https://github.com/Lunarequest/NightPDF#readme",
@@ -11,10 +11,11 @@
         "email": "nullrequest@vivaldi.net"
     },
     "scripts": {
+        "build": "tsc",
         "pack": "electron-builder --dir",
-        "dev": "electron .",
-        "dist": "electron-builder",
-        "dist-win": "electron-builder --win",
+        "dev": "yarn build && electron .",
+        "dist": "yarn build && electron-builder",
+        "dist-win": "yarn build && electron-builder --win",
         "lint": "eslint .",
         "prettier": "prettier --config .prettierrc --write ."
     },
@@ -29,7 +30,8 @@
         "eslint": "^8.34.0",
         "eslint-config-prettier": "^8.6.0",
         "eslint-plugin-prettier": "^4.2.1",
-        "prettier": "^2.8.4"
+        "prettier": "^2.8.4",
+        "typescript": "^4.9.5"
     },
     "dependencies": {
         "electron-updater": "^5.3.0",

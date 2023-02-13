@@ -4,7 +4,6 @@ Dark Mode PDF reader
 
 It uses Electron but my eyes dont care.
 
-
 ![NightPDF screencast](docs/nightpdf.gif?raw=true)
 
 ## Download Binaries
