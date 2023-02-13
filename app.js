@@ -29,11 +29,15 @@ const {
 } = require('electron');
 const path = require('path');
 const { menuTemplate } = require('./app/menutemplate');
-const { autoUpdater } = require('electron-updater')
+const { autoUpdater } = require('electron-updater');
 let wins = [];
 let menuIsConfigured = false;
 
 const DEBUG = process.env.DEBUG;
+const APPIMAGE = process.env.APPIMAGE;
+const linux = process.platform === 'linux';
+const windows = process.platform === 'win32';
+const mac = process.platform === 'darwin';
 
 function getpath(filePath) {
     return path.parse(filePath).base;
@@ -56,12 +60,13 @@ function createWindow(filename = null) {
         titleBarStyle: 'default',
         show: false,
     });
-
-    try {
-        autoUpdater.checkForUpdatesAndNotify();
-    } catch (e) {
-        if(DEBUG) {
-            console.log(e)
+    if ((linux && APPIMAGE) || windows || mac) {
+        try {
+            autoUpdater.checkForUpdatesAndNotify();
+        } catch (e) {
+            if (DEBUG) {
+                console.log(e);
+            }
         }
     }
 
