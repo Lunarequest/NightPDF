@@ -1,6 +1,6 @@
 {
     "name": "nightpdf",
-    "version": "0.4.7",
+    "version": "0.4.8",
     "description": "Dark Mode for PDFs",
     "main": "out/app.js",
     "packageManager": "yarn@3.4.1",
