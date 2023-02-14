@@ -21,8 +21,7 @@
     "win": {
         "publish": ["github"],
         "target": ["nsis", "portable"],
-        "icon": "build/icon.ico",
-        "artifactName": "NightPDF-${version}.${ext}"
+        "icon": "build/icon.ico"
     },
     "mac": {
         "publish": ["github"],
