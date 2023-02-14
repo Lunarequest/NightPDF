@@ -1,6 +1,6 @@
 {
     "name": "nightpdf",
-    "version": "0.4.9",
+    "version": "1.0.0",
     "description": "Dark Mode for PDFs",
     "main": "out/app.js",
     "packageManager": "yarn@3.4.1",
@@ -26,7 +26,6 @@
     },
     "license": "GPL-2.0-only",
     "devDependencies": {
-        "@rollup/plugin-node-resolve": "^15.0.1",
         "@rollup/plugin-typescript": "^11.0.0",
         "electron": "^23.0.0",
         "electron-builder": "^23.6.0",
