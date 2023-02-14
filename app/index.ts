@@ -19,8 +19,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 /* eslint-disable no-undef */
 /* eslint no-unused-vars: [ "error", { "argsIgnorePattern": "^_" } ] */
 /*eslint-env browser*/
-'use strict';
-function _try(func, fallbackValue) {
+import * as noUiSlider from 'nouislider';
+
+function _try(func: Function, fallbackValue: any) {
     try {
         let value = func();
         return value === null || value === undefined ? fallbackValue : value;
@@ -29,62 +30,83 @@ function _try(func, fallbackValue) {
     }
 }
 
+declare global {
+    interface Window {
+        api: {
+            getPath: any;
+            getPDF: any;
+            removeAllListeners: any;
+            openNewPDF: any;
+            newWindow: any;
+            togglePrinting: any;
+            resizeWindow: any;
+            on: any;
+        };
+    }
+    interface HTMLElement {
+        noUiSlider: any;
+        width: any;
+        height: any;
+        getContext: any;
+    }
+}
+
 const nightPDF = (function () {
     console.log('loading');
-    let _pdfElement;
-    let _headerElement;
-    let _titleElement;
-    let _darkConfiguratorElement;
-    let _brightnessSliderElement;
-    let _grayscaleSliderElement;
-    let _invertSliderElement;
-    let _sepiaSliderElement;
-    let _hueSliderElement;
-    let _extraBrightnessSliderElement;
-    let _splashElement;
-    let _splashExtraElement;
-    let _appContainerElement;
-    let _defaultButton;
-    let _sepiaButton;
-    let _redeyeButton;
-    let _customButton;
+    let _pdfElement: any;
+    let _appContainerElement: any;
+    let _headerElement: any;
+    let _titleElement: any;
+    let _darkConfiguratorElement: any;
+    let _brightnessSliderElement: any;
+    let _grayscaleSliderElement: any;
+    let _invertSliderElement: any;
+    let _sepiaSliderElement: any;
+    let _hueSliderElement: any;
+    let _extraBrightnessSliderElement: any;
+    let _splashElement: any;
+    let _splashExtraElement: any;
+    let _defaultButton: any;
+    let _sepiaButton: any;
+    let _redeyeButton: any;
+    let _customButton: any;
 
     function main() {
-        _appContainerElement = document.getElementById('appContainer');
-        _pdfElement = document.getElementById('pdfjs');
-        _headerElement = document.getElementById('header');
-        _titleElement = document.getElementById('title');
-        _defaultButton = document.getElementById('default-button');
-        _sepiaButton = document.getElementById('sepia-button');
-        _redeyeButton = document.getElementById('redeye-button');
-        _customButton = document.getElementById('custom-button');
-        _darkConfiguratorElement = document.getElementById('darkConfigurator');
-        _brightnessSliderElement = document.getElementById('brightnessSlider');
-        _grayscaleSliderElement = document.getElementById('grayscaleSlider');
-        _invertSliderElement = document.getElementById('invertSlider');
-        _sepiaSliderElement = document.getElementById('sepiaSlider');
-        _hueSliderElement = document.getElementById('hueSlider');
+        _appContainerElement = document.getElementById('appContainer')!;
+        _pdfElement = document.getElementById('pdfjs')!;
+        _headerElement = document.getElementById('header')!;
+        _titleElement = document.getElementById('title')!;
+        _defaultButton = document.getElementById('default-button')!;
+        _sepiaButton = document.getElementById('sepia-button')!;
+        _redeyeButton = document.getElementById('redeye-button')!;
+        _customButton = document.getElementById('custom-button')!;
+        _darkConfiguratorElement = document.getElementById('darkConfigurator')!;
+        _brightnessSliderElement = document.getElementById('brightnessSlider')!;
+        _grayscaleSliderElement = document.getElementById('grayscaleSlider')!;
+        _invertSliderElement = document.getElementById('invertSlider')!;
+        _sepiaSliderElement = document.getElementById('sepiaSlider')!;
+        _hueSliderElement = document.getElementById('hueSlider')!;
         _extraBrightnessSliderElement = document.getElementById(
             'extraBrightnessSlider'
-        );
-        _splashElement = document.getElementById('splash');
-        _splashExtraElement = document.getElementById('splash-extra');
+        )!;
+        _splashElement = document.getElementById('splash')!;
+        _splashExtraElement = document.getElementById('splash-extra')!;
 
         //setup electron listeners
         window.api.removeAllListeners('file-open');
-        window.api.on('file-open', (_e, msg) => {
+        window.api.on('file-open', (_e: Event, msg: string) => {
             _openFile(msg);
         });
 
         window.api.removeAllListeners('file-print');
-        window.api.on('file-print', (_e, _msg) => {
+        window.api.on('file-print', (_e: Event, _msg: string) => {
             _pdfElement.contentDocument
                 .getElementById('print')
                 .dispatchEvent(new Event('click'));
         });
 
         // setup dom listeners
-        _defaultButton.addEventListener('click', (e) => {
+        _defaultButton.addEventListener('click', (e: Event) => {
             // do default styling
 
             if (_defaultButton.className.includes('active')) {
@@ -99,7 +121,7 @@ const nightPDF = (function () {
 
             e.stopPropagation();
         });
-        _sepiaButton.addEventListener('click', (e) => {
+        _sepiaButton.addEventListener('click', (e: Event) => {
             // do default styling
             if (_sepiaButton.className.includes('active')) {
                 _toggleDarkConfigurator();
@@ -112,7 +134,7 @@ const nightPDF = (function () {
             }
             e.stopPropagation();
         });
-        _redeyeButton.addEventListener('click', (e) => {
+        _redeyeButton.addEventListener('click', (e: Event) => {
             // do default styling
             // only display menu if active
             if (_redeyeButton.className.includes('active')) {
@@ -127,7 +149,7 @@ const nightPDF = (function () {
             e.stopPropagation();
         });
 
-        _customButton.addEventListener('click', (e) => {
+        _customButton.addEventListener('click', (e: Event) => {
             // do default styling
             // always display menu
             if (!_customButton.className.includes('active')) {
@@ -141,39 +163,42 @@ const nightPDF = (function () {
             e.stopPropagation();
         });
 
-        _headerElement.addEventListener('click', (_e) => {
+        _headerElement.addEventListener('click', (_e: Event) => {
             _hideDarkConfigurator();
         });
 
         _pdfElement.addEventListener(
             'click',
-            (e) => {
+            (e: Event) => {
                 _hideDarkConfigurator();
                 e.stopPropagation();
             },
             true
         );
 
-        _splashElement.addEventListener('click', (_e) => {
+        _splashElement.addEventListener('click', (_e: Event) => {
             window.api.openNewPDF(null);
         });
 
-        _splashExtraElement.addEventListener('click', (_e) => {
+        _splashExtraElement.addEventListener('click', (_e: Event) => {
             window.api.openNewPDF(null);
         });
 
         window.addEventListener('blur', function () {
-            if (document.activeElement.id == 'pdfjs') {
-                _hideDarkConfigurator();
+            let activeElement = document.activeElement;
+            if (activeElement) {
+                if (activeElement.id == 'pdfjs') {
+                    _hideDarkConfigurator();
+                }
             }
         });
 
-        _splashElement.ondrop = (e) => {
+        _splashElement.ondrop = (e: any) => {
             console.log('files dropped');
             e.preventDefault();
             e.stopPropagation();
 
-            const files = e.dataTransfer.files;
+            const files = e.dataTransfer!.files;
 
             if (!files || files.length === 0) {
                 return;
@@ -182,7 +207,7 @@ const nightPDF = (function () {
             const fileToOpen = files[0];
             _openFile(fileToOpen.path);
         };
-        _splashElement.ondragover = (e) => {
+        _splashElement.ondragover = (e: Event) => {
             console.log('file dragged');
             e.preventDefault();
             e.stopPropagation();
@@ -203,7 +228,7 @@ const nightPDF = (function () {
         }
     };
 
-    const _openFile = async (file) => {
+    const _openFile = async (file: string) => {
         console.log('opening ', file);
         if (_pdfElement.src) {
             console.log('opening in new window');
@@ -229,7 +254,7 @@ const nightPDF = (function () {
         _setupSliders();
     };
 
-    const _handlePresetChange = (preset) => {
+    const _handlePresetChange = (preset: any) => {
         const brightness = _brightnessSliderElement.noUiSlider;
         const grayness = _grayscaleSliderElement.noUiSlider;
         const inversion = _invertSliderElement.noUiSlider;
@@ -358,12 +383,12 @@ const nightPDF = (function () {
             tooltips: [
                 {
                     // 'to' the formatted value. Receives a number.
-                    to: function (value) {
+                    to: function (value: number) {
                         return Math.round(value) + '%';
                     },
                     // 'from' the formatted value.
                     // Receives a string, should return a number.
-                    from: function (value) {
+                    from: function (value: string) {
                         return Number(value.replace('%', ''));
                     },
                 },
@@ -381,12 +406,12 @@ const nightPDF = (function () {
             tooltips: [
                 {
                     // 'to' the formatted value. Receives a number.
-                    to: function (value) {
+                    to: function (value: number) {
                         return Math.round(value) + '°';
                     },
                     // 'from' the formatted value.
                     // Receives a string, should return a number.
-                    from: function (value) {
+                    from: function (value: string) {
                         return Number(value.replace('°', ''));
                     },
                 },
@@ -404,12 +429,12 @@ const nightPDF = (function () {
             tooltips: [
                 {
                     // 'to' the formatted value. Receives a number.
-                    to: function (value) {
+                    to: function (value: number) {
                         return Math.round(value) + '%';
                     },
                     // 'from' the formatted value.
                     // Receives a string, should return a number.
-                    from: function (value) {
+                    from: function (value: string) {
                         return Number(value.replace('%', ''));
                     },
                 },
@@ -444,7 +469,7 @@ const nightPDF = (function () {
         _pdfElement.contentDocument.head.appendChild(style);
     };
 
-    const _updateDarkSettings = (cssFilter) => {
+    const _updateDarkSettings = (cssFilter: any) => {
         const currentStyle =
             _pdfElement.contentDocument.getElementById('pageStyle');
 
@@ -492,7 +517,7 @@ const nightPDF = (function () {
         _updateDarkSettings(cssRule);
     };
 
-    const _updateTitle = async (filePath) => {
+    const _updateTitle = async (filePath: string) => {
         let fileName = await window.api.getPath(filePath);
         console.log(fileName);
         if (fileName) {

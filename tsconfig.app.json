@@ -1,0 +1,14 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "module": "ES6",
+        "lib": ["ES6", "DOM"]
+    },
+    "exclude": [
+        "app.ts",
+        "app/preload.ts",
+        "app/menutemplate.ts",
+        "libs",
+        "out"
+    ]
+}

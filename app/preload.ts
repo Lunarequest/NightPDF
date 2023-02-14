@@ -21,27 +21,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {
-    getPath: async (filePath) => {
+    getPath: async (filePath: string) => {
         return await ipcRenderer.invoke('getPath', filePath);
     },
 
-    removeAllListeners: (ListenerType) => {
+    removeAllListeners: (ListenerType: string) => {
         ipcRenderer.removeAllListeners(ListenerType);
     },
 
-    openNewPDF: (pdf) => {
+    openNewPDF: (pdf: string) => {
         ipcRenderer.send('openNewPDF', pdf);
     },
-    newWindow: (file) => {
+    newWindow: (file: string) => {
         ipcRenderer.send('newWindow', file);
     },
-    togglePrinting: (value) => {
+    togglePrinting: (value: boolean) => {
         ipcRenderer.send('togglePrinting', value);
     },
-    resizeWindow: (value) => {
+    resizeWindow: (value: string) => {
         ipcRenderer.send('resizeWindow', value);
     },
-    on: (eventName, callback) => {
+    on: (eventName: string, callback: any) => {
         ipcRenderer.on(eventName, callback);
     },
 });

@@ -1,0 +1,37 @@
+{
+    "appId": "io.github.lunarequest.NightPDF",
+    "productName": "NightPDF",
+    "fileAssociations": [
+        {
+            "ext": "pdf",
+            "icon": "build/icon.icns",
+            "role": "viewer",
+            "isPackage": false
+        }
+    ],
+    "linux": {
+        "desktop": {
+            "Name": "NightPdf",
+            "Comment": "Dark Mode PDF reader"
+        },
+        "publish": ["github"],
+        "target": ["AppImage", "deb", "rpm"],
+        "category": "Utilty"
+    },
+    "win": {
+        "publish": ["github"],
+        "target": ["nsis", "portable"],
+        "icon": "build/icon.ico"
+    },
+    "mac": {
+        "publish": ["github"],
+        "category": "public.app-category.productivity",
+        "target": ["dmg"],
+        "bundleVersion": "1",
+        "artifactName": "NightPDF-${version}.${ext}",
+        "darkModeSupport": true,
+        "hardenedRuntime": true,
+        "gatekeeperAssess": false,
+        "type": "distribution"
+    }
+}
