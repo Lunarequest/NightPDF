@@ -22,7 +22,7 @@
         "publish": ["github"],
         "target": ["nsis", "portable"],
         "icon": "build/icon.ico",
-        "artifactName": "NightPDF-${version}-${arch}.${ext}"
+        "artifactName": "NightPDF-${version}.${ext}"
     },
     "mac": {
         "publish": ["github"],
