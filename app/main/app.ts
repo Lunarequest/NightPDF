@@ -54,6 +54,7 @@ function createWindow(filename: string | null = null) {
         minWidth: 565,
         minHeight: 200,
         webPreferences: {
+            sandbox: true,
             preload: path.resolve(
                 path.join(__dirname, '../preload/preload.js')
             ),
@@ -84,9 +85,12 @@ function createWindow(filename: string | null = null) {
     // if the window url changes from the inital one,
     // block the change and use xdg-open to open it
     wc.on('will-navigate', function (e: Event, url: string) {
-        if (url != wc.getURL()) {
+        if (url !== wc.getURL()) {
             e.preventDefault();
-            shell.openExternal(url);
+            if (url.split('/')[0].indexOf('http') > -1){
+                shell.openExternal(url);
+            }
+            console.log('url is potentially insecure not going to open');
         }
     });
 
