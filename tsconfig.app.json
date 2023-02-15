@@ -5,9 +5,8 @@
         "lib": ["ES6", "DOM"]
     },
     "exclude": [
-        "app.ts",
-        "app/preload.ts",
-        "app/menutemplate.ts",
+        "app/preload",
+        "app/main",
         "libs",
         "out"
     ]

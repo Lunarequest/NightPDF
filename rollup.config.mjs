@@ -1,7 +1,7 @@
 import typescript from '@rollup/plugin-typescript';
 
-export default {
-    input: './app/index.ts',
+export default [{
+    input: './app/render/index.ts',
     output: {
         dir: './out',
         format: 'iife',
@@ -13,4 +13,5 @@ export default {
             target: 'ES6',
         }),
     ],
-};
+}
+];

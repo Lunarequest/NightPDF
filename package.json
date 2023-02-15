@@ -2,7 +2,7 @@
     "name": "nightpdf",
     "version": "1.0.0",
     "description": "Dark Mode for PDFs",
-    "main": "out/app.js",
+    "main": "out/main/app.js",
     "packageManager": "yarn@3.4.1",
     "repository": "https://github.com/Lunarequest/NightPDF",
     "homepage": "https://github.com/Lunarequest/NightPDF#readme",

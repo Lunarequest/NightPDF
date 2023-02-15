@@ -28,7 +28,7 @@ const {
     nativeTheme,
 } = require('electron');
 const path = require('path');
-import menutemplate from './app/menutemplate';
+import menutemplate from './menutemplate';
 import { autoUpdater } from 'electron-updater';
 let wins = [];
 let menuIsConfigured = false;
@@ -43,7 +43,7 @@ function getpath(filePath: string) {
     return path.parse(filePath).base;
 }
 
-function createWindow(filename = null) {
+function createWindow(filename: string | null = null) {
     //force dark theme irespective of os theme
     //useful for linux since we don't have a standardised way of detecting dark theme
     nativeTheme.themeSource = 'dark';
@@ -54,7 +54,7 @@ function createWindow(filename = null) {
         minWidth: 565,
         minHeight: 200,
         webPreferences: {
-            preload: path.resolve(path.join(__dirname, 'app/preload.js')),
+            preload: path.resolve(path.join(__dirname, '../preload/preload.js')),
         },
         resizable: true,
         titleBarStyle: 'default',
@@ -183,7 +183,7 @@ function createWindow(filename = null) {
     });
 }
 
-let fileToOpen: any = '';
+let fileToOpen: string = '';
 
 const args = process.argv;
 const argsLength = args.length;
@@ -191,7 +191,7 @@ if (argsLength > 1 && args[argsLength - 1].endsWith('.pdf')) {
     fileToOpen = args[argsLength - 1];
 }
 
-app.on('open-file', (e: Event, path: any) => {
+app.on('open-file', (e: Event, path: string) => {
     e.preventDefault();
     if (app.isReady()) {
         if (wins.length === 0) {

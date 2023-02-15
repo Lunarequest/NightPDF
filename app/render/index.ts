@@ -33,47 +33,43 @@ function _try(func: Function, fallbackValue: any) {
 declare global {
     interface Window {
         api: {
-            getPath: any;
-            getPDF: any;
-            removeAllListeners: any;
-            openNewPDF: any;
-            newWindow: any;
-            togglePrinting: any;
-            resizeWindow: any;
-            on: any;
+            getPath(arg0: string): Promise<string>;
+            removeAllListeners(arg0: string): null;
+            openNewPDF(arg0: null | string): null;
+            newWindow(arg0: string): null;
+            togglePrinting(arg0: Boolean): null;
+            resizeWindow(arg0: null | string): null;
+            on(arg0: string, arg1: any): null;
         };
     }
     interface HTMLElement {
-        noUiSlider: any;
-        width: any;
-        height: any;
-        getContext: any;
+        noUiSlider: any
     }
 }
 
 const nightPDF = (function () {
     console.log('loading');
-    let _pdfElement: any;
-    let _appContainerElement: any;
-    let _headerElement: any;
-    let _titleElement: any;
-    let _darkConfiguratorElement: any;
-    let _brightnessSliderElement: any;
-    let _grayscaleSliderElement: any;
-    let _invertSliderElement: any;
-    let _sepiaSliderElement: any;
-    let _hueSliderElement: any;
-    let _extraBrightnessSliderElement: any;
-    let _splashElement: any;
-    let _splashExtraElement: any;
-    let _defaultButton: any;
-    let _sepiaButton: any;
-    let _redeyeButton: any;
-    let _customButton: any;
+    let _pdfElement: HTMLIFrameElement;
+    let _appContainerElement: HTMLElement;
+    let _headerElement: HTMLElement;
+    let _titleElement: HTMLElement;
+    let _darkConfiguratorElement: HTMLElement;
+    let _brightnessSliderElement: HTMLElement;
+    let _grayscaleSliderElement: HTMLElement;
+    let _invertSliderElement: HTMLElement;
+    let _sepiaSliderElement: HTMLElement;
+    let _hueSliderElement: HTMLElement;
+    let _extraBrightnessSliderElement: HTMLElement;
+    let _splashElement: HTMLElement;
+    let _splashExtraElement: HTMLElement;
+    let _defaultButton: HTMLElement;
+    let _sepiaButton: HTMLElement;
+    let _redeyeButton: HTMLElement;
+    let _customButton: HTMLElement;
 
     function main() {
         _appContainerElement = document.getElementById('appContainer')!;
-        _pdfElement = document.getElementById('pdfjs')!;
+        _pdfElement = document.getElementById('pdfjs') as HTMLIFrameElement;
         _headerElement = document.getElementById('header')!;
         _titleElement = document.getElementById('title')!;
         _defaultButton = document.getElementById('default-button')!;
@@ -100,9 +96,10 @@ const nightPDF = (function () {
 
         window.api.removeAllListeners('file-print');
         window.api.on('file-print', (_e: Event, _msg: string) => {
-            _pdfElement.contentDocument
-                .getElementById('print')
-                .dispatchEvent(new Event('click'));
+            const print = _pdfElement.ownerDocument.getElementById('print');
+            if (print) {
+                print.dispatchEvent(new Event('click'));
+            }
         });
 
         // setup dom listeners
@@ -460,27 +457,32 @@ const nightPDF = (function () {
 
     const _setupDarkMode = () => {
         let style = document.createElement('style');
+        let content = _pdfElement.contentDocument;
         style.setAttribute('id', 'pageStyle');
         style.textContent = 'div#viewer .page {';
         style.textContent +=
             'filter: brightness(0.91) grayscale(0.95) invert(0.95) sepia(0.55) hue-rotate(180deg);';
         style.textContent += 'border-image: none;';
         style.textContent += '}';
-        _pdfElement.contentDocument.head.appendChild(style);
+        if (content) {
+            content.head.appendChild(style);
+        }
     };
 
     const _updateDarkSettings = (cssFilter: any) => {
-        const currentStyle =
-            _pdfElement.contentDocument.getElementById('pageStyle');
+        let content = _pdfElement.contentDocument;
+        if (content) {
+            const currentStyle = content.getElementById('pageStyle');
 
-        let cssRule;
-        cssRule = 'div#viewer .page {';
-        cssRule += cssFilter;
-        cssRule += 'border-image: none;';
-        cssRule += '}';
+            let cssRule;
+            cssRule = 'div#viewer .page {';
+            cssRule += cssFilter;
+            cssRule += 'border-image: none;';
+            cssRule += '}';
 
-        if (currentStyle) {
-            currentStyle.innerHTML = cssRule;
+            if (currentStyle) {
+                currentStyle.innerHTML = cssRule;
+            }
         }
     };
 
@@ -526,6 +528,7 @@ const nightPDF = (function () {
         } else {
             document.title = 'NightPDF';
         }
+
     };
 
     return {
