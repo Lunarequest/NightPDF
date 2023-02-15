@@ -1,6 +1,6 @@
 {
     "name": "nightpdf",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Dark Mode for PDFs",
     "main": "out/main/app.js",
     "packageManager": "yarn@3.4.1",
@@ -12,7 +12,7 @@
     },
     "scripts": {
         "typecheck": "tsc --noEmit",
-        "build": "rimraf out && tsc && rollup -c rollup.config.mjs",
+        "build": "rimraf out && rollup -c rollup.config.mjs",
         "pack": "electron-builder --dir",
         "dev": "yarn build && electron .",
         "dist": "yarn build && electron-builder",
@@ -26,6 +26,8 @@
     },
     "license": "GPL-2.0-only",
     "devDependencies": {
+        "@rollup/plugin-commonjs": "^24.0.1",
+        "@rollup/plugin-node-resolve": "^15.0.1",
         "@rollup/plugin-typescript": "^11.0.0",
         "electron": "^23.0.0",
         "electron-builder": "^23.6.0",

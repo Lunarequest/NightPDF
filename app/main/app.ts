@@ -28,8 +28,8 @@ const {
     nativeTheme,
 } = require('electron');
 const path = require('path');
-import menutemplate from './menutemplate';
-import { autoUpdater } from 'electron-updater';
+import type { MenuItemConstructorOptions } from 'electron';
+const { autoUpdater } = require('electron-updater');
 let wins = [];
 let menuIsConfigured = false;
 
@@ -87,7 +87,7 @@ function createWindow(filename: string | null = null) {
     wc.on('will-navigate', function (e: Event, url: string) {
         if (url !== wc.getURL()) {
             e.preventDefault();
-            if (url.split('/')[0].indexOf('http') > -1){
+            if (url.split('/')[0].indexOf('http') > -1) {
                 shell.openExternal(url);
             }
             console.log('url is potentially insecure not going to open');
@@ -112,7 +112,7 @@ function createWindow(filename: string | null = null) {
     });
 
     if (!menuIsConfigured) {
-        let template = menutemplate.createMenu();
+        let template = createMenu();
         const menu = Menu.buildFromTemplate(template);
 
         menu.getMenuItemById('file-open')!.click = () => {
@@ -231,3 +231,76 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
+function createMenu() {
+    const menuTemplate: MenuItemConstructorOptions[] = [];
+    menuTemplate.push(
+        // { role: 'fileMenu' }
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'Open...',
+                    id: 'file-open',
+                    accelerator: 'CmdOrCtrl+O',
+                },
+                {
+                    label: 'Print',
+                    id: 'file-print',
+                    accelerator: 'CmdOrCtrl+P',
+                    enabled: false,
+                },
+            ],
+        },
+        // { role: 'editMenu' }
+        {
+            label: 'Edit',
+            submenu: [
+                { role: 'undo' },
+                { role: 'redo' },
+                { type: 'separator' },
+                { role: 'cut' },
+                { role: 'copy' },
+                { role: 'paste' },
+            ],
+        },
+        // { role: 'viewMenu' }
+        {
+            label: 'View',
+            submenu: [
+                { role: 'resetZoom' },
+                { role: 'zoomIn' },
+                { role: 'zoomOut' },
+                { type: 'separator' },
+                { role: 'togglefullscreen' },
+            ],
+        },
+        // { role: 'windowMenu' }
+        {
+            label: 'Window',
+            submenu: [{ role: 'minimize' }],
+        },
+        {
+            role: 'help',
+            submenu: [
+                {
+                    label: 'Learn More',
+                    click: async () => {
+                        await shell.openExternal(
+                            'https://github.com/Lunarequest/NightPDF#readme'
+                        );
+                    },
+                },
+                {
+                    label: 'License',
+                    click: async () => {
+                        await shell.openExternal(
+                            'https://github.com/Lunarequest/NightPDF/blob/mistress/LICENSE'
+                        );
+                    },
+                },
+            ],
+        }
+    );
+    return menuTemplate;
+}
