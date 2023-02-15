@@ -43,7 +43,7 @@ declare global {
         };
     }
     interface HTMLElement {
-        noUiSlider: any
+        noUiSlider: any;
     }
 }
 
@@ -528,7 +528,6 @@ const nightPDF = (function () {
         } else {
             document.title = 'NightPDF';
         }
-
     };
 
     return {

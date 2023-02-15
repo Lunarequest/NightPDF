@@ -4,10 +4,5 @@
         "module": "ES6",
         "lib": ["ES6", "DOM"]
     },
-    "exclude": [
-        "app/preload",
-        "app/main",
-        "libs",
-        "out"
-    ]
+    "exclude": ["app/preload", "app/main", "libs", "out"]
 }
