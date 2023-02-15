@@ -20,15 +20,16 @@
     },
     "win": {
         "publish": ["github"],
-        "target": ["nsis", "portable"],
-        "icon": "build/icon.ico"
+        "target": ["nsis"],
+        "icon": "build/icon.ico",
+        "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "mac": {
         "publish": ["github"],
         "category": "public.app-category.productivity",
         "target": ["dmg"],
         "bundleVersion": "1",
-        "artifactName": "NightPDF-${version}.${ext}",
+        "artifactName": "${productName}-${version}.${ext}",
         "darkModeSupport": true,
         "hardenedRuntime": true,
         "gatekeeperAssess": false,
