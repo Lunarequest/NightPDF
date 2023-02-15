@@ -1,47 +1,50 @@
 {
-    "name": "nightpdf",
-    "version": "1.0.2",
-    "description": "Dark Mode for PDFs",
-    "main": "out/main/app.js",
-    "packageManager": "yarn@3.4.1",
-    "repository": "https://github.com/Lunarequest/NightPDF",
-    "homepage": "https://github.com/Lunarequest/NightPDF#readme",
-    "bugs": {
-        "url": "https://github.com/Lunarequest/NightPDF/issues",
-        "email": "nullrequest@vivaldi.net"
-    },
-    "scripts": {
-        "typecheck": "tsc --noEmit",
-        "build": "rimraf out && rollup -c rollup.config.mjs",
-        "pack": "electron-builder --dir",
-        "dev": "yarn build && electron .",
-        "dist": "yarn build && electron-builder",
-        "dist-win": "yarn build && electron-builder --win",
-        "lint": "eslint",
-        "prettier": "prettier --config .prettierrc --write ."
-    },
-    "author": {
-        "name": "Nullrequest",
-        "email": "nullrequest@vivaldi.net"
-    },
-    "license": "GPL-2.0-only",
-    "devDependencies": {
-        "@rollup/plugin-commonjs": "^24.0.1",
-        "@rollup/plugin-node-resolve": "^15.0.1",
-        "@rollup/plugin-typescript": "^11.0.0",
-        "electron": "^23.0.0",
-        "electron-builder": "^23.6.0",
-        "eslint": "^8.34.0",
-        "eslint-config-prettier": "^8.6.0",
-        "eslint-plugin-prettier": "^4.2.1",
-        "prettier": "^2.8.4",
-        "rimraf": "^4.1.2",
-        "rollup": "^3.15.0",
-        "rollup-plugin-uglify": "^6.0.4",
-        "typescript": "^4.9.5"
-    },
-    "dependencies": {
-        "electron-updater": "^5.3.0",
-        "nouislider": "^15.7.0"
-    }
+	"name": "nightpdf",
+	"version": "1.0.2",
+	"description": "Dark Mode for PDFs",
+	"main": "out/main/app.js",
+	"packageManager": "yarn@3.4.1",
+	"repository": "https://github.com/Lunarequest/NightPDF",
+	"homepage": "https://github.com/Lunarequest/NightPDF#readme",
+	"bugs": {
+		"url": "https://github.com/Lunarequest/NightPDF/issues",
+		"email": "nullrequest@vivaldi.net"
+	},
+	"scripts": {
+		"typecheck": "tsc --noEmit",
+		"build": "rimraf out && rollup -c rollup.config.mjs",
+		"pack": "electron-builder --dir",
+		"dev": "yarn build && electron .",
+		"dist": "yarn build && electron-builder",
+		"dist-win": "yarn build && electron-builder --win",
+		"lint": "eslint",
+		"prettier": "prettier --config .prettierrc --write .",
+		"prepare": "husky install"
+	},
+	"author": {
+		"name": "Nullrequest",
+		"email": "nullrequest@vivaldi.net"
+	},
+	"license": "GPL-2.0-only",
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^24.0.1",
+		"@rollup/plugin-node-resolve": "^15.0.1",
+		"@rollup/plugin-typescript": "^11.0.0",
+		"electron": "latest",
+		"electron-builder": "^23.6.0",
+		"eslint": "^8.34.0",
+		"eslint-config-prettier": "^8.6.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"husky": "^8.0.0",
+		"prettier": "latest",
+		"pretty-quick": "^3.1.3",
+		"rimraf": "^4.1.2",
+		"rollup": "^3.15.0",
+		"rollup-plugin-uglify": "^6.0.4",
+		"typescript": "latest"
+	},
+	"dependencies": {
+		"electron-updater": "^5.3.0",
+		"nouislider": "^15.7.0"
+	}
 }

@@ -18,59 +18,59 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>NightPDF</title>
-        <link href="css/index.css" rel="stylesheet" />
-        <link
-            href="../node_modules/nouislider/dist/nouislider.css"
-            rel="stylesheet"
-        />
-        <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
-        <meta
-            http-equiv="Content-Security-Policy"
-            content="script-src 'self';"
-        />
-    </head>
+	<head>
+		<meta charset="UTF-8" />
+		<title>NightPDF</title>
+		<link href="css/index.css" rel="stylesheet" />
+		<link
+			href="../node_modules/nouislider/dist/nouislider.css"
+			rel="stylesheet"
+		/>
+		<!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="script-src 'self';"
+		/>
+	</head>
 
-    <body>
-        <div id="header">
-            <span id="title"> </span>
-            <div id="menu">
-                <div id="default-button" class="button active">Default</div>
-                <div id="sepia-button" class="button">Sepia</div>
-                <div id="redeye-button" class="button">Redeye</div>
-                <div id="custom-button" class="button">Custom</div>
-            </div>
-        </div>
-        <div id="darkConfigurator">
-            <h3>Settings</h3>
-            <div id="slides">
-                <label>Darkness</label>
-                <div id="brightnessSlider"></div>
-                <label>Grayscale</label>
-                <div id="grayscaleSlider"></div>
-                <label>Inversion</label>
-                <div id="invertSlider"></div>
-                <label>Sepia</label>
-                <div id="sepiaSlider"></div>
-                <label>Hue</label>
-                <div id="hueSlider"></div>
-                <label>Brightness</label>
-                <div id="extraBrightnessSlider"></div>
-            </div>
-        </div>
-        <div id="appContainer">
-            <iframe id="pdfjs"></iframe>
-        </div>
-        <div id="splash">
-            <img src="assets/icon2.png" width="100px" />
-            <h3>Drop PDF here</h3>
-        </div>
-        <div id="splash-extra">
-            <h3 id="prompt">Open File with CTRL+O</h3>
-        </div>
-        <script src="../node_modules/nouislider/dist/nouislider.js"></script>
-        <script src="../out/index/index.js"></script>
-    </body>
+	<body>
+		<div id="header">
+			<span id="title"> </span>
+			<div id="menu">
+				<div id="default-button" class="button active">Default</div>
+				<div id="sepia-button" class="button">Sepia</div>
+				<div id="redeye-button" class="button">Redeye</div>
+				<div id="custom-button" class="button">Custom</div>
+			</div>
+		</div>
+		<div id="darkConfigurator">
+			<h3>Settings</h3>
+			<div id="slides">
+				<label>Darkness</label>
+				<div id="brightnessSlider"></div>
+				<label>Grayscale</label>
+				<div id="grayscaleSlider"></div>
+				<label>Inversion</label>
+				<div id="invertSlider"></div>
+				<label>Sepia</label>
+				<div id="sepiaSlider"></div>
+				<label>Hue</label>
+				<div id="hueSlider"></div>
+				<label>Brightness</label>
+				<div id="extraBrightnessSlider"></div>
+			</div>
+		</div>
+		<div id="appContainer">
+			<iframe id="pdfjs"></iframe>
+		</div>
+		<div id="splash">
+			<img src="assets/icon2.png" width="100px" />
+			<h3>Drop PDF here</h3>
+		</div>
+		<div id="splash-extra">
+			<h3 id="prompt">Open File with CTRL+O</h3>
+		</div>
+		<script src="../node_modules/nouislider/dist/nouislider.js"></script>
+		<script src="../out/index/index.js"></script>
+	</body>
 </html>
