@@ -1,13 +1,14 @@
 import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
+import { uglify } from 'rollup-plugin-uglify';
 
 export default [
     {
-        input: 'app/main/app.ts',
+        input: ['app/main/menutemplate.ts', 'app/main/app.ts'],
         output: [
             {
-                file: './out/main/app.js',
+                dir: './out/main/',
                 format: 'cjs',
             },
         ],
@@ -17,6 +18,7 @@ export default [
             commonjs({
                 include: './node_modules/**',
             }),
+            uglify(),
         ],
     },
     {
@@ -32,6 +34,7 @@ export default [
             typescript({
                 tsconfig: './tsconfig.preload.json',
             }),
+            uglify(),
         ],
     },
     {
@@ -46,7 +49,7 @@ export default [
                 tsconfig: './tsconfig.app.json',
                 target: 'ES6',
             }),
-
+            uglify(),
         ],
     },
 ];

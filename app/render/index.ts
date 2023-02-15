@@ -520,14 +520,15 @@ const nightPDF = (function () {
     };
 
     const _updateTitle = async (filePath: string) => {
-        let fileName = await window.api.getPath(filePath);
-        console.log(fileName);
-        if (fileName) {
-            _titleElement.innerHTML = fileName;
-            document.title = fileName;
-        } else {
-            document.title = 'NightPDF';
-        }
+        window.api.getPath(filePath).then((fileName) => {
+            console.log(fileName);
+            if (fileName) {
+                _titleElement.innerHTML = fileName;
+                document.title = fileName;
+            } else {
+                document.title = 'NightPDF';
+            }
+        });
     };
 
     return {
