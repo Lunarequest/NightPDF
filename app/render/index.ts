@@ -16,12 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-/* eslint-disable no-undef */
-/* eslint no-unused-vars: [ "error", { "argsIgnorePattern": "^_" } ] */
 /*eslint-env browser*/
 import * as noUiSlider from "nouislider";
 
-function _try(func: Function, fallbackValue: any) {
+function _try(func: Function, fallbackValue: number) {
 	try {
 		let value = func();
 		return value === null || value === undefined ? fallbackValue : value;
@@ -39,11 +37,14 @@ declare global {
 			newWindow(arg0: string): null;
 			togglePrinting(arg0: Boolean): null;
 			resizeWindow(arg0: null | string): null;
-			on(arg0: string, arg1: any): null;
+			on(arg0: string, arg1: Function): null;
 		};
 	}
 	interface HTMLElement {
 		noUiSlider: any;
+	}
+	interface File {
+		path: string;
 	}
 }
 
@@ -190,7 +191,7 @@ const nightPDF = (function () {
 			}
 		});
 
-		_splashElement.ondrop = (e: any) => {
+		_splashElement.ondrop = (e: DragEvent) => {
 			console.log("files dropped");
 			e.preventDefault();
 			e.stopPropagation();
@@ -202,7 +203,9 @@ const nightPDF = (function () {
 			}
 
 			const fileToOpen = files[0];
-			_openFile(fileToOpen.path);
+			if (fileToOpen) {
+				_openFile(fileToOpen.path);
+			}
 		};
 		_splashElement.ondragover = (e: Event) => {
 			console.log("file dragged");
@@ -251,7 +254,7 @@ const nightPDF = (function () {
 		_setupSliders();
 	};
 
-	const _handlePresetChange = (preset: any) => {
+	const _handlePresetChange = (preset: string) => {
 		const brightness = _brightnessSliderElement.noUiSlider;
 		const grayness = _grayscaleSliderElement.noUiSlider;
 		const inversion = _invertSliderElement.noUiSlider;
@@ -469,7 +472,7 @@ const nightPDF = (function () {
 		}
 	};
 
-	const _updateDarkSettings = (cssFilter: any) => {
+	const _updateDarkSettings = (cssFilter: string) => {
 		let content = _pdfElement.contentDocument;
 		if (content) {
 			const currentStyle = content.getElementById("pageStyle");

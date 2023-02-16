@@ -2,6 +2,8 @@ import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
 import { uglify } from "rollup-plugin-uglify";
+import { rollupPluginHTML as html } from "@web/rollup-plugin-html";
+import copy from "rollup-plugin-copy";
 
 export default [
 	{
@@ -50,6 +52,18 @@ export default [
 				target: "ES6",
 			}),
 			uglify(),
+		],
+	},
+	{
+		input: "app/index.html",
+		output: {
+			dir: "out",
+		},
+		plugins: [
+			html(),
+			copy({
+				targets: [{ src: "app/libs/*", dest: "out/libs" }],
+			}),
 		],
 	},
 ];

@@ -28,7 +28,10 @@ const {
 	nativeTheme,
 } = require("electron");
 const path = require("path");
-import type { MenuItemConstructorOptions } from "electron";
+import type {
+	MenuItemConstructorOptions,
+	OpenDialogReturnValue,
+} from "electron";
 const { autoUpdater } = require("electron-updater");
 let wins = [];
 let menuIsConfigured = false;
@@ -77,7 +80,7 @@ function createWindow(filename: string | null = null) {
 
 	// and load the index.html of the app.
 
-	win.loadFile("app/index.html");
+	win.loadFile(path.join(__dirname, "../index.html"));
 	if (DEBUG) {
 		win.webContents.openDevTools();
 	}
@@ -136,7 +139,7 @@ function createWindow(filename: string | null = null) {
 				properties: ["openFile"],
 				filters: [{ name: "PDF Files", extensions: ["pdf"] }],
 			})
-			.then((dialogReturn: any) => {
+			.then((dialogReturn: OpenDialogReturnValue) => {
 				const filename = dialogReturn["filePaths"][0];
 				if (filename) {
 					if (wins.length === 0) {
@@ -170,7 +173,7 @@ function createWindow(filename: string | null = null) {
 	});
 
 	ipcMain.removeAllListeners("resizeWindow");
-	ipcMain.once("resizeWindow", (_e: Event, _msg: any) => {
+	ipcMain.once("resizeWindow", (_e: Event, _msg: string) => {
 		const { width, height } = win.getBounds();
 		if (width < 1000 || height < 650) {
 			win.setResizable(true);
