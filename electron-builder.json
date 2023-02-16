@@ -1,6 +1,7 @@
 {
 	"appId": "io.github.lunarequest.NightPDF",
 	"productName": "NightPDF",
+	"files": ["**/*", "!app${/*}", "!build${/*}", "!docs${/*}", "!*.{md,json}"],
 	"fileAssociations": [
 		{
 			"ext": "pdf",

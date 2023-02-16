@@ -1,8 +1,7 @@
 import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import typescript from "@rollup/plugin-typescript";
-import { uglify } from "rollup-plugin-uglify";
 import { rollupPluginHTML as html } from "@web/rollup-plugin-html";
+import { swc, defineRollupSwcOption } from "rollup-plugin-swc3";
 import copy from "rollup-plugin-copy";
 
 export default [
@@ -12,15 +11,19 @@ export default [
 			{
 				dir: "./out/main/",
 				format: "cjs",
+				minifyInternalExports: true,
 			},
 		],
 		plugins: [
 			nodeResolve(),
-			typescript(),
+			swc(
+				defineRollupSwcOption({
+					minify: true,
+				}),
+			),
 			commonjs({
 				include: "./node_modules/**",
 			}),
-			uglify(),
 		],
 	},
 	{
@@ -29,14 +32,17 @@ export default [
 			{
 				file: "./out/preload/preload.js",
 				format: "cjs",
+				minifyInternalExports: true,
 			},
 		],
 		plugins: [
 			nodeResolve(),
-			typescript({
-				tsconfig: "./tsconfig.preload.json",
-			}),
-			uglify(),
+			swc(
+				defineRollupSwcOption({
+					tsconfig: "./tsconfig.preload.json",
+					minify: true,
+				}),
+			),
 		],
 	},
 	{
@@ -44,25 +50,31 @@ export default [
 		output: {
 			file: "./out/index/index.js",
 			format: "iife",
+			minifyInternalExports: true,
 		},
 		external: ["nouislider"],
 		plugins: [
-			typescript({
-				tsconfig: "./tsconfig.app.json",
-				target: "ES6",
-			}),
-			uglify(),
+			swc(
+				defineRollupSwcOption({
+					tsconfig: "./tsconfig.app.json",
+					minify: true,
+				}),
+			),
 		],
 	},
 	{
 		input: "app/index.html",
 		output: {
 			dir: "out",
+			minifyInternalExports: true,
 		},
 		plugins: [
 			html(),
 			copy({
-				targets: [{ src: "app/libs/*", dest: "out/libs" }],
+				targets: [
+					{ src: "app/libs/*", dest: "out/libs" },
+					{ src: "app/css/gradient3.svg", dest: "out/assets" },
+				],
 			}),
 		],
 	},
