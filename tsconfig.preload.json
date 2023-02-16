@@ -1,7 +1,0 @@
-{
-	"extends": "./tsconfig.json",
-	"compilerOptions": {
-		"outDir": "./out"
-	},
-	"exclude": ["app/render", "app/main", "libs", "out"]
-}

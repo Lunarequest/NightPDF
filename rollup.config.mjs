@@ -32,7 +32,7 @@ export default [
 		plugins: [
 			swc(
 				defineRollupSwcOption({
-					tsconfig: "./tsconfig.preload.json",
+					outputPath: "out",
 					minify: true,
 				}),
 			),
@@ -49,7 +49,9 @@ export default [
 		plugins: [
 			swc(
 				defineRollupSwcOption({
-					tsconfig: "./tsconfig.app.json",
+					module: {
+						type: "es6",
+					},
 					minify: true,
 				}),
 			),
