@@ -1,5 +1,3 @@
-import commonjs from "@rollup/plugin-commonjs";
-import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { rollupPluginHTML as html } from "@web/rollup-plugin-html";
 import { swc, defineRollupSwcOption } from "rollup-plugin-swc3";
 import copy from "rollup-plugin-copy";
@@ -15,15 +13,11 @@ export default [
 			},
 		],
 		plugins: [
-			nodeResolve(),
 			swc(
 				defineRollupSwcOption({
 					minify: true,
 				}),
 			),
-			commonjs({
-				include: "./node_modules/**",
-			}),
 		],
 	},
 	{
@@ -36,7 +30,6 @@ export default [
 			},
 		],
 		plugins: [
-			nodeResolve(),
 			swc(
 				defineRollupSwcOption({
 					tsconfig: "./tsconfig.preload.json",
