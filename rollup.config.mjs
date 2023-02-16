@@ -44,6 +44,9 @@ export default [
 			file: "./out/index/index.js",
 			format: "iife",
 			minifyInternalExports: true,
+			globals: {
+				nouislider: "noUiSlider",
+			},
 		},
 		external: ["nouislider"],
 		plugins: [
