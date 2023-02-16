@@ -1662,16 +1662,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:latest":
-  version: 23.0.0
-  resolution: "electron@npm:23.0.0"
+"electron@npm:^23.1.0":
+  version: 23.1.0
+  resolution: "electron@npm:23.1.0"
   dependencies:
     "@electron/get": ^2.0.0
     "@types/node": ^16.11.26
     extract-zip: ^2.0.1
   bin:
     electron: cli.js
-  checksum: 3452f034a9804b5041bd3bb57707f49b782a1bc3deebd3a75290afff04313c223a56abd6177c8b2b847a7c636f30191a77772172841caa9f2b6c26bc2182951f
+  checksum: 57c013a6dc15847a1661197f3a84774dfcbc6b3a5c3f92a4da4bbebe42b8a37eb7891d814315ae61ef28403ae4299e79a21a01a7936e8277cfcc3da9f4282af1
   languageName: node
   linkType: hard
 
@@ -2495,7 +2495,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"husky@npm:^8.0.0":
+"husky@npm:^8.0.3":
   version: 8.0.3
   resolution: "husky@npm:8.0.3"
   bin:
@@ -3237,15 +3237,15 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.52.0
     "@typescript-eslint/parser": ^5.52.0
     "@web/rollup-plugin-html": ^1.11.0
-    electron: latest
+    electron: ^23.1.0
     electron-builder: ^23.6.0
     electron-updater: ^5.3.0
     eslint: ^8.34.0
     eslint-config-prettier: ^8.6.0
     eslint-plugin-prettier: ^4.2.1
-    husky: ^8.0.0
+    husky: ^8.0.3
     nouislider: ^15.7.0
-    prettier: latest
+    prettier: ^2.8.4
     pretty-quick: ^3.1.3
     rimraf: ^4.1.2
     rollup: ^3.15.0
@@ -3549,7 +3549,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:latest":
+"prettier@npm:^2.8.4":
   version: 2.8.4
   resolution: "prettier@npm:2.8.4"
   bin:
