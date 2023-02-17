@@ -1,8 +1,8 @@
 import type { MenuItemConstructorOptions } from "electron";
-const { shell } = require("electron");
+import { shell } from "electron";
 
 function createMenu() {
-	const menuTemplate: MenuItemConstructorOptions[] = [];
+	let menuTemplate: MenuItemConstructorOptions[] = [];
 	menuTemplate.push(
 		// { role: 'fileMenu' }
 		{

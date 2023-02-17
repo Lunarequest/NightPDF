@@ -17,8 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 /* eslint no-unused-vars: [ "error", { "argsIgnorePattern": "^_" } ] */
-"use strict";
-const {
+import {
 	app,
 	BrowserWindow,
 	Menu,
@@ -26,13 +25,13 @@ const {
 	ipcMain,
 	shell,
 	nativeTheme,
-} = require("electron");
-const path = require("path");
+} from "electron";
+import * as path from "path";
 import type {
 	MenuItemConstructorOptions,
 	OpenDialogReturnValue,
 } from "electron";
-const { autoUpdater } = require("electron-updater");
+import { autoUpdater } from "electron-updater";
 let wins = [];
 let menuIsConfigured = false;
 

@@ -13,10 +13,8 @@
 	"scripts": {
 		"typecheck": "tsc --noEmit",
 		"build": "rimraf out && rollup -c rollup.config.mjs",
-		"pack": "electron-builder --dir",
 		"dev": "yarn build && electron .",
-		"dist": "yarn build && electron-builder",
-		"dist-win": "yarn build && electron-builder --win",
+		"dist": "yarn build && electron-builder --config electron-builder.js",
 		"lint": "eslint",
 		"prettier": "prettier --config .prettierrc --write .",
 		"prepare": "husky install"
