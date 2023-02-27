@@ -4,41 +4,6 @@ import copy from "rollup-plugin-copy";
 
 export default [
 	{
-		input: ["app/main/menutemplate.ts", "app/main/app.ts"],
-		output: [
-			{
-				dir: "./out/main/",
-				format: "cjs",
-				minifyInternalExports: true,
-			},
-		],
-		plugins: [
-			swc(
-				defineRollupSwcOption({
-					minify: true,
-				}),
-			),
-		],
-	},
-	{
-		input: "app/preload/preload.ts",
-		output: [
-			{
-				file: "./out/preload/preload.js",
-				format: "cjs",
-				minifyInternalExports: true,
-			},
-		],
-		plugins: [
-			swc(
-				defineRollupSwcOption({
-					outputPath: "out",
-					minify: true,
-				}),
-			),
-		],
-	},
-	{
 		input: "./app/render/index.ts",
 		output: {
 			file: "./out/index/index.js",

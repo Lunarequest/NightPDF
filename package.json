@@ -11,9 +11,8 @@
 		"email": "nullrequest@vivaldi.net"
 	},
 	"scripts": {
-		"typecheck": "tsc --noEmit",
 		"build": "rimraf out && rollup -c rollup.config.mjs",
-		"dev": "yarn build && electron .",
+		"dev": "yarn build",
 		"dist": "yarn build && electron-builder --config electron-builder.js",
 		"lint": "eslint",
 		"prettier": "prettier --config .prettierrc --write .",
@@ -29,8 +28,6 @@
 		"@typescript-eslint/eslint-plugin": "^5.52.0",
 		"@typescript-eslint/parser": "^5.52.0",
 		"@web/rollup-plugin-html": "^1.11.0",
-		"electron": "^23.1.0",
-		"electron-builder": "^23.6.0",
 		"eslint": "^8.34.0",
 		"eslint-config-prettier": "^8.6.0",
 		"eslint-plugin-prettier": "^4.2.1",
@@ -43,7 +40,7 @@
 		"rollup-plugin-swc3": "^0.8.0"
 	},
 	"dependencies": {
-		"electron-updater": "^5.3.0",
+		"@tauri-apps/api": "^1.2.0",
 		"nouislider": "^15.7.0"
 	}
 }

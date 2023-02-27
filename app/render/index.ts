@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 /*eslint-env browser*/
 import * as noUiSlider from "nouislider";
+import { emit, listen } from "@tauri-apps/api/event";
 
 function _try(func: Function, fallbackValue: number) {
 	try {
@@ -29,17 +30,6 @@ function _try(func: Function, fallbackValue: number) {
 }
 
 declare global {
-	interface Window {
-		api: {
-			getPath(arg0: string): Promise<string>;
-			removeAllListeners(arg0: string): null;
-			openNewPDF(arg0: null | string): null;
-			newWindow(arg0: string): null;
-			togglePrinting(arg0: Boolean): null;
-			resizeWindow(arg0: null | string): null;
-			on(arg0: string, arg1: Function): null;
-		};
-	}
 	interface HTMLElement {
 		noUiSlider: any;
 	}
@@ -48,7 +38,7 @@ declare global {
 	}
 }
 
-const nightPDF = (function () {
+const nightPDF = (async function () {
 	console.log("loading");
 	let _pdfElement: HTMLIFrameElement;
 	let _appContainerElement: HTMLElement;
@@ -68,7 +58,7 @@ const nightPDF = (function () {
 	let _redeyeButton: HTMLElement;
 	let _customButton: HTMLElement;
 
-	function main() {
+	async function main() {
 		_appContainerElement = document.getElementById("appContainer")!;
 		_pdfElement = document.getElementById("pdfjs") as HTMLIFrameElement;
 		_headerElement = document.getElementById("header")!;
@@ -90,13 +80,11 @@ const nightPDF = (function () {
 		_splashExtraElement = document.getElementById("splash-extra")!;
 
 		//setup electron listeners
-		window.api.removeAllListeners("file-open");
-		window.api.on("file-open", (_e: Event, msg: string) => {
-			_openFile(msg);
+		const file_open = await listen<string>("file-open", (event) => {
+			_openFile(event.payload);
 		});
 
-		window.api.removeAllListeners("file-print");
-		window.api.on("file-print", (_e: Event, _msg: string) => {
+		const file_print = await listen("file-print", (_event) => {
 			const print = _pdfElement.ownerDocument.getElementById("print");
 			if (print) {
 				print.dispatchEvent(new Event("click"));
@@ -174,12 +162,12 @@ const nightPDF = (function () {
 			true,
 		);
 
-		_splashElement.addEventListener("click", (_e: Event) => {
-			window.api.openNewPDF(null);
+		_splashElement.addEventListener("click", async (_e: Event) => {
+			await emit("openNewPDF", { path: null });
 		});
 
-		_splashExtraElement.addEventListener("click", (_e: Event) => {
-			window.api.openNewPDF(null);
+		_splashExtraElement.addEventListener("click", async (_e: Event) => {
+			await emit("openNewPDF", { path: null });
 		});
 
 		window.addEventListener("blur", function () {
