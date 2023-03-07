@@ -52,6 +52,8 @@ jobs:
             - name: Package application
               id: packageing
               run: yarn dist --x64 --arm64
+              env:
+                  DEBUG: "1"
               if: ${{ matrix.os != 'macos-12' && startsWith(github.ref,
                   'refs/tags/') }}
 
