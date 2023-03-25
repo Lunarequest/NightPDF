@@ -5,6 +5,7 @@ import copy from "rollup-plugin-copy";
 export default [
 	{
 		input: ["app/main/menutemplate.ts", "app/main/app.ts"],
+		external: ["electron", "path", "electron-updater"],
 		output: [
 			{
 				dir: "./out/main/",
@@ -22,6 +23,7 @@ export default [
 	},
 	{
 		input: "app/preload/preload.ts",
+		external: ["electron"],
 		output: [
 			{
 				file: "./out/preload/preload.js",
