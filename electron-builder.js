@@ -1,7 +1,19 @@
-let config = {
+const config = {
 	appId: "io.github.lunarequest.NightPDF",
 	productName: "NightPDF",
-	files: ["**/*", "!app${/*}", "!build${/*}", "!docs${/*}", "!*.{md,json}"],
+	files: [
+		"**/*",
+		"!*.{ts}",
+		"!app${/*}",
+		"!build${/*}",
+		"!docs${/*}",
+		"!*.{md,json}",
+		"!.husky",
+		"!.vscode",
+		"!.github",
+		"!.eslint*",
+		"!.prettier*",
+	],
 	fileAssociations: [
 		{
 			ext: "pdf",

@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 /* eslint no-unused-vars: [ "error", { "argsIgnorePattern": "^_" } ] */
-import {
+const {
 	app,
 	BrowserWindow,
 	Menu,
@@ -25,13 +25,13 @@ import {
 	ipcMain,
 	shell,
 	nativeTheme,
-} from "electron";
-import * as path from "path";
+} = require("electron");
+const path = require("path");
 import type {
 	MenuItemConstructorOptions,
 	OpenDialogReturnValue,
 } from "electron";
-import { autoUpdater } from "electron-updater";
+const { autoUpdater } = require("electron-updater");
 let wins = [];
 let menuIsConfigured = false;
 
@@ -50,7 +50,7 @@ function createWindow(filename: string | null = null) {
 	//useful for linux since we don't have a standardised way of detecting dark theme
 	nativeTheme.themeSource = "dark";
 	// Create the browser window.
-	let win = new BrowserWindow({
+	const win = new BrowserWindow({
 		width: 550,
 		height: 420,
 		minWidth: 565,
@@ -83,7 +83,7 @@ function createWindow(filename: string | null = null) {
 	if (DEBUG) {
 		win.webContents.openDevTools();
 	}
-	let wc = win.webContents;
+	const wc = win.webContents;
 	// if the window url changes from the inital one,
 	// block the change and use xdg-open to open it
 	wc.on("will-navigate", function (e: Event, url: string) {
@@ -114,7 +114,7 @@ function createWindow(filename: string | null = null) {
 	});
 
 	if (!menuIsConfigured) {
-		let template = createMenu();
+		const template = createMenu();
 		const menu = Menu.buildFromTemplate(template);
 
 		menu.getMenuItemById("file-open")!.click = () => {

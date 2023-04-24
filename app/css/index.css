@@ -22,7 +22,7 @@ body {
 	font-family: Helvetica;
 	font-size: 18px;
 	text-align: center;
-	background-image: url("gradient3.svg");
+	background-image: url("../assets/gradient3.svg");
 	border-radius: 4px;
 	padding-bottom: 32px;
 	padding-top: 32px;

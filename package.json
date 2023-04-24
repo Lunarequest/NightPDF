@@ -1,6 +1,6 @@
 {
 	"name": "nightpdf",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"description": "Dark Mode for PDFs",
 	"main": "out/main/app.js",
 	"packageManager": "yarn@3.4.1",
@@ -12,9 +12,9 @@
 	},
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "rimraf out && rollup -c rollup.config.mjs",
+		"build": "rimraf out && gulp",
 		"dev": "yarn build && electron .",
-		"dist": "yarn build && electron-builder --config electron-builder.js",
+		"dist": "NODE_ENV='production' yarn build && NODE_ENV='production' electron-builder --config electron-builder.js",
 		"lint": "eslint",
 		"prettier": "prettier --config .prettierrc --write .",
 		"prepare": "husky install"
@@ -25,25 +25,29 @@
 	},
 	"license": "GPL-2.0-only",
 	"devDependencies": {
-		"@swc/core": "^1.3.49",
 		"@typescript-eslint/eslint-plugin": "^5.58.0",
 		"@typescript-eslint/parser": "^5.58.0",
-		"@web/rollup-plugin-html": "^1.11.1",
+		"autoprefixer": "^10.4.14",
+		"cssnano": "^6.0.0",
 		"electron": "^24.1.1",
 		"electron-builder": "^23.6.0",
+		"esbuild": "^0.17.18",
 		"eslint": "^8.38.0",
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-prettier": "^4.2.1",
+		"gulp": "^4.0.2",
+		"gulp-concat": "^2.6.1",
+		"gulp-esbuild": "^0.11.1",
+		"gulp-postcss": "^9.0.1",
 		"husky": "^8.0.3",
+		"postcss": "^8.4.23",
 		"prettier": "^2.8.7",
 		"pretty-quick": "^3.1.3",
-		"rimraf": "^5.0.0",
-		"rollup": "^3.20.2",
-		"rollup-plugin-copy": "^3.4.0",
-		"rollup-plugin-swc3": "^0.8.1"
+		"rimraf": "^5.0.0"
 	},
 	"dependencies": {
 		"electron-updater": "^5.3.0",
-		"nouislider": "^15.7.0"
+		"nouislider": "^15.7.0",
+		"typescript": "^5.0.4"
 	}
 }

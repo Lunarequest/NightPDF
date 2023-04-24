@@ -18,10 +18,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 /*eslint-env browser*/
 import * as noUiSlider from "nouislider";
-
 function _try(func: Function, fallbackValue: number) {
 	try {
-		let value = func();
+		const value = func();
 		return value === null || value === undefined ? fallbackValue : value;
 	} catch (e) {
 		return fallbackValue;
@@ -183,9 +182,9 @@ const nightPDF = (function () {
 		});
 
 		window.addEventListener("blur", function () {
-			let activeElement = document.activeElement;
+			const activeElement = document.activeElement;
 			if (activeElement) {
-				if (activeElement.id == "pdfjs") {
+				if (activeElement.id === "pdfjs") {
 					_hideDarkConfigurator();
 				}
 			}
@@ -235,10 +234,9 @@ const nightPDF = (function () {
 			window.api.newWindow(file);
 		} else {
 			_appContainerElement.style.zIndex = "1";
-			_pdfElement.src =
-				"libs/pdfjs/web/viewer.html?file=" +
-				encodeURIComponent(file) +
-				"#pagemode=none";
+			_pdfElement.src = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
+				file,
+			)}#pagemode=none`;
 			_pdfElement.onload = _fileDidLoad;
 			await _updateTitle(file);
 			//send message to update window size
