@@ -1,6 +1,6 @@
 {
 	"name": "nightpdf",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "Dark Mode for PDFs",
 	"main": "out/main/app.js",
 	"packageManager": "yarn@3.4.1",
@@ -14,7 +14,7 @@
 		"typecheck": "tsc --noEmit",
 		"build": "rimraf out && gulp",
 		"dev": "yarn build && electron .",
-		"dist": "NODE_ENV='production' electron-builder",
+		"dist": "NODE_ENV='production' yarn build && NODE_ENV='production' electron-builder",
 		"lint": "rome check .",
 		"format": "rome format . --write",
 		"prepare": "husky install",
