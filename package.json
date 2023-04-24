@@ -14,7 +14,7 @@
 		"typecheck": "tsc --noEmit",
 		"build": "rimraf out && gulp",
 		"dev": "yarn build && electron .",
-		"dist": "NODE_ENV='production' electron-builder --config electron-builder.js",
+		"dist": "NODE_ENV='production' electron-builder",
 		"lint": "rome check .",
 		"format": "rome format . --write",
 		"prepare": "husky install",
