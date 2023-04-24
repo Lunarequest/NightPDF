@@ -57,9 +57,7 @@ function createWindow(filename: string | null = null) {
 		minHeight: 200,
 		webPreferences: {
 			sandbox: true,
-			preload: path.resolve(
-				path.join(__dirname, "../preload/preload.js"),
-			),
+			preload: path.resolve(path.join(__dirname, "../preload/preload.js")),
 		},
 		resizable: true,
 		titleBarStyle: "default",
@@ -146,10 +144,7 @@ function createWindow(filename: string | null = null) {
 					} else {
 						const focusedWin = BrowserWindow.getFocusedWindow();
 						if (focusedWin) {
-							focusedWin.webContents.send(
-								"file-open",
-								filename.toString(),
-							);
+							focusedWin.webContents.send("file-open", filename.toString());
 							focusedWin.maximize();
 						}
 					}

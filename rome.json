@@ -1,0 +1,24 @@
+{
+	"$schema": "./node_modules/rome/configuration_schema.json",
+	"organizeImports": {
+		"enabled": false
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"suspicious": {
+				"noExplicitAny": "off"
+			},
+			"style": {
+				"noNonNullAssertion": "off"
+			}
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"ignore": ["app/libs/**/**"]
+	},
+	"files": {
+		"ignore": ["app/libs/**/**", "out/**/**"]
+	}
+}

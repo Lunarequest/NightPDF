@@ -2,7 +2,7 @@ import type { MenuItemConstructorOptions } from "electron";
 import { shell } from "electron";
 
 function createMenu() {
-	let menuTemplate: MenuItemConstructorOptions[] = [];
+	const menuTemplate: MenuItemConstructorOptions[] = [];
 	menuTemplate.push(
 		// { role: 'fileMenu' }
 		{

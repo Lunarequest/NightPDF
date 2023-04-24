@@ -352,6 +352,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rometools/cli-darwin-arm64@npm:12.0.0":
+  version: 12.0.0
+  resolution: "@rometools/cli-darwin-arm64@npm:12.0.0"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@rometools/cli-darwin-x64@npm:12.0.0":
+  version: 12.0.0
+  resolution: "@rometools/cli-darwin-x64@npm:12.0.0"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@rometools/cli-linux-arm64@npm:12.0.0":
+  version: 12.0.0
+  resolution: "@rometools/cli-linux-arm64@npm:12.0.0"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@rometools/cli-linux-x64@npm:12.0.0":
+  version: 12.0.0
+  resolution: "@rometools/cli-linux-x64@npm:12.0.0"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@rometools/cli-win32-arm64@npm:12.0.0":
+  version: 12.0.0
+  resolution: "@rometools/cli-win32-arm64@npm:12.0.0"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@rometools/cli-win32-x64@npm:12.0.0":
+  version: 12.0.0
+  resolution: "@rometools/cli-win32-x64@npm:12.0.0"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@sindresorhus/is@npm:^4.0.0":
   version: 4.6.0
   resolution: "@sindresorhus/is@npm:4.6.0"
@@ -2562,32 +2604,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:^8.8.0":
-  version: 8.8.0
-  resolution: "eslint-config-prettier@npm:8.8.0"
-  peerDependencies:
-    eslint: ">=7.0.0"
-  bin:
-    eslint-config-prettier: bin/cli.js
-  checksum: 1e94c3882c4d5e41e1dcfa2c368dbccbfe3134f6ac7d40101644d3bfbe3eb2f2ffac757f3145910b5eacf20c0e85e02b91293d3126d770cbf3dc390b3564681c
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-prettier@npm:^4.2.1":
-  version: 4.2.1
-  resolution: "eslint-plugin-prettier@npm:4.2.1"
-  dependencies:
-    prettier-linter-helpers: ^1.0.0
-  peerDependencies:
-    eslint: ">=7.28.0"
-    prettier: ">=2.0.0"
-  peerDependenciesMeta:
-    eslint-config-prettier:
-      optional: true
-  checksum: b9e839d2334ad8ec7a5589c5cb0f219bded260839a857d7a486997f9870e95106aa59b8756ff3f37202085ebab658de382b0267cae44c3a7f0eb0bcc03a4f6d6
-  languageName: node
-  linkType: hard
-
 "eslint-scope@npm:^5.1.1":
   version: 5.1.1
   resolution: "eslint-scope@npm:5.1.1"
@@ -2854,13 +2870,6 @@ __metadata:
   version: 3.1.3
   resolution: "fast-deep-equal@npm:3.1.3"
   checksum: e21a9d8d84f53493b6aa15efc9cfd53dd5b714a1f23f67fb5dc8f574af80df889b3bce25dc081887c6d25457cce704e636395333abad896ccdec03abaf1f3f9d
-  languageName: node
-  linkType: hard
-
-"fast-diff@npm:^1.1.2":
-  version: 1.2.0
-  resolution: "fast-diff@npm:1.2.0"
-  checksum: 1b5306eaa9e826564d9e5ffcd6ebd881eb5f770b3f977fcbf38f05c824e42172b53c79920e8429c54eb742ce15a0caf268b0fdd5b38f6de52234c4a8368131ae
   languageName: node
   linkType: hard
 
@@ -4935,8 +4944,6 @@ __metadata:
     electron-updater: ^5.3.0
     esbuild: ^0.17.18
     eslint: ^8.39.0
-    eslint-config-prettier: ^8.8.0
-    eslint-plugin-prettier: ^4.2.1
     gulp: ^4.0.2
     gulp-concat: ^2.6.1
     gulp-esbuild: ^0.11.1
@@ -4944,9 +4951,9 @@ __metadata:
     husky: ^8.0.3
     nouislider: ^15.7.0
     postcss: ^8.4.23
-    prettier: ^2.8.8
     pretty-quick: ^3.1.3
     rimraf: ^5.0.0
+    rome: ^12.0.0
     typescript: ^5.0.4
   languageName: unknown
   linkType: soft
@@ -5859,24 +5866,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-linter-helpers@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "prettier-linter-helpers@npm:1.0.0"
-  dependencies:
-    fast-diff: ^1.1.2
-  checksum: 00ce8011cf6430158d27f9c92cfea0a7699405633f7f1d4a45f07e21bf78e99895911cbcdc3853db3a824201a7c745bd49bfea8abd5fb9883e765a90f74f8392
-  languageName: node
-  linkType: hard
-
-"prettier@npm:^2.8.8":
-  version: 2.8.8
-  resolution: "prettier@npm:2.8.8"
-  bin:
-    prettier: bin-prettier.js
-  checksum: b49e409431bf129dd89238d64299ba80717b57ff5a6d1c1a8b1a28b590d998a34e083fa13573bc732bb8d2305becb4c9a4407f8486c81fa7d55100eb08263cf8
-  languageName: node
-  linkType: hard
-
 "pretty-hrtime@npm:^1.0.0":
   version: 1.0.3
   resolution: "pretty-hrtime@npm:1.0.3"
@@ -6292,6 +6281,35 @@ __metadata:
     semver-compare: ^1.0.0
     sprintf-js: ^1.1.2
   checksum: 682e28d5491e3ae99728a35ba188f4f0ccb6347dbd492f95dc9f4bfdfe8ee63d8203ad234766ee2db88c8d7a300714304976eb095ce5c9366fe586c03a21586c
+  languageName: node
+  linkType: hard
+
+"rome@npm:^12.0.0":
+  version: 12.0.0
+  resolution: "rome@npm:12.0.0"
+  dependencies:
+    "@rometools/cli-darwin-arm64": 12.0.0
+    "@rometools/cli-darwin-x64": 12.0.0
+    "@rometools/cli-linux-arm64": 12.0.0
+    "@rometools/cli-linux-x64": 12.0.0
+    "@rometools/cli-win32-arm64": 12.0.0
+    "@rometools/cli-win32-x64": 12.0.0
+  dependenciesMeta:
+    "@rometools/cli-darwin-arm64":
+      optional: true
+    "@rometools/cli-darwin-x64":
+      optional: true
+    "@rometools/cli-linux-arm64":
+      optional: true
+    "@rometools/cli-linux-x64":
+      optional: true
+    "@rometools/cli-win32-arm64":
+      optional: true
+    "@rometools/cli-win32-x64":
+      optional: true
+  bin:
+    rome: bin/rome
+  checksum: e26adcf06da28ec61b048b69f0387ad72c0f105444cb59f633f330aa9975e382f4055c6d17748e6630b303a33d87c5a3a0fc465bbb1054b74b88f01d14a70529
   languageName: node
   linkType: hard
 

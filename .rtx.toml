@@ -1,0 +1,6 @@
+[tools]
+node =['20']
+
+
+[settings]
+verbose = true
