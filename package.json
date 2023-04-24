@@ -14,7 +14,7 @@
 		"typecheck": "tsc --noEmit",
 		"build": "rimraf out && gulp",
 		"dev": "yarn build && electron .",
-		"dist": "NODE_ENV='production' yarn build && NODE_ENV='production' electron-builder --config electron-builder.js",
+		"dist": "NODE_ENV='production' electron-builder --config electron-builder.js",
 		"lint": "eslint",
 		"prettier": "prettier --config .prettierrc --write .",
 		"prepare": "husky install"

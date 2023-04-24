@@ -40,7 +40,10 @@ jobs:
               env:
                   npm_config_arch: ${{ matrix.arch }}
                   TARGET_ARCH: ${{ matrix.arch }}}
-
+            - name: build files
+              run: yarn build
+              env:
+                  NODE_ENV: production
             - name: Package application(Macos Hack)
               id: macos_packageing
               run: yarn dist --universal -c.mac.identity=null
