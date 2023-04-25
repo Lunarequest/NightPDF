@@ -33,31 +33,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-
-      - name: Restore yarn cache
-        uses: actions/cache@v2
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: yarn-cache-folder-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
-          restore-keys: |
-            yarn-cache-folder-
-
-      - name: Install and build dependencies
-        id: deps
-        run: yarn install --immutable --inline-builds --prefer-offline
-        env:
-          npm_config_arch: ${{ matrix.arch }}
-          TARGET_ARCH: ${{ matrix.arch }}}
-          # CI optimizations. Overrides yarnrc.yml options (or their defaults) in the CI action.
-          YARN_ENABLE_GLOBAL_CACHE: 'false' # Use local cache folder to keep downloaded archives
-          YARN_NM_MODE: 'hardlinks-local' # Hardlinks-(local|global) reduces io / node_modules size
-          YARN_INSTALL_STATE_PATH: .yarn/ci-cache/install-state.gz # Very small speedup when lock does not change
-          # Other environment variables
-          HUSKY: '0' # By default do not run HUSKY install
+      - name: yarn install && cache
+        uses: ./.github/actions/yarn-nm-install
 
       - name: Package application
         id: packageing
