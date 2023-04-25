@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 /*eslint-env browser*/
 import * as noUiSlider from "nouislider";
+import { API } from "nouislider";
 function _try(func: Function, fallbackValue: number) {
 	try {
 		const value = func();
@@ -40,7 +41,7 @@ declare global {
 		};
 	}
 	interface HTMLElement {
-		noUiSlider: any;
+		noUiSlider: API;
 	}
 	interface File {
 		path: string;
@@ -102,9 +103,21 @@ const nightPDF = (function () {
 
 		//setup electron listeners
 		window.api.removeAllListeners("file-open");
-		window.api.on("file-open", (_e: Event, msg: string) => {
-			_openFile(msg);
-		});
+		window.api.on(
+			"file-open",
+			(_e: Event, msg: string | [string, number] | [string]) => {
+				console.log(msg);
+				if (typeof msg === "string") {
+					_openFile(msg);
+				} else {
+					if (msg.length === 1) {
+						_openFile(msg[0]);
+					} else {
+						_openFile(msg[0][0], msg[1]);
+					}
+				}
+			},
+		);
 
 		window.api.removeAllListeners("file-print");
 		window.api.on("file-print", (_e: Event, _msg: string) => {
@@ -239,18 +252,28 @@ const nightPDF = (function () {
 		}
 	};
 
-	const _openFile = async (file: string) => {
+	const _openFile = async (file: string, page: number | null = null) => {
 		console.log("opening ", file);
 		if (_pdfElement.src) {
 			console.log("opening in new window");
 			window.api.newWindow(file);
 		} else {
 			_appContainerElement.style.zIndex = "1";
-			_pdfElement.src = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
-				file,
-			)}#pagemode=none`;
+			if (page) {
+				_pdfElement.src = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
+					file,
+				)}#page=${page}`;
+			} else {
+				_pdfElement.src = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
+					file,
+				)}#pagemode=none`;
+			}
 			_pdfElement.onload = _fileDidLoad;
-			await _updateTitle(file);
+			if (typeof file === "string") {
+				await _updateTitle(file);
+			} else {
+				await _updateTitle(file[0]);
+			}
 			//send message to update window size
 		}
 	};

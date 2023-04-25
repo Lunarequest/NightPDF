@@ -27,6 +27,7 @@ const {
 	nativeTheme,
 } = require("electron");
 const path = require("path");
+const yargs = require("yargs");
 import type {
 	MenuItemConstructorOptions,
 	OpenDialogReturnValue,
@@ -45,7 +46,10 @@ function getpath(filePath: string) {
 	return path.parse(filePath).base;
 }
 
-function createWindow(filename: string | null = null) {
+function createWindow(
+	filename: string | null = null,
+	page: number | null = null,
+) {
 	//force dark theme irespective of os theme
 	//useful for linux since we don't have a standardised way of detecting dark theme
 	nativeTheme.themeSource = "dark";
@@ -72,7 +76,6 @@ function createWindow(filename: string | null = null) {
 			}
 		}
 	}
-
 	wins.push(win);
 
 	// and load the index.html of the app.
@@ -89,8 +92,8 @@ function createWindow(filename: string | null = null) {
 			e.preventDefault();
 			if (url.split("/")[0].indexOf("http") > -1) {
 				shell.openExternal(url);
+				console.log(`${url} is 3rd party content opening externally`);
 			}
-			console.log("url is potentially insecure not going to open");
 		}
 	});
 
@@ -104,27 +107,44 @@ function createWindow(filename: string | null = null) {
 	win.webContents.removeAllListeners("did-finish-load");
 	win.webContents.once("did-finish-load", () => {
 		if (filename) {
-			win.webContents.send("file-open", filename);
+			if (page) {
+				win.webContents.send("file-open", [filename, page]);
+			} else {
+				win.webContents.send("file-open", [filename]);
+			}
 			win.show();
 		} else {
 			win.show();
+		}
+		if (fileToOpen) {
+			win.maximize();
 		}
 	});
 
 	if (!menuIsConfigured) {
 		const template = createMenu();
 		const menu = Menu.buildFromTemplate(template);
+		const file_open = menu.getMenuItemById("file-open");
+		const print = menu.getMenuItemById("file-print");
 
-		menu.getMenuItemById("file-open")!.click = () => {
-			openNewPDF();
-		};
+		if (file_open) {
+			file_open.click = () => {
+				openNewPDF();
+			};
+		}
 
-		menu.getMenuItemById("file-print")!.click = () => {
-			const focusedWin = BrowserWindow.getFocusedWindow();
-			if (focusedWin) {
-				focusedWin.webContents.send("file-print");
-			}
-		};
+		if (print) {
+			print.click = () => {
+				const focusedWin = BrowserWindow.getFocusedWindow();
+				if (focusedWin) {
+					focusedWin.webContents.send("file-print");
+				}
+			};
+		}
+
+		ipcMain.handle("getPath", (_e: Event, args: string) => {
+			return getpath(args);
+		});
 
 		Menu.setApplicationMenu(menu);
 		menuIsConfigured = true;
@@ -156,7 +176,10 @@ function createWindow(filename: string | null = null) {
 	ipcMain.once("togglePrinting", (_e: Event, msg: string) => {
 		const menu = Menu.getApplicationMenu();
 		if (menu) {
-			menu.getMenuItemById("file-print")!.enabled = Boolean(msg);
+			const print = menu.getMenuItemById("file-print");
+			if (print) {
+				print.enabled = Boolean(msg);
+			}
 		}
 	});
 
@@ -180,18 +203,38 @@ function createWindow(filename: string | null = null) {
 	ipcMain.once("openNewPDF", (_e: Event, _msg: null) => {
 		openNewPDF();
 	});
-
-	ipcMain.handle("getPath", (_e: Event, args: string) => {
-		return getpath(args);
-	});
 }
 
 let fileToOpen: string = "";
+let pageToOpen: number | null = null;
 
-const args = process.argv;
-const argsLength = args.length;
-if (argsLength > 1 && args[argsLength - 1].endsWith(".pdf")) {
-	fileToOpen = args[argsLength - 1];
+const { argv } = yargs
+	.scriptName("NightPDF")
+	.usage("Usage: $0 [-p] [pdf]")
+	.example("$0 -p 5 pdf.pdf", "Loads pdf on the 5th page")
+	.option("p", {
+		alias: "pages",
+		describe: "The page to open in the pdf",
+		type: "number",
+		nargs: 1,
+	})
+	.positional("pdf", {
+		describe: "The pdf to open",
+		type: "string",
+		alias: "pdf",
+		nargs: 1,
+	})
+	.describe("help", "Dark Mode PDF Reader built using Electron and PDF.js")
+	.epilog(`copyright ${new Date().getFullYear()}`);
+
+const { p, _ } = argv;
+const pdf = _;
+
+if (pdf.length > 0) {
+	fileToOpen = pdf;
+	if (p) {
+		pageToOpen = p;
+	}
 }
 
 app.on("open-file", (e: Event, path: string) => {
@@ -202,7 +245,7 @@ app.on("open-file", (e: Event, path: string) => {
 		} else {
 			const focusedWin = BrowserWindow.getFocusedWindow();
 			if (focusedWin) {
-				focusedWin.webContents.send("file-open", path.toString());
+				focusedWin.webContents.send("file-open", [path.toString()]);
 			}
 		}
 	}
@@ -211,7 +254,11 @@ app.on("open-file", (e: Event, path: string) => {
 
 app.whenReady().then(() => {
 	if (fileToOpen) {
-		createWindow(fileToOpen);
+		if (pageToOpen) {
+			createWindow(fileToOpen, pageToOpen);
+		} else {
+			createWindow(fileToOpen);
+		}
 	} else {
 		createWindow();
 	}
