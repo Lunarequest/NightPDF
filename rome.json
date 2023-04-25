@@ -6,16 +6,13 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"suspicious": {
-				"noExplicitAny": "off"
-			},
-			"style": {
-				"noNonNullAssertion": "off"
-			}
+			"recommended": true
 		}
 	},
 	"formatter": {
 		"enabled": true,
+		"indentStyle": "tab",
+		"indentSize": 4,
 		"ignore": ["app/libs/**/**"]
 	},
 	"files": {

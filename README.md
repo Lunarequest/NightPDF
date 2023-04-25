@@ -14,6 +14,12 @@ Binaries for Linux and Windows
 
 -   [Latest release](https://github.com/Lunarequest/NightPDF/releases/latest)
 
+## Support tiers
+
+- Tier 1: Linux, garunteed builds and garunteed 100% functionality
+- Tier 2: Windows, garunteed builds. Functionality is not garunteed
+- Tier 3: Macos, builds are not garunteed if it breaks fix is not garunteed.
+
 ## Limitations
 
 There is limited support for xfa forms, and saving forms with filled in data. This will be worked on with coming releases.
@@ -24,8 +30,8 @@ There is limited support for xfa forms, and saving forms with filled in data. Th
 
 This software was developed using
 
--   node: v19.x
--   yarn: v1.x
+-   node: v12.x
+-   yarn: berry
 -   Arch Linux Rolling/OpenSUSE Tumbleweed
 
 ## Instructions

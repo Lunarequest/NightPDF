@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "ES2016",
-		"module": "commonjs",
+		"target": "ES2022",
+		"module": "ES2022",
 		"moduleResolution": "node",
 		"outDir": "./out/main",
 		"esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
