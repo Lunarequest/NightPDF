@@ -62,6 +62,22 @@ yarn
 yarn dist
 ```
 
+## CLI
+```
+Usage: NightPDF [-p] [pdf]
+
+Positionals:
+  pdf, pdf  The pdf to open                                             [string]
+
+Options:
+      --help     Dark Mode PDF Reader built using Electron and PDF.js  [boolean]
+      --version  Show version number                                   [boolean]
+  -p, --pages    The page to open in the pdf                            [number]
+
+Examples:
+  NightPDF -p 5 pdf.pdf  Loads pdf on the 5th page
+```
+
 ## Licenses
 
 -   [NightPDF](https://github.com/Lunarequest/NightPDF) is under [GPLv2 only](LICENSE)
