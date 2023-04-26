@@ -111,6 +111,7 @@ const nightPDF = (function () {
 					_openFile(msg);
 				} else {
 					if (msg.length === 1) {
+						// this case only occurs when launching from a started instance unsure why
 						_openFile(msg[0]);
 					} else {
 						_openFile(msg[0][0], msg[1]);

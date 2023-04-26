@@ -4,7 +4,7 @@
 	"productName": "NightPDF",
 	"files": [
 		"**/*", "!*.{ts}", "!app${/*}", "!build${/*}", "!docs${/*}", "!*.{md,json}",
-		"!.husky", "!.vscode", "!.github", "!.eslint*", "!.prettier*"
+		"!.husky", "!.vscode", "!.github", "!gulp*"
 	],
 	"fileAssociations": [
 		{
@@ -56,7 +56,8 @@
 		"icon": "build/icon.ico"
 	},
 	"nsis": {
-		"perMachine": true,
+		"oneClick": false,
+		"allowElevation": true,
 		"deleteAppDataOnUninstall": true,
 		"uninstallDisplayName": "Night PDF",
 		"artifactName": "${productName}-${version}-${arch}-nsis.${ext}"
