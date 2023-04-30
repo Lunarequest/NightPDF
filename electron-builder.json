@@ -4,7 +4,7 @@
 	"productName": "NightPDF",
 	"files": [
 		"**/*", "!*.{ts}", "!app${/*}", "!build${/*}", "!docs${/*}", "!*.{md,json}",
-		"!.husky", "!.vscode", "!.github", "!gulp*"
+		"!.husky", "!.vscode", "!.github", "!gulp*", "!update_pdfjs.py"
 	],
 	"fileAssociations": [
 		{
