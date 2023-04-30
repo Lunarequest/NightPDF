@@ -38,6 +38,8 @@ let menuIsConfigured = false;
 
 const DEBUG = process.env.DEBUG;
 const APPIMAGE = process.env.APPIMAGE;
+const RPM = process.env.RPM;
+const DEB = process.env.DEB;
 const linux = process.platform === "linux";
 const windows = process.platform === "win32";
 const mac = process.platform === "darwin";
@@ -67,7 +69,7 @@ function createWindow(
 		titleBarStyle: "default",
 		show: false,
 	});
-	if ((linux && APPIMAGE) || windows || mac) {
+	if ((linux && (APPIMAGE || RPM || DEB)) || windows || mac) {
 		try {
 			autoUpdater.checkForUpdatesAndNotify();
 		} catch (e) {
