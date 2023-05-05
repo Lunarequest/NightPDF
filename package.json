@@ -1,6 +1,6 @@
 {
 	"name": "nightpdf",
-	"version": "1.2.5",
+	"version": "1.2.6",
 	"description": "Dark Mode for PDFs",
 	"main": "out/main/app.js",
 	"packageManager": "yarn@3.5.1",
@@ -14,7 +14,7 @@
 		"typecheck": "tsc --noEmit",
 		"build": "rimraf out && gulp",
 		"dev": "yarn build && DEBUG=1 electron .",
-		"dist": "NODE_ENV='production' yarn build && NODE_ENV='production' electron-builder",
+		"dist": "NODE_ENV='production' yarn build && NODE_ENV='production' electron-builder  --config electron-builder-config.js",
 		"lint": "rome check .",
 		"format": "rome format . --write",
 		"prepare": "husky install",
@@ -26,10 +26,13 @@
 	},
 	"license": "GPL-2.0-only",
 	"devDependencies": {
+		"@types/gulp": "^4.0.10",
+		"@types/gulp-concat": "^0.0.33",
+		"@types/gulp-postcss": "^8.0.2",
 		"@types/yargs": "^17.0.24",
-		"autoprefixer": "^10.4.14",
 		"cssnano": "^6.0.1",
-		"electron": "^24.1.3",
+		"cssnano-preset-advanced": "^6.0.1",
+		"electron": "^24.2.0",
 		"electron-builder": "^24.3.0",
 		"esbuild": "^0.17.18",
 		"eslint": "^8.39.0",
@@ -40,7 +43,8 @@
 		"husky": "^8.0.3",
 		"postcss": "^8.4.23",
 		"rimraf": "^5.0.0",
-		"rome": "^12.0.0"
+		"rome": "^12.0.0",
+		"ts-node": "^10.9.1"
 	},
 	"dependencies": {
 		"electron-updater": "6.1.0",
