@@ -122,10 +122,7 @@ const nightPDF = (function () {
 
 		window.api.removeAllListeners("file-print");
 		window.api.on("file-print", (_e: Event, _msg: string) => {
-			const print = _pdfElement.ownerDocument.getElementById("print");
-			if (print) {
-				print.dispatchEvent(new Event("click"));
-			}
+			_pdfElement.contentWindow?.print();
 		});
 
 		// setup dom listeners
