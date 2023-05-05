@@ -13,6 +13,10 @@ const config = {
 		"!.github",
 		"!gulp*",
 		"!update_pdfjs.py",
+		"!.rtx.toml",
+		"!.yarnclean",
+		"!electron-builder-config.js",
+		"!.python-version",
 	],
 	fileAssociations: [
 		{
