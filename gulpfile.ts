@@ -1,10 +1,31 @@
 import { src, task, dest, parallel } from "gulp";
 import gulpEsbuild from "gulp-esbuild";
 import cssnano from "cssnano";
-import concat from "gulp-concat";
 import postcss from "gulp-postcss";
+import gulpSass from "gulp-sass";
+import dartSass from "sass";
 
 const production = process.env.NODE_ENV === "production";
+const sass = gulpSass(dartSass);
+
+const plugins = [];
+if (production) {
+	plugins.push(
+		cssnano({
+			preset: [
+				"advanced",
+				{
+					discardComments: {
+						removeAll: true,
+					},
+					discardEmpty: true,
+					normalizeUrl: true,
+					autoprefixer: true,
+				},
+			],
+		}),
+	);
+}
 
 task("copy-assets", () => {
 	return src("app/assets/*").pipe(dest("out/assets"));
@@ -34,8 +55,8 @@ task("bundle-css", () => {
 			],
 		}),
 	];
-	return src(["app/css/*.css", "node_modules/nouislider/dist/*.css"])
-		.pipe(concat("bundle.css"))
+	return src("app/css/bundle.scss")
+		.pipe(sass())
 		.pipe(postcss(plugins))
 		.pipe(dest("out/css"));
 });
