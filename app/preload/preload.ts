@@ -23,6 +23,10 @@ contextBridge.exposeInMainWorld("api", {
 		return await ipcRenderer.invoke("getPath", filePath);
 	},
 
+	ResolvePath: async (filePath: string) => {
+		return await ipcRenderer.invoke("ResolvePath", filePath);
+	},
+
 	removeAllListeners: (ListenerType: string) => {
 		ipcRenderer.removeAllListeners(ListenerType);
 	},

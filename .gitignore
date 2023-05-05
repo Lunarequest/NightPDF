@@ -12,3 +12,4 @@ keys
 !.yarn/sdks
 !.yarn/versions
 out
+*pdf

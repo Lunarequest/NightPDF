@@ -32,12 +32,13 @@ declare global {
 	interface Window {
 		api: {
 			getPath(arg0: string): Promise<string>;
+			ResolvePath(arg0: string): Promise<string>;
 			removeAllListeners(arg0: string): null;
 			openNewPDF(arg0: null | string): null;
-			newWindow(arg0: string): null;
+			newWindow(arg0: string | string[]): null;
 			togglePrinting(arg0: Boolean): null;
 			resizeWindow(arg0: null | string): null;
-			on(arg0: string, arg1: Function): null;
+			on(arg0: string, arg1: CallableFunction): null;
 		};
 	}
 	interface HTMLElement {
@@ -250,20 +251,30 @@ const nightPDF = (function () {
 		}
 	};
 
-	const _openFile = async (file: string, page: number | null = null) => {
+	const _openFile = async (
+		file: string | string[],
+		page: number | null = null,
+	) => {
 		console.log("opening ", file);
 		if (_pdfElement.src) {
 			console.log("opening in new window");
 			window.api.newWindow(file);
 		} else {
 			_appContainerElement.style.zIndex = "1";
+			let resolved_file;
+			console.log(file);
+			if (typeof file === "string") {
+				resolved_file = await window.api.ResolvePath(file);
+			} else {
+				resolved_file = await window.api.ResolvePath(file[0]);
+			}
 			if (page) {
 				_pdfElement.src = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
-					file,
+					resolved_file,
 				)}#page=${page}`;
 			} else {
 				_pdfElement.src = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
-					file,
+					resolved_file,
 				)}#pagemode=none`;
 			}
 			_pdfElement.onload = _fileDidLoad;

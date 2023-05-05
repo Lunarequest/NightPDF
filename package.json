@@ -21,7 +21,7 @@
 		"pre-commit": "yarn format && yarn lint"
 	},
 	"author": {
-		"name": "Nullrequest",
+		"name": "Lunarequest",
 		"email": "nullrequest@vivaldi.net"
 	},
 	"license": "GPL-2.0-only",

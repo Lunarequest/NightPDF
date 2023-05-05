@@ -30,7 +30,8 @@ import type {
 	MenuItemConstructorOptions,
 	OpenDialogReturnValue,
 } from "electron";
-import path from "path";
+import { parse, join, resolve } from "path";
+
 import { autoUpdater } from "electron-updater";
 import yargs from "yargs";
 
@@ -46,7 +47,7 @@ const windows = process.platform === "win32";
 const mac = process.platform === "darwin";
 
 function getpath(filePath: string) {
-	return path.parse(filePath).base;
+	return parse(filePath).base;
 }
 
 function createWindow(
@@ -64,7 +65,7 @@ function createWindow(
 		minHeight: 200,
 		webPreferences: {
 			sandbox: true,
-			preload: path.resolve(path.join(__dirname, "../preload/preload.js")),
+			preload: resolve(join(__dirname, "../preload/preload.js")),
 		},
 		resizable: true,
 		titleBarStyle: "default",
@@ -83,7 +84,7 @@ function createWindow(
 
 	// and load the index.html of the app.
 
-	win.loadFile(path.join(__dirname, "../index.html"));
+	win.loadFile(join(__dirname, "../index.html"));
 	if (DEBUG) {
 		win.webContents.openDevTools();
 	}
@@ -147,6 +148,10 @@ function createWindow(
 
 		ipcMain.handle("getPath", (_e: Event, args: string) => {
 			return getpath(args);
+		});
+
+		ipcMain.handle("ResolvePath", (_e: Event, args: string) => {
+			return resolve(args);
 		});
 
 		Menu.setApplicationMenu(menu);
@@ -213,19 +218,17 @@ let pageToOpen: number | null = null;
 
 const argv = yargs
 	.scriptName("NightPDF")
-	.usage("Usage: $0 [-p] [pdf]")
+	.usage("Usage: $0 [-p] <pdf>")
 	.example("$0 -p 5 pdf.pdf", "Loads pdf on the 5th page")
 	.option("p", {
 		alias: "pages",
 		describe: "The page to open in the pdf",
 		type: "number",
-		nargs: 1,
 	})
 	.positional("pdf", {
 		describe: "The pdf to open",
 		type: "string",
 		alias: "pdf",
-		nargs: 1,
 	})
 	.describe("help", "Dark Mode PDF Reader built using Electron and PDF.js")
 	.epilog(`copyright ${new Date().getFullYear()}`)
@@ -245,15 +248,15 @@ app.on("open-file", (e: Event, path: string) => {
 	e.preventDefault();
 	if (app.isReady()) {
 		if (wins.length === 0) {
-			createWindow(path.toString());
+			createWindow(path);
 		} else {
 			const focusedWin = BrowserWindow.getFocusedWindow();
 			if (focusedWin) {
-				focusedWin.webContents.send("file-open", [path.toString()]);
+				focusedWin.webContents.send("file-open", [path]);
 			}
 		}
 	}
-	fileToOpen = path.toString();
+	fileToOpen = resolve(path);
 });
 
 app.whenReady().then(() => {
@@ -345,6 +348,20 @@ function createMenu() {
 						await shell.openExternal(
 							"https://github.com/Lunarequest/NightPDF/blob/mistress/LICENSE",
 						);
+					},
+				},
+				{
+					label: "Bugs",
+					click: async () => {
+						await shell.openExternal(
+							"https://github.com/Lunarequest/NightPDF/issues",
+						);
+					},
+				},
+				{
+					label: "Contact",
+					click: async () => {
+						await shell.openExternal("mailto:luna@nullrequest.com");
 					},
 				},
 			],
