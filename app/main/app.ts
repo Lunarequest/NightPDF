@@ -31,9 +31,10 @@ import type {
 	OpenDialogReturnValue,
 } from "electron";
 import { parse, join, resolve } from "path";
-
+import { version } from "../../package.json";
 import { autoUpdater } from "electron-updater";
 import yargs from "yargs";
+import { readFileSync } from "fs";
 
 let wins = [];
 let menuIsConfigured = false;
@@ -48,6 +49,11 @@ const mac = process.platform === "darwin";
 
 function getpath(filePath: string) {
 	return parse(filePath).base;
+}
+
+function versionString(): string {
+	const pdfjsver = readFileSync(".pdfjs_version");
+	return `NightPDF: v${version} PDF.js: ${pdfjsver} Electron: v${process.versions.electron}`;
 }
 
 function createWindow(
@@ -230,12 +236,13 @@ const argv = yargs
 		type: "string",
 		alias: "pdf",
 	})
-	.describe("help", "Dark Mode PDF Reader built using Electron and PDF.js")
+	.describe("help", "Show help.") // Override --help usage message.
+	.version(versionString())
 	.epilog(`copyright ${new Date().getFullYear()}`)
 	.parseSync();
 
 const { p, _ } = argv;
-const pdf = _ as string[];
+const pdf = _ as string[]; // string[] or number[] force only string[]
 
 if (pdf.length > 0) {
 	fileToOpen = pdf;
@@ -286,8 +293,8 @@ app.on("activate", () => {
 function createMenu() {
 	const menuTemplate: MenuItemConstructorOptions[] = [];
 	menuTemplate.push(
-		// { role: 'fileMenu' }
 		{
+			role: "fileMenu",
 			label: "File",
 			submenu: [
 				{
@@ -303,8 +310,8 @@ function createMenu() {
 				},
 			],
 		},
-		// { role: 'editMenu' }
 		{
+			role: "editMenu",
 			label: "Edit",
 			submenu: [
 				{ role: "undo" },
@@ -315,8 +322,8 @@ function createMenu() {
 				{ role: "paste" },
 			],
 		},
-		// { role: 'viewMenu' }
 		{
+			role: "viewMenu",
 			label: "View",
 			submenu: [
 				{ role: "resetZoom" },
@@ -326,8 +333,8 @@ function createMenu() {
 				{ role: "togglefullscreen" },
 			],
 		},
-		// { role: 'windowMenu' }
 		{
+			role: "windowMenu",
 			label: "Window",
 			submenu: [{ role: "minimize" }],
 		},
