@@ -45,6 +45,7 @@ task("build-render", () => {
 		.pipe(
 			gulpEsbuild({
 				outfile: "render.mjs",
+				format: "iife",
 				bundle: true,
 				minify: production,
 			}),
@@ -59,6 +60,7 @@ task("build-preload", () => {
 				outfile: "preload.js",
 				bundle: false,
 				minify: production,
+				format: "cjs",
 				platform: "node",
 				packages: "external",
 			}),
@@ -72,6 +74,7 @@ task("build-main", () => {
 			gulpEsbuild({
 				bundle: false,
 				minify: production,
+				format: "cjs",
 				platform: "node",
 				packages: "external",
 			}),
@@ -82,12 +85,7 @@ task("build-main", () => {
 task(
 	"default",
 	parallel(
-		"build-main",
-		"build-preload",
-		"build-render",
-		"bundle-css",
-		"copy-assets",
-		"gulp-copy-html",
-		"gulp-copy-libs",
+		parallel("build-main", "build-preload", "build-render"),
+		parallel("bundle-css", "copy-assets", "gulp-copy-html", "gulp-copy-libs"),
 	),
 );

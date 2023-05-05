@@ -29,6 +29,7 @@
 		"@types/gulp": "^4.0.10",
 		"@types/gulp-concat": "^0.0.33",
 		"@types/gulp-postcss": "^8.0.2",
+		"@types/node": "^20.0.0",
 		"@types/yargs": "^17.0.24",
 		"cssnano": "^6.0.1",
 		"cssnano-preset-advanced": "^6.0.1",

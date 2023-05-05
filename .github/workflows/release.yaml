@@ -54,4 +54,5 @@ jobs:
             dist/*.deb
             dist/*.rpm
             dist/latest*.yml
+            dist/*.blockmap
           draft: true

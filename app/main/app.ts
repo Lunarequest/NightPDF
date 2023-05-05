@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 /* eslint no-unused-vars: [ "error", { "argsIgnorePattern": "^_" } ] */
-const {
+import {
 	app,
 	BrowserWindow,
 	Menu,
@@ -25,14 +25,15 @@ const {
 	ipcMain,
 	shell,
 	nativeTheme,
-} = require("electron");
-const path = require("path");
-const yargs = require("yargs");
+} from "electron";
 import type {
 	MenuItemConstructorOptions,
 	OpenDialogReturnValue,
 } from "electron";
-const { autoUpdater } = require("electron-updater");
+import path from "path";
+import { autoUpdater } from "electron-updater";
+import yargs from "yargs";
+
 let wins = [];
 let menuIsConfigured = false;
 
@@ -49,7 +50,7 @@ function getpath(filePath: string) {
 }
 
 function createWindow(
-	filename: string | null = null,
+	filename: string | string[] | null = null,
 	page: number | null = null,
 ) {
 	//force dark theme irespective of os theme
@@ -207,10 +208,10 @@ function createWindow(
 	});
 }
 
-let fileToOpen: string = "";
+let fileToOpen: string | string[] = "";
 let pageToOpen: number | null = null;
 
-const { argv } = yargs
+const argv = yargs
 	.scriptName("NightPDF")
 	.usage("Usage: $0 [-p] [pdf]")
 	.example("$0 -p 5 pdf.pdf", "Loads pdf on the 5th page")
@@ -227,10 +228,11 @@ const { argv } = yargs
 		nargs: 1,
 	})
 	.describe("help", "Dark Mode PDF Reader built using Electron and PDF.js")
-	.epilog(`copyright ${new Date().getFullYear()}`);
+	.epilog(`copyright ${new Date().getFullYear()}`)
+	.parseSync();
 
 const { p, _ } = argv;
-const pdf = _;
+const pdf = _ as string[];
 
 if (pdf.length > 0) {
 	fileToOpen = pdf;
