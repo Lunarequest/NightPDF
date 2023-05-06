@@ -25,6 +25,7 @@ import {
 	ipcMain,
 	shell,
 	nativeTheme,
+	Notification,
 } from "electron";
 import type {
 	MenuItemConstructorOptions,
@@ -33,26 +34,24 @@ import type {
 import { parse, join, resolve } from "path";
 import { version } from "../../package.json";
 import { autoUpdater } from "electron-updater";
-import yargs from "yargs";
 import { readFileSync } from "fs";
+import log from "electron-log";
+import yargs from "yargs";
 
 let wins = [];
 let menuIsConfigured = false;
 
 const DEBUG = process.env.DEBUG;
-const APPIMAGE = process.env.APPIMAGE;
-const RPM = process.env.RPM;
-const DEB = process.env.DEB;
+const FLATPAK = process.env.FLATPAK;
 const linux = process.platform === "linux";
-const windows = process.platform === "win32";
-const mac = process.platform === "darwin";
+log.transports.file.level = "debug";
 
 function getpath(filePath: string) {
 	return parse(filePath).base;
 }
 
 function versionString(): string {
-	const pdfjsver = readFileSync(".pdfjs_version");
+	const pdfjsver = readFileSync(join(__dirname, "../../.pdfjs_version"));
 	return `NightPDF: v${version} PDF.js: ${pdfjsver} Electron: v${process.versions.electron}`;
 }
 
@@ -77,12 +76,13 @@ function createWindow(
 		titleBarStyle: "default",
 		show: false,
 	});
-	if ((linux && (APPIMAGE || RPM || DEB)) || windows || mac) {
+	if (!(linux && FLATPAK)) {
 		try {
+			autoUpdater.logger = log;
 			autoUpdater.checkForUpdatesAndNotify();
 		} catch (e) {
 			if (DEBUG) {
-				console.log(e);
+				log.error(e);
 			}
 		}
 	}
@@ -102,7 +102,7 @@ function createWindow(
 			e.preventDefault();
 			if (url.split("/")[0].indexOf("http") > -1) {
 				shell.openExternal(url);
-				console.log(`${url} is 3rd party content opening externally`);
+				log.debug(`${url} is 3rd party content opening externally`);
 			}
 		}
 	});
@@ -199,7 +199,7 @@ function createWindow(
 
 	ipcMain.removeAllListeners("newWindow");
 	ipcMain.once("newWindow", (_e: Event, msg: undefined | null) => {
-		console.log("opening ", msg, " in new window");
+		log.debug("opening ", msg, " in new window");
 		createWindow(msg);
 	});
 

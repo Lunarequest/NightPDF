@@ -674,10 +674,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.0.0":
-  version: 20.0.0
-  resolution: "@types/node@npm:20.0.0"
-  checksum: 7dadc41081eee634fd0b19e46dfb0a74f8296ee562533118f7c2f2b54dcaba7124961d506db425fff74d8e8288610b93939cd06fa723f053c72b1a7e87aa4ddc
+"@types/node@npm:^20.1.0":
+  version: 20.1.0
+  resolution: "@types/node@npm:20.1.0"
+  checksum: c6d9afa9aa78b4b4348c69ece94975be70346b144c278f1395694a10ef919d7db300018101b6f9245e6bdd76674a5327d2d14829092f3d5295e858cff5f22a66
   languageName: node
   linkType: hard
 
@@ -2426,6 +2426,13 @@ __metadata:
     electron-builder: cli.js
     install-app-deps: install-app-deps.js
   checksum: ca57020fcaf55de2cdffcd5945fbbc2e8688e70bb90b9c67c4e504ee9a840c1502592ffd72c577645d29ab773b10aeaaf296e05669f19fcc2b69d96317fa9187
+  languageName: node
+  linkType: hard
+
+"electron-log@npm:^4.4.8":
+  version: 4.4.8
+  resolution: "electron-log@npm:4.4.8"
+  checksum: 5a7958f8fd9a5c95987e885ffe1c5b88be15bb41d348b65c92e2d8664519faddf17ce0208cd4e7027b0908f92fecedfbef246a45061f53e4a53b5d2201aafbd9
   languageName: node
   linkType: hard
 
@@ -4923,12 +4930,13 @@ __metadata:
     "@types/gulp": ^4.0.10
     "@types/gulp-postcss": ^8.0.2
     "@types/gulp-sass": ^5.0.0
-    "@types/node": ^20.0.0
+    "@types/node": ^20.1.0
     "@types/yargs": ^17.0.24
     cssnano: ^6.0.1
     cssnano-preset-advanced: ^6.0.1
     electron: ^24.2.0
     electron-builder: ^24.3.0
+    electron-log: ^4.4.8
     electron-updater: 6.1.0
     esbuild: ^0.17.18
     eslint: ^8.39.0

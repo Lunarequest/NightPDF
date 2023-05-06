@@ -29,7 +29,7 @@
 		"@types/gulp": "^4.0.10",
 		"@types/gulp-postcss": "^8.0.2",
 		"@types/gulp-sass": "^5.0.0",
-		"@types/node": "^20.0.0",
+		"@types/node": "^20.1.0",
 		"@types/yargs": "^17.0.24",
 		"cssnano": "^6.0.1",
 		"cssnano-preset-advanced": "^6.0.1",
@@ -49,6 +49,7 @@
 		"ts-node": "^10.9.1"
 	},
 	"dependencies": {
+		"electron-log": "^4.4.8",
 		"electron-updater": "6.1.0",
 		"nouislider": "^15.7.0",
 		"typescript": "^5.0.4",
