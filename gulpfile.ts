@@ -66,7 +66,7 @@ task("build-render", () => {
 		.pipe(
 			gulpEsbuild({
 				outfile: "render.mjs",
-				format: "iife",
+				format: "esm",
 				bundle: true,
 				minify: production,
 			}),

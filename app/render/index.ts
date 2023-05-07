@@ -49,7 +49,7 @@ declare global {
 	}
 }
 
-const nightPDF = (function () {
+const nightPDF = (async function () {
 	console.log("loading");
 	let _pdfElement: HTMLIFrameElement;
 	let _appContainerElement: HTMLElement;
@@ -69,7 +69,7 @@ const nightPDF = (function () {
 	let _redeyeButton: HTMLElement;
 	let _customButton: HTMLElement;
 
-	function main() {
+	async function main() {
 		_appContainerElement = document.getElementById(
 			"appContainer",
 		) as HTMLElement;
@@ -283,6 +283,7 @@ const nightPDF = (function () {
 			} else {
 				await _updateTitle(file[0]);
 			}
+			window.api.resizeWindow(null);
 			//send message to update window size
 		}
 	};
@@ -574,4 +575,5 @@ const nightPDF = (function () {
 	};
 })();
 
-nightPDF.run();
+const n = await nightPDF;
+n.run();
