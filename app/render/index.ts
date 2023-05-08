@@ -16,9 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-/*eslint-env browser*/
-import * as noUiSlider from "nouislider";
-import { API } from "nouislider";
+
+import { API, create } from "nouislider";
 function _try(func: Function, fallbackValue: number) {
 	try {
 		const value = func();
@@ -346,7 +345,7 @@ const nightPDF = (async function () {
 	};
 
 	const _setupSliders = () => {
-		noUiSlider.create(_brightnessSliderElement, {
+		create(_brightnessSliderElement, {
 			start: 7,
 			step: 1,
 			connect: "lower",
@@ -369,7 +368,7 @@ const nightPDF = (async function () {
 			],
 		});
 
-		noUiSlider.create(_grayscaleSliderElement, {
+		create(_grayscaleSliderElement, {
 			start: 95,
 			step: 1,
 			connect: "lower",
@@ -392,7 +391,7 @@ const nightPDF = (async function () {
 			],
 		});
 
-		noUiSlider.create(_invertSliderElement, {
+		create(_invertSliderElement, {
 			start: 95,
 			step: 1,
 			connect: "lower",
@@ -415,7 +414,7 @@ const nightPDF = (async function () {
 			],
 		});
 
-		noUiSlider.create(_sepiaSliderElement, {
+		create(_sepiaSliderElement, {
 			start: 55,
 			step: 1,
 			connect: "lower",
@@ -438,7 +437,7 @@ const nightPDF = (async function () {
 			],
 		});
 
-		noUiSlider.create(_hueSliderElement, {
+		create(_hueSliderElement, {
 			start: 180,
 			step: 1,
 			connect: "lower",
@@ -461,7 +460,7 @@ const nightPDF = (async function () {
 			],
 		});
 
-		noUiSlider.create(_extraBrightnessSliderElement, {
+		create(_extraBrightnessSliderElement, {
 			start: 0,
 			step: 1,
 			connect: "lower",

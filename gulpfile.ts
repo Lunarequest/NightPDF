@@ -66,8 +66,9 @@ task("build-render", () => {
 		.pipe(
 			gulpEsbuild({
 				outfile: "render.mjs",
-				format: "esm",
 				bundle: true,
+				treeShaking: true,
+				format: "esm",
 				minify: production,
 			}),
 		)
@@ -80,6 +81,7 @@ task("build-preload", () => {
 			gulpEsbuild({
 				outfile: "preload.js",
 				bundle: false,
+				treeShaking: true,
 				minify: production,
 				format: "cjs",
 				platform: "node",
@@ -94,6 +96,7 @@ task("build-main", () => {
 		.pipe(
 			gulpEsbuild({
 				bundle: false,
+				treeShaking: true,
 				minify: production,
 				format: "cjs",
 				platform: "node",
