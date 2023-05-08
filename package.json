@@ -36,7 +36,6 @@
 		"electron": "^24.2.0",
 		"electron-builder": "^24.3.0",
 		"esbuild": "^0.17.18",
-		"eslint": "^8.39.0",
 		"gulp": "^4.0.2",
 		"gulp-esbuild": "^0.11.1",
 		"gulp-postcss": "^9.0.1",
