@@ -31,7 +31,63 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 	<body>
 		<div id="header">
-			<span id="title"> </span>
+			<tab-group new-tab-button="true" sortable="true">
+				<style>
+					:host {
+					--tabgroup-background: #2d2d2d;
+					--tab-background: #2d2d2d;
+					--tab-color: #cccccc;
+					--tab-border-color: #1e1e1e;
+					--tab-transition: background-color 200ms ease-out, color 200ms ease-out;
+					--tab-cursor: pointer;
+					--tab-active-color: currentcolor;
+					--tab-active-background: #1e1e1e;
+					--tag-hover-color: currentcolor;
+					--tag-hover-background: #1e1e1e;
+					--button-font-size: 15px;
+					--button-background: none;
+					--button-color: #777777;
+					--button-hover-background: #cccccc;
+					--button-hover-color: #383a3e;
+					--badge-background: #383a3e;
+					--badge-color: #fff;
+					}
+					/* Make tabs dark */
+					.tabs > .tab.document-tab {
+						/* background-color: #1e1e1e; */
+						/*color: #cccccc; */
+						--tab-border: none;
+						max-width: 15vw;
+    					text-align: right;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						/* direction: rtl; */
+					}
+					/* .tabs > .tab.document-tab.active {
+						background: rgb(45, 45, 45);
+						color: #cccccc;
+					} */
+
+					.tabs > .tab.document-tab > .tab-title {
+						/* margin-left: 1em; */
+						display: inline-block;
+						/* padding-left: 1em; */
+						/* box-sizing: border-box; */
+						direction: rtl;
+						text-align: right;
+						white-space: nowrap;
+						max-width: calc(15vw - 20px);
+						overflow: hidden;
+					}
+
+					.etabs > .nav {
+						border-color: #2d2d2d;
+						background-color: #2d2d2d;
+						height: 39px;
+					}
+				  </style>
+			</tab-group>
 			<div id="menu">
 				<div id="default-button" class="button active">Default</div>
 				<div id="sepia-button" class="button">Sepia</div>
@@ -57,14 +113,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 			</div>
 		</div>
 		<div id="appContainer">
-			<iframe id="pdfjs"></iframe>
+			<!-- <iframe id="pdfjs"></iframe> -->
 		</div>
-		<div id="splash">
-			<img src="assets/icon2.png" width="100px" />
-			<h3>Drop PDF here</h3>
-		</div>
-		<div id="splash-extra">
-			<h3 id="prompt">Open File with CTRL+O</h3>
+		<div id="splash-container">
+			<div id="splash">
+				<img src="assets/icon2.png" width="100px" />
+				<h3>Drop PDF here</h3>
+			</div>
+			<div id="splash-extra">
+				<h3 id="prompt">Open File with CTRL+O</h3>
+			</div>
 		</div>
 		<script type="module" src="./render/render.mjs"></script>
 	</body>
