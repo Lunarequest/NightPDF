@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+//trans rights
 
 import "electron-tabs";
 import { Tab, TabGroup } from "electron-tabs";
@@ -50,7 +51,6 @@ declare global {
 	interface File {
 		path: string;
 	}
-
 }
 
 const nightPDF = (async function () {
@@ -84,16 +84,16 @@ const nightPDF = (async function () {
 		_tabGroup?.on("ready", (tabGroup: TabGroup) => {
 			// replace new tabe default "click" event handler
 			tabGroup.buttonContainer
-					.getElementsByTagName("button")[0]
-					.addEventListener(
-						"click",
-						(e: Event) => {
-							e.stopImmediatePropagation();
-							window.api.openNewPDF(null);
-						},
-						true,
-					);
-					
+				.getElementsByTagName("button")[0]
+				.addEventListener(
+					"click",
+					(e: Event) => {
+						e.stopImmediatePropagation();
+						window.api.openNewPDF(null);
+					},
+					true,
+				);
+
 			console.info("TabGroup is ready, moving container");
 			_appContainerElement.appendChild(tabGroup.viewContainer);
 			tabGroup?.viewContainer.addEventListener(
@@ -150,7 +150,7 @@ const nightPDF = (async function () {
 
 		window.api.removeAllListeners("file-print");
 		window.api.on("file-print", (_e: Event, _msg: string) => {
-			const tab = _tabGroup?.getActiveTab()
+			const tab = _tabGroup?.getActiveTab();
 			if (tab) {
 				// the webview's window.print() method is intercepted
 				// by pdfjs and opens the print dialog.
@@ -220,8 +220,6 @@ const nightPDF = (async function () {
 		_headerElement.addEventListener("click", (_e: Event) => {
 			_hideDarkConfigurator();
 		});
-
-		
 
 		_splashElement.addEventListener("click", (_e: Event) => {
 			window.api.openNewPDF(null);
