@@ -25,7 +25,6 @@ import {
 	ipcMain,
 	shell,
 	nativeTheme,
-	Notification,
 } from "electron";
 import type {
 	MenuItemConstructorOptions,

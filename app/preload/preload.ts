@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("api", {
-	getPath: async (filePath: string) => {
+	getFileName: async (filePath: string) => {
 		return await ipcRenderer.invoke("getPath", filePath);
 	},
 

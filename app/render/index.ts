@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-require('electron-tabs');
+import "electron-tabs";
 import { Tab, TabGroup } from "electron-tabs";
 import { API, create } from "nouislider";
 
@@ -33,7 +33,7 @@ function _try(func: Function, fallbackValue: number) {
 declare global {
 	interface Window {
 		api: {
-			getPath(arg0: string): Promise<string>;
+			getFileName(arg0: string): Promise<string>;
 			ResolvePath(arg0: string): Promise<string>;
 			removeAllListeners(arg0: string): null;
 			openNewPDF(arg0: null | string): null;
@@ -52,9 +52,9 @@ declare global {
 	}
 
 }
-await (async function () {
+
+const nightPDF = (async function () {
 	console.log("loading");
-	let _pdfElement: HTMLIFrameElement;
 	let _appContainerElement: HTMLElement;
 	let _headerElement: HTMLElement;
 	// let _titleElement: HTMLElement;
@@ -72,7 +72,8 @@ await (async function () {
 	let _customButton: HTMLElement;
 	let _tabGroup: TabGroup | null = null;
 	let _slidersInitialized = false;
-	const _tabCssKeyMap: Map<Tab, string> = new Map();
+	const _tabCssKey: Map<Tab, string> = new Map();
+    const _tabFilePath: Map<Tab, string> = new Map();
 
 	async function main() {
 		_appContainerElement = document.getElementById(
@@ -82,14 +83,16 @@ await (async function () {
 		_tabGroup = document.querySelector("tab-group");
 		_tabGroup?.on("ready", (tabGroup: TabGroup) => {
 			// replace new tabe default "click" event handler
-			tabGroup.buttonContainer.getElementsByTagName("button")[0].addEventListener(
-				"click",
-				(e: Event) => {
-					e.stopImmediatePropagation();
-					window.api.openNewPDF(null);
-				},
-				true,
-			);
+			tabGroup.buttonContainer
+                    .getElementsByTagName("button")[0]
+                    .addEventListener(
+                        "click",
+                        (e: Event) => {
+                            e.stopImmediatePropagation();
+                            window.api.openNewPDF(null);
+                        },
+                        true,
+                    );
 					
 			console.info("TabGroup is ready, moving container");
 			_appContainerElement.appendChild(tabGroup.viewContainer);
@@ -102,9 +105,7 @@ await (async function () {
 				true,
 			);
 		});
-		// _pdfElement = document.getElementById("pdfjs") as HTMLIFrameElement;
 		_headerElement = document.getElementById("header") as HTMLElement;
-		// _titleElement = document.getElementById("title") as HTMLElement;
 		_defaultButton = document.getElementById("default-button") as HTMLElement;
 		_sepiaButton = document.getElementById("sepia-button") as HTMLElement;
 		_redeyeButton = document.getElementById("redeye-button") as HTMLElement;
@@ -149,7 +150,13 @@ await (async function () {
 
 		window.api.removeAllListeners("file-print");
 		window.api.on("file-print", (_e: Event, _msg: string) => {
-			_pdfElement.contentWindow?.print();
+            const tab = _tabGroup?.getActiveTab()
+            if (tab) {
+                // the webview's window.print() method is intercepted
+                // by pdfjs and opens the print dialog.
+                // @ts-ignore
+                tab.webview?.executeJavaScript("window.print();");
+            }
 		});
 
 		// setup dom listeners
@@ -275,27 +282,26 @@ await (async function () {
 		if (!tabs || tabs.length === 0) {
 			console.debug("No tabs yet, creating new tab");
 		}
-		let resolved_file;
+		let resolved_file: string;
 		let title: string;
 		console.debug(file);
 		if (typeof file === "string") {
 			resolved_file = await window.api.ResolvePath(file);
-			title = file;
+			title = await window.api.getFileName(file);
 		} else {
 			resolved_file = await window.api.ResolvePath(file[0]);
-			title = file[0];
+			title = await window.api.getFileName(file[0]);
 		}
 		// check if file is already open
 		let fileAlreadyOpen = false;
 		_tabGroup?.eachTab((tab) => {
-			if (tab.getTitle() === title) {
-				fileAlreadyOpen = true;
-				console.info("file already open");
-				_tabGroup?.setActiveTab(tab);
-				return;
-			}
+            if (_tabFilePath.get(tab) === resolved_file) {
+                fileAlreadyOpen = true;
+                console.info("file already open");
+                _tabGroup?.setActiveTab(tab);
+            }
 		});
-		
+
 		let pageArg = "";
 		if (page) {
 			pageArg = `page=${page}`;
@@ -311,6 +317,7 @@ await (async function () {
 				active: true,
 				ready: (tab) => {
 					console.info("tab loaded");
+                    _tabFilePath.set(tab, resolved_file);
 					tab.element.classList.add("document-tab");
 					_headerElement.style.visibility = "visible";
 					_appContainerElement.style.display = "block";
@@ -320,11 +327,12 @@ await (async function () {
 					if (!_slidersInitialized) {
 						_setupSliders();
 					}
-				}
+				},
 			});
 			tab?.on("close", () => {
 				console.debug("tab closed");
-				_tabGroup?.tabs.length
+                _tabFilePath.delete(tab);
+				_tabGroup?.tabs.length;
 				if (_tabGroup?.getTabs().length === 0) {
 					_headerElement.style.visibility = "hidden";
 					_splashElement.style.display = "flex";
@@ -554,13 +562,13 @@ await (async function () {
 			// @ts-ignore
 			content?.insertCSS(style.textContent).then((key: string) => {
 				console.info("inserted style", key);
-				_tabCssKeyMap.set(tab, key);
+				_tabCssKey.set(tab, key);
 			});
 		});
 		tab.on("close", (tab) => {
-			const key = _tabCssKeyMap.get(tab);
+			const key = _tabCssKey.get(tab);
 			if (key) {
-				_tabCssKeyMap.delete(tab);
+				_tabCssKey.delete(tab);
 			}
 		});
 	};
@@ -574,16 +582,15 @@ await (async function () {
 		_tabGroup?.eachTab((tab) => {
 			const content = tab.webview;
 			if (content) {
-				if (_tabCssKeyMap.has(tab)) {
-					const key = _tabCssKeyMap.get(tab);
+				if (_tabCssKey.has(tab)) {
+					const key = _tabCssKey.get(tab);
 					// @ts-ignore
 					content.removeInsertedCSS(key);
 				}
 				// @ts-ignore
-				content.insertCSS(cssRule).then(
-					(key: string) => {
+				content.insertCSS(cssRule).then((key: string) => {
 					console.info("inserted style", key);
-					_tabCssKeyMap.set(tab, key);
+					_tabCssKey.set(tab, key);
 				});
 			}
 		});
@@ -615,4 +622,7 @@ await (async function () {
 	return {
 		run: main,
 	};
-})().then((extension) => extension.run());
+})();
+
+const n = await nightPDF;
+n.run();
