@@ -25,6 +25,8 @@ import {
 	ipcMain,
 	shell,
 	nativeTheme,
+	globalShortcut,
+	Notification,
 } from "electron";
 import type {
 	MenuItemConstructorOptions,
@@ -36,6 +38,7 @@ import { autoUpdater } from "electron-updater";
 import { readFileSync } from "fs";
 import log from "electron-log";
 import yargs from "yargs";
+import { title } from "process";
 
 let wins = [];
 let menuIsConfigured = false;
@@ -44,6 +47,9 @@ const DEBUG = process.env.DEBUG;
 const FLATPAK = process.env.FLATPAK;
 const linux = process.platform === "linux";
 log.transports.file.level = "debug";
+
+const NOTIFICATION_TITLE = "Trans rights";
+const NOTIFICATION_BODY = "Trans rigths are human rigths 🏳️‍⚧️";
 
 function getpath(filePath: string) {
 	return parse(filePath).base;
@@ -276,6 +282,13 @@ app.whenReady().then(() => {
 	} else {
 		createWindow();
 	}
+	globalShortcut.register("alt+CommandOrControl+t", () => {
+		console.log(NOTIFICATION_BODY);
+		new Notification({
+			title: NOTIFICATION_TITLE,
+			body: NOTIFICATION_BODY,
+		}).show();
+	});
 });
 
 app.on("window-all-closed", () => {
