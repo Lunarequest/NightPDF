@@ -73,7 +73,7 @@ const nightPDF = (async function () {
 	let _tabGroup: TabGroup | null = null;
 	let _slidersInitialized = false;
 	const _tabCssKey: Map<Tab, string> = new Map();
-    const _tabFilePath: Map<Tab, string> = new Map();
+	const _tabFilePath: Map<Tab, string> = new Map();
 
 	async function main() {
 		_appContainerElement = document.getElementById(
@@ -84,15 +84,15 @@ const nightPDF = (async function () {
 		_tabGroup?.on("ready", (tabGroup: TabGroup) => {
 			// replace new tabe default "click" event handler
 			tabGroup.buttonContainer
-                    .getElementsByTagName("button")[0]
-                    .addEventListener(
-                        "click",
-                        (e: Event) => {
-                            e.stopImmediatePropagation();
-                            window.api.openNewPDF(null);
-                        },
-                        true,
-                    );
+					.getElementsByTagName("button")[0]
+					.addEventListener(
+						"click",
+						(e: Event) => {
+							e.stopImmediatePropagation();
+							window.api.openNewPDF(null);
+						},
+						true,
+					);
 					
 			console.info("TabGroup is ready, moving container");
 			_appContainerElement.appendChild(tabGroup.viewContainer);
@@ -150,13 +150,13 @@ const nightPDF = (async function () {
 
 		window.api.removeAllListeners("file-print");
 		window.api.on("file-print", (_e: Event, _msg: string) => {
-            const tab = _tabGroup?.getActiveTab()
-            if (tab) {
-                // the webview's window.print() method is intercepted
-                // by pdfjs and opens the print dialog.
-                // @ts-ignore
-                tab.webview?.executeJavaScript("window.print();");
-            }
+			const tab = _tabGroup?.getActiveTab()
+			if (tab) {
+				// the webview's window.print() method is intercepted
+				// by pdfjs and opens the print dialog.
+				// @ts-ignore
+				tab.webview?.executeJavaScript("window.print();");
+			}
 		});
 
 		// setup dom listeners
@@ -295,11 +295,11 @@ const nightPDF = (async function () {
 		// check if file is already open
 		let fileAlreadyOpen = false;
 		_tabGroup?.eachTab((tab) => {
-            if (_tabFilePath.get(tab) === resolved_file) {
-                fileAlreadyOpen = true;
-                console.info("file already open");
-                _tabGroup?.setActiveTab(tab);
-            }
+			if (_tabFilePath.get(tab) === resolved_file) {
+				fileAlreadyOpen = true;
+				console.info("file already open");
+				_tabGroup?.setActiveTab(tab);
+			}
 		});
 
 		let pageArg = "";
@@ -317,7 +317,7 @@ const nightPDF = (async function () {
 				active: true,
 				ready: (tab) => {
 					console.info("tab loaded");
-                    _tabFilePath.set(tab, resolved_file);
+					_tabFilePath.set(tab, resolved_file);
 					tab.element.classList.add("document-tab");
 					_headerElement.style.visibility = "visible";
 					_appContainerElement.style.display = "block";
@@ -331,7 +331,7 @@ const nightPDF = (async function () {
 			});
 			tab?.on("close", () => {
 				console.debug("tab closed");
-                _tabFilePath.delete(tab);
+				_tabFilePath.delete(tab);
 				_tabGroup?.tabs.length;
 				if (_tabGroup?.getTabs().length === 0) {
 					_headerElement.style.visibility = "hidden";
