@@ -38,7 +38,6 @@ import { autoUpdater } from "electron-updater";
 import { readFileSync } from "fs";
 import log from "electron-log";
 import yargs from "yargs";
-import { title } from "process";
 
 let wins = [];
 let menuIsConfigured = false;
