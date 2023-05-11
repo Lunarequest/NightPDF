@@ -28,10 +28,51 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 			content="script-src 'self';"
 		/>
 	</head>
-
 	<body>
 		<div id="header">
-			<span id="title"> </span>
+			<tab-group new-tab-button="true" sortable="true">
+				<style>
+					/* Make tabs dark 
+					
+					   Ideally these should be variables that are set somewhere else, but
+					   they also must remain in this <style> block inside the <tab-group>
+					   element. This is because the <tab-group> element is a web component
+					   and the shadow dom prevents styles from leaking out.
+					*/
+					:host {
+						--tabgroup-background: #2d2d2d;
+						--tab-background: #2d2d2d;
+						--tab-color: #cccccc;
+						--tab-border-color: #1e1e1e;
+						--tab-active-background: #1e1e1e;
+						--tag-hover-background: #1e1e1e;
+						--button-font-size: 15px;
+						--button-background: none;
+						--button-color: #777777;
+						--button-hover-background: #cccccc;
+						--button-hover-color: #383a3e;
+						--badge-background: #383a3e;
+						--badge-color: #fff;
+						--tab-border: none;
+					}
+					.tabs > .tab.document-tab {
+						max-width: 15vw;
+						text-align: right;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+
+					.tabs > .tab.document-tab > .tab-title {
+						display: inline-block;
+						direction: rtl;
+						text-align: right;
+						white-space: nowrap;
+						max-width: calc(15vw - 20px);
+						overflow: hidden;
+					}
+				  </style>
+			</tab-group>
 			<div id="menu">
 				<div id="default-button" class="button active">Default</div>
 				<div id="sepia-button" class="button">Sepia</div>
@@ -57,14 +98,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 			</div>
 		</div>
 		<div id="appContainer">
-			<iframe id="pdfjs"></iframe>
 		</div>
-		<div id="splash">
-			<img src="assets/icon2.png" width="100px" />
-			<h3>Drop PDF here</h3>
-		</div>
-		<div id="splash-extra">
-			<h3 id="prompt">Open File with CTRL+O</h3>
+		<div id="splash-container">
+			<div id="splash">
+				<img src="assets/icon2.png" width="100px" />
+				<h3>Drop PDF here</h3>
+			</div>
+			<div id="splash-extra">
+				<h3 id="prompt">Open File with CTRL+O</h3>
+			</div>
 		</div>
 		<script type="module" src="./render/render.mjs"></script>
 	</body>

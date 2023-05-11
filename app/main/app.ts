@@ -25,7 +25,6 @@ import {
 	ipcMain,
 	shell,
 	nativeTheme,
-	Notification,
 } from "electron";
 import type {
 	MenuItemConstructorOptions,
@@ -70,6 +69,7 @@ function createWindow(
 		minHeight: 200,
 		webPreferences: {
 			sandbox: true,
+			webviewTag: true,
 			preload: resolve(join(__dirname, "../preload/preload.js")),
 		},
 		resizable: true,
@@ -187,7 +187,7 @@ function createWindow(
 	};
 
 	ipcMain.removeAllListeners("togglePrinting");
-	ipcMain.once("togglePrinting", (_e: Event, msg: string) => {
+	ipcMain.on("togglePrinting", (_e: Event, msg: string) => {
 		const menu = Menu.getApplicationMenu();
 		if (menu) {
 			const print = menu.getMenuItemById("file-print");
@@ -214,7 +214,7 @@ function createWindow(
 	});
 
 	ipcMain.removeAllListeners("openNewPDF");
-	ipcMain.once("openNewPDF", (_e: Event, _msg: null) => {
+	ipcMain.on("openNewPDF", (_e: Event, _msg: null) => {
 		openNewPDF();
 	});
 }

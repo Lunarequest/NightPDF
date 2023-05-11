@@ -17,7 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import "electron-tabs";
+import { Tab, TabGroup } from "electron-tabs";
 import { API, create } from "nouislider";
+
 function _try(func: Function, fallbackValue: number) {
 	try {
 		const value = func();
@@ -30,11 +33,12 @@ function _try(func: Function, fallbackValue: number) {
 declare global {
 	interface Window {
 		api: {
-			getPath(arg0: string): Promise<string>;
+			getFileName(arg0: string): Promise<string>;
 			ResolvePath(arg0: string): Promise<string>;
 			removeAllListeners(arg0: string): null;
 			openNewPDF(arg0: null | string): null;
 			newWindow(arg0: string | string[]): null;
+			newTab(arg0: string | string[]): null;
 			togglePrinting(arg0: Boolean): null;
 			resizeWindow(arg0: null | string): null;
 			on(arg0: string, arg1: CallableFunction): null;
@@ -46,14 +50,14 @@ declare global {
 	interface File {
 		path: string;
 	}
+
 }
 
 const nightPDF = (async function () {
 	console.log("loading");
-	let _pdfElement: HTMLIFrameElement;
 	let _appContainerElement: HTMLElement;
 	let _headerElement: HTMLElement;
-	let _titleElement: HTMLElement;
+	// let _titleElement: HTMLElement;
 	let _darkConfiguratorElement: HTMLElement;
 	let _brightnessSliderElement: HTMLElement;
 	let _grayscaleSliderElement: HTMLElement;
@@ -62,19 +66,46 @@ const nightPDF = (async function () {
 	let _hueSliderElement: HTMLElement;
 	let _extraBrightnessSliderElement: HTMLElement;
 	let _splashElement: HTMLElement;
-	let _splashExtraElement: HTMLElement;
 	let _defaultButton: HTMLElement;
 	let _sepiaButton: HTMLElement;
 	let _redeyeButton: HTMLElement;
 	let _customButton: HTMLElement;
+	let _tabGroup: TabGroup | null = null;
+	let _slidersInitialized = false;
+	const _tabCssKey: Map<Tab, string> = new Map();
+	const _tabFilePath: Map<Tab, string> = new Map();
 
 	async function main() {
 		_appContainerElement = document.getElementById(
 			"appContainer",
 		) as HTMLElement;
-		_pdfElement = document.getElementById("pdfjs") as HTMLIFrameElement;
+		_appContainerElement.style.display = "none";
+		_tabGroup = document.querySelector("tab-group");
+		_tabGroup?.on("ready", (tabGroup: TabGroup) => {
+			// replace new tabe default "click" event handler
+			tabGroup.buttonContainer
+					.getElementsByTagName("button")[0]
+					.addEventListener(
+						"click",
+						(e: Event) => {
+							e.stopImmediatePropagation();
+							window.api.openNewPDF(null);
+						},
+						true,
+					);
+					
+			console.info("TabGroup is ready, moving container");
+			_appContainerElement.appendChild(tabGroup.viewContainer);
+			tabGroup?.viewContainer.addEventListener(
+				"click",
+				(e: Event) => {
+					_hideDarkConfigurator();
+					e.stopPropagation();
+				},
+				true,
+			);
+		});
 		_headerElement = document.getElementById("header") as HTMLElement;
-		_titleElement = document.getElementById("title") as HTMLElement;
 		_defaultButton = document.getElementById("default-button") as HTMLElement;
 		_sepiaButton = document.getElementById("sepia-button") as HTMLElement;
 		_redeyeButton = document.getElementById("redeye-button") as HTMLElement;
@@ -96,10 +127,7 @@ const nightPDF = (async function () {
 		_extraBrightnessSliderElement = document.getElementById(
 			"extraBrightnessSlider",
 		) as HTMLElement;
-		_splashElement = document.getElementById("splash") as HTMLElement;
-		_splashExtraElement = document.getElementById(
-			"splash-extra",
-		) as HTMLElement;
+		_splashElement = document.getElementById("splash-container") as HTMLElement;
 
 		//setup electron listeners
 		window.api.removeAllListeners("file-open");
@@ -122,7 +150,13 @@ const nightPDF = (async function () {
 
 		window.api.removeAllListeners("file-print");
 		window.api.on("file-print", (_e: Event, _msg: string) => {
-			_pdfElement.contentWindow?.print();
+			const tab = _tabGroup?.getActiveTab()
+			if (tab) {
+				// the webview's window.print() method is intercepted
+				// by pdfjs and opens the print dialog.
+				// @ts-ignore
+				tab.webview?.executeJavaScript("window.print();");
+			}
 		});
 
 		// setup dom listeners
@@ -187,20 +221,9 @@ const nightPDF = (async function () {
 			_hideDarkConfigurator();
 		});
 
-		_pdfElement.addEventListener(
-			"click",
-			(e: Event) => {
-				_hideDarkConfigurator();
-				e.stopPropagation();
-			},
-			true,
-		);
+		
 
 		_splashElement.addEventListener("click", (_e: Event) => {
-			window.api.openNewPDF(null);
-		});
-
-		_splashExtraElement.addEventListener("click", (_e: Event) => {
 			window.api.openNewPDF(null);
 		});
 
@@ -255,45 +278,70 @@ const nightPDF = (async function () {
 		page: number | null = null,
 	) => {
 		console.log("opening ", file);
-		if (_pdfElement.src) {
-			console.log("opening in new window");
-			window.api.newWindow(file);
-		} else {
-			_appContainerElement.style.zIndex = "1";
-			let resolved_file;
-			console.log(file);
-			if (typeof file === "string") {
-				resolved_file = await window.api.ResolvePath(file);
-			} else {
-				resolved_file = await window.api.ResolvePath(file[0]);
-			}
-			if (page) {
-				_pdfElement.src = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
-					resolved_file,
-				)}#page=${page}`;
-			} else {
-				_pdfElement.src = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
-					resolved_file,
-				)}#pagemode=none`;
-			}
-			_pdfElement.onload = _fileDidLoad;
-			if (typeof file === "string") {
-				await _updateTitle(file);
-			} else {
-				await _updateTitle(file[0]);
-			}
-			window.api.resizeWindow(null);
-			//send message to update window size
+		const tabs = _tabGroup?.getTabs();
+		if (!tabs || tabs.length === 0) {
+			console.debug("No tabs yet, creating new tab");
 		}
-	};
+		let resolved_file: string;
+		let title: string;
+		console.debug(file);
+		if (typeof file === "string") {
+			resolved_file = await window.api.ResolvePath(file);
+			title = await window.api.getFileName(file);
+		} else {
+			resolved_file = await window.api.ResolvePath(file[0]);
+			title = await window.api.getFileName(file[0]);
+		}
+		// check if file is already open
+		let fileAlreadyOpen = false;
+		_tabGroup?.eachTab((tab) => {
+			if (_tabFilePath.get(tab) === resolved_file) {
+				fileAlreadyOpen = true;
+				console.info("file already open");
+				_tabGroup?.setActiveTab(tab);
+			}
+		});
 
-	const _fileDidLoad = () => {
-		console.log("Loaded PDF");
-		_headerElement.style.visibility = "visible";
-		window.api.togglePrinting(true);
-		window.api.resizeWindow(null);
-		_setupDarkMode();
-		_setupSliders();
+		let pageArg = "";
+		if (page) {
+			pageArg = `page=${page}`;
+		} else {
+			pageArg = "pagemode=none";
+		}
+		if (!fileAlreadyOpen) {
+			const tab = _tabGroup?.addTab({
+				title: title,
+				src: `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
+					resolved_file,
+				)}#${pageArg}`,
+				active: true,
+				ready: (tab) => {
+					console.info("tab loaded");
+					_tabFilePath.set(tab, resolved_file);
+					tab.element.classList.add("document-tab");
+					_headerElement.style.visibility = "visible";
+					_appContainerElement.style.display = "block";
+					_splashElement.style.display = "none";
+					window.api.togglePrinting(true);
+					_setupDarkMode(tab);
+					if (!_slidersInitialized) {
+						_setupSliders();
+					}
+				},
+			});
+			tab?.on("close", () => {
+				console.debug("tab closed");
+				_tabFilePath.delete(tab);
+				_tabGroup?.tabs.length;
+				if (_tabGroup?.getTabs().length === 0) {
+					_headerElement.style.visibility = "hidden";
+					_splashElement.style.display = "flex";
+					_appContainerElement.style.display = "none";
+					window.api.togglePrinting(false);
+				}
+			});
+		}
+		return;
 	};
 
 	const _handlePresetChange = (preset: string) => {
@@ -341,7 +389,7 @@ const nightPDF = (async function () {
 				brightness.set(9);
 		}
 
-		console.log(preset, "changed");
+		console.debug(preset, "changed");
 	};
 
 	const _setupSliders = () => {
@@ -498,37 +546,54 @@ const nightPDF = (async function () {
 				updateCSS();
 			});
 		});
+		_slidersInitialized = true;
 	};
 
-	const _setupDarkMode = () => {
-		const style = document.createElement("style");
-		const content = _pdfElement.contentDocument;
-		style.setAttribute("id", "pageStyle");
-		style.textContent = "div#viewer .page {";
-		style.textContent +=
-			"filter: brightness(0.91) grayscale(0.95) invert(0.95) sepia(0.55) hue-rotate(180deg);";
-		style.textContent += "border-image: none;";
-		style.textContent += "}";
-		if (content) {
-			content.head.appendChild(style);
-		}
+	const _setupDarkMode = (tab: Tab) => {
+		tab.once("webview-dom-ready", () => {
+			const style = document.createElement("style");
+			const content = tab.webview;
+			style.setAttribute("id", "pageStyle");
+			style.textContent = "div#viewer .page {";
+			style.textContent +=
+				"filter: brightness(0.91) grayscale(0.95) invert(0.95) sepia(0.55) hue-rotate(180deg);";
+			style.textContent += "border-image: none;";
+			style.textContent += "}";
+			// @ts-ignore
+			content?.insertCSS(style.textContent).then((key: string) => {
+				console.info("inserted style", key);
+				_tabCssKey.set(tab, key);
+			});
+		});
+		tab.on("close", (tab) => {
+			const key = _tabCssKey.get(tab);
+			if (key) {
+				_tabCssKey.delete(tab);
+			}
+		});
 	};
 
 	const _updateDarkSettings = (cssFilter: string) => {
-		const content = _pdfElement.contentDocument;
-		if (content) {
-			const currentStyle = content.getElementById("pageStyle");
-
-			let cssRule;
-			cssRule = "div#viewer .page {";
-			cssRule += cssFilter;
-			cssRule += "border-image: none;";
-			cssRule += "}";
-
-			if (currentStyle) {
-				currentStyle.innerHTML = cssRule;
+		let cssRule: string;
+		cssRule = "div#viewer .page {";
+		cssRule += cssFilter;
+		cssRule += "border-image: none;";
+		cssRule += "}";
+		_tabGroup?.eachTab((tab) => {
+			const content = tab.webview;
+			if (content) {
+				if (_tabCssKey.has(tab)) {
+					const key = _tabCssKey.get(tab);
+					// @ts-ignore
+					content.removeInsertedCSS(key);
+				}
+				// @ts-ignore
+				content.insertCSS(cssRule).then((key: string) => {
+					console.info("inserted style", key);
+					_tabCssKey.set(tab, key);
+				});
 			}
-		}
+		});
 	};
 
 	const updateCSS = () => {
@@ -542,7 +607,6 @@ const nightPDF = (async function () {
 			0,
 		);
 
-		console.log(extraBrightness);
 		let cssRule = "";
 		cssRule += "filter: ";
 		cssRule += `brightness(${(100 - brightness) / 100}) `;
@@ -552,21 +616,7 @@ const nightPDF = (async function () {
 		cssRule += `hue-rotate(${hue}deg) `;
 		cssRule += `brightness(${(Math.round(extraBrightness) + 100.0) / 100});`;
 
-		console.log(cssRule);
-
 		_updateDarkSettings(cssRule);
-	};
-
-	const _updateTitle = async (filePath: string) => {
-		window.api.getPath(filePath).then((fileName) => {
-			console.log(fileName);
-			if (fileName) {
-				_titleElement.innerHTML = fileName;
-				document.title = fileName;
-			} else {
-				document.title = "NightPDF";
-			}
-		});
 	};
 
 	return {

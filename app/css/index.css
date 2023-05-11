@@ -6,6 +6,19 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 }
 
+.views {
+	height: calc(100vh - 40px);
+}
+
+.views > .view {
+	display: none;
+}
+
+.views > .view.visible {
+	height: 100%;
+	display: flex;
+}
+
 #splash {
 	position: absolute;
 	height: 232px;
