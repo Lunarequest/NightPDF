@@ -189,7 +189,7 @@ function createWindow(
 					} else {
 						const focusedWin = BrowserWindow.getFocusedWindow();
 						if (focusedWin) {
-							focusedWin.webContents.send("file-open", filename.toString());
+							focusedWin.webContents.send("file-open", filename.toString(), DEBUG);
 							focusedWin.maximize();
 						}
 					}

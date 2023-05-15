@@ -162,16 +162,16 @@ const nightPDF = (async function () {
 		window.api.removeAllListeners("file-open");
 		window.api.on(
 			"file-open",
-			(_e: Event, msg: string | [string, number] | [string]) => {
+			(_e: Event, msg: string | [string, number] | [string], debug = false) => {
 				console.log(msg);
 				if (typeof msg === "string") {
-					_openFile(msg);
+					_openFile(msg, null, debug);
 				} else {
 					if (msg.length === 1) {
 						// this case only occurs when launching from a started instance unsure why
-						_openFile(msg[0]);
+						_openFile(msg[0], null, debug);
 					} else {
-						_openFile(msg[0][0], msg[1]);
+						_openFile(msg[0][0], msg[1], debug);
 					}
 				}
 			},
@@ -415,6 +415,7 @@ const nightPDF = (async function () {
 	const _openFile = async (
 		file: string | string[],
 		page: number | null = null,
+		debug = false,
 	) => {
 		console.log("opening ", file);
 		const tabs = _tabGroup?.getTabs();
@@ -462,7 +463,7 @@ const nightPDF = (async function () {
 					_appContainerElement.style.display = "block";
 					_splashElement.style.display = "none";
 					window.api.togglePrinting(true);
-					_setupTab(tab);
+					_setupTab(tab, debug);
 					if (!_slidersInitialized) {
 						_setupSliders();
 					}
@@ -704,23 +705,53 @@ const nightPDF = (async function () {
 		_slidersInitialized = true;
 	};
 
-	const _setupTab = (tab: Tab) => {
+	const _setupTab = (tab: Tab, debug = false) => {
 		tab.once("webview-dom-ready", () => {
-			const style = document.createElement("style");
 			const content = tab.webview;
+			if (debug) {
+				// @ts-ignore
+				content?.openDevTools();
+			}
 			// @ts-ignore
 			content?.executeJavaScript(_keyInterceptor)
-			style.setAttribute("id", "pageStyle");
-			style.textContent = "div#viewer .page {";
-			style.textContent +=
+			let style = "div#viewer .page {";
+			style +=
 				"filter: brightness(0.91) grayscale(0.95) invert(0.95) sepia(0.55) hue-rotate(180deg);";
-			style.textContent += "border-image: none;";
-			style.textContent += "}";
+			style += "border-image: none;";
+			style += "}";
 			// @ts-ignore
-			content?.insertCSS(style.textContent).then((key: string) => {
+			content?.insertCSS(style).then((key: string) => {
 				console.info("inserted style", key);
 				_tabCssKey.set(tab, key);
 			});
+			// .viewerContainer scrollbar dark colors
+			// @ts-ignore
+			content?.insertCSS(`
+				:root {
+					--dark-scrollbar-color: #1e1e1e;
+					--dark-scrollbar-bg-color: #444444;
+				}
+				#viewerContainer {
+					scrollbar-color: var(--dark-scrollbar-color) var(--dark-scrollbar-bg-color) !important;
+				}
+				#viewerContainer::-webkit-scrollbar {
+					width: 15px !important;
+					height: 15px !important;
+				}
+				#viewerContainer::-webkit-scrollbar-track {
+					background-color: var(--dark-scrollbar-bg-color) !important;
+				}
+				#viewerContainer::-webkit-scrollbar-thumb {
+					background-color: var(--dark-scrollbar-color) !important;
+				}
+				#viewerContainer::-webkit-scrollbar-track-piece {
+					background-color: var(--dark-scrollbar-bg-color) !important;
+				}
+				#viewerContainer::-webkit-scrollbar-corner {
+					background-color: var(--dark-scrollbar-bg-color) !important;
+				}`).then((key: string) => {
+					console.info("inserted style", key);
+				});
 		});
 		tab.on("close", (tab) => {
 			const key = _tabCssKey.get(tab);
