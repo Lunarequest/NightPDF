@@ -81,28 +81,6 @@ const nightPDF = (async function () {
 	let _slidersInitialized = false;
 	const _tabCssKey: Map<Tab, string> = new Map();
 	const _tabFilePath: Map<Tab, string> = new Map();
-	// Keys we are interested in
-	const _ctrlCmdKeybinds: string[] = [
-		"o",
-		"p",
-		"t",
-		"w",
-		"Tab",
-		"F4",
-		"PageUp",
-		"PageDown",
-		"0",
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-	];
-	const _ctrlCmdPlusShiftKeybinds: string[] = ["t", "w", "Tab", "PageUp", "PageDown", "Home", "End"];
 	// Code to inject into the webview, to prevent jsPDF from intercepting keybinds
 	const _keyInterceptor: string = `
 		var _ctrlCmdKeybinds = ["o", "p", "t", "w", "Tab", "F4", "PageUp", "PageDown", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
