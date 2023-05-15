@@ -96,9 +96,6 @@ function createWindow(
 	// and load the index.html of the app.
 
 	win.loadFile(join(__dirname, "../index.html"));
-	if (DEBUG) {
-		win.webContents.openDevTools();
-	}
 	const wc = win.webContents;
 	// if the window url changes from the inital one,
 	// block the change and use xdg-open to open it
@@ -121,6 +118,10 @@ function createWindow(
 
 	win.webContents.removeAllListeners("did-finish-load");
 	win.webContents.once("did-finish-load", () => {
+		// avoid race condition
+		if (DEBUG) {
+			win.webContents.openDevTools();
+		}
 		if (filename) {
 			if (page) {
 				win.webContents.send("file-open", [filename, page]);
@@ -293,6 +294,89 @@ app.whenReady().then(() => {
 			body: NOTIFICATION_BODY,
 		}).show();
 	});
+
+	// add "new tab" alias for open file
+	globalShortcut.register("CommandOrControl+t", () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			ipcMain.emit("openNewPDF");
+		}
+	});
+
+	// send "close-tab" to window
+	globalShortcut.registerAll(["CommandOrControl+w", "CommandOrControl+F4"], () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			console.log("sending close-tab");
+			focusedWin.webContents.send("close-tab");
+		}
+	});
+
+	// register all "next-tab" shortcuts
+	globalShortcut.registerAll([
+		"CommandOrControl+Tab",
+		"CommandOrControl+PageDown"	
+	], () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			focusedWin.webContents.send("switch-tab", "next");
+		}
+	});
+
+	// register all "previous-tab" shortcuts
+	globalShortcut.registerAll([
+		"CommandOrControl+Shift+Tab",
+		"CommandOrControl+PageUp"
+	], () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			focusedWin.webContents.send("switch-tab", "prev");
+		}
+	});
+
+	// register Ctrl+1 to Ctrl+9 shortcuts
+	for (let i = 1; i <= 9; i++) {
+		globalShortcut.register(`CommandOrControl+${i}`, () => {
+			const focusedWin = BrowserWindow.getFocusedWindow();
+			if (focusedWin) {
+				focusedWin.webContents.send("switch-tab", i);
+			}
+		});
+	}
+
+	// register move-tab (left) shortcut
+	globalShortcut.register("CommandOrControl+Shift+PageUp", () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			focusedWin.webContents.send("move-tab", "prev");
+		}
+	});
+
+	// register move-tab (right) shortcut
+	globalShortcut.register("CommandOrControl+Shift+PageDown", () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			focusedWin.webContents.send("move-tab", "next");
+		}
+	});
+
+	// register move-tab (start)
+	globalShortcut.register("CommandOrControl+Shift+Home", () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			focusedWin.webContents.send("move-tab", "start");
+		}
+	});
+
+	// register move-tab (end)
+	globalShortcut.register("CommandOrControl+Shift+End", () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			focusedWin.webContents.send("move-tab", "end");
+		}
+	});
+
+
 });
 
 app.on("window-all-closed", () => {

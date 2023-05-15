@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 import "electron-tabs";
 import { Tab, TabGroup } from "electron-tabs";
 import { API, create } from "nouislider";
+import { List } from "postcss/lib/list";
 
 function _try(func: Function, fallbackValue: number) {
 	try {
@@ -65,7 +66,6 @@ const nightPDF = (async function () {
 	console.log("loading");
 	let _appContainerElement: HTMLElement;
 	let _headerElement: HTMLElement;
-	// let _titleElement: HTMLElement;
 	let _darkConfiguratorElement: HTMLElement;
 	let _brightnessSliderElement: HTMLElement;
 	let _grayscaleSliderElement: HTMLElement;
@@ -82,6 +82,48 @@ const nightPDF = (async function () {
 	let _slidersInitialized = false;
 	const _tabCssKey: Map<Tab, string> = new Map();
 	const _tabFilePath: Map<Tab, string> = new Map();
+	// Keys we are interested in
+	const _ctrlCmdKeybinds: string[] = [
+		"o",
+		"p",
+		"t",
+		"w",
+		"Tab",
+		"F4",
+		"PageUp",
+		"PageDown",
+		"0",
+		"1",
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+		"7",
+		"8",
+		"9",
+	];
+	const _ctrlCmdPlusShiftKeybinds: string[] = ["t", "w", "Tab", "PageUp", "PageDown", "Home", "End"];
+	// Code to inject into the webview, to prevent jsPDF from intercepting keybinds
+	const _keyInterceptor: string = `
+		var _ctrlCmdKeybinds = ["o", "p", "t", "w", "Tab", "F4", "PageUp", "PageDown", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+		var _ctrlCmdPlusShiftKeybinds = ["t", "w", "Tab", "PageUp", "PageDown", "Home", "End"];
+		function handleKeys(e) {
+			// ctrl / cmd
+			if (e.ctrlKey || e.metaKey) {
+				if (_ctrlCmdKeybinds.includes(e.key)) {
+					e.stopPropagation();
+				}
+				// ctrl / cmd + shift
+				if (e.shiftKey) {
+					if (_ctrlCmdPlusShiftKeybinds.includes(e.key)) {
+						e.stopPropagation();
+					}
+				}
+			}
+		};
+		document.addEventListener("keydown", handleKeys, true);
+	`
 
 	async function main() {
 		_appContainerElement = document.getElementById(
@@ -166,6 +208,104 @@ const nightPDF = (async function () {
 				tab.webview?.executeJavaScript("window.print();");
 			}
 		});
+
+		// close-tab event
+		window.api.removeAllListeners("close-tab");
+		window.api.on(
+			"close-tab",
+			(_e: Event, _msg: string) => {
+				const tab = _tabGroup?.getActiveTab();
+				if (tab) {
+					console.log("Closing active tab.");
+					tab.close(false);
+				}
+		});
+
+		// switch-tab event
+		// expects "next", "prev" or a number from 1-9
+		window.api.removeAllListeners("switch-tab");
+		window.api.on(
+			"switch-tab",
+			(_e: Event, msg: string | number) => {
+				const tab = _tabGroup?.getActiveTab();
+				// There is a bug in electron-tabs where
+				// selecting the previous tab with "getPreviousTab" will never work if the previous
+				// tab position === 0, see:
+				// https://github.com/brrd/electron-tabs/blob/master/src/index.ts#L231
+
+				// tabgroup methods return null if there is no tab
+				let target: Tab | null | undefined = null;
+				if (tab) {
+					if (typeof msg === "string") {
+						switch (msg) {
+							case "next":
+								console.log("switching to next tab");
+								target = _tabGroup?.getNextTab();
+								break;
+							case "prev": {
+								console.log("switching to previous tab");
+								// target = _tabGroup?.getPreviousTab();
+								const targetPos = tab.getPosition() - 1;
+								if (targetPos >= 0) {
+									target = _tabGroup?.getTabByPosition(targetPos);
+								}
+								break;
+							}
+						}
+					} else {
+						if (msg >= 1 && msg <= 8) {
+							target = _tabGroup?.getTabByPosition(msg - 1);
+						} else if (msg === 9) {
+							// last tab
+							target = _tabGroup?.getTabByPosition(-1);
+						}
+					}
+					if(target) {
+						target.activate();
+					}
+				}
+			},
+		);
+
+		// move-tab event
+		// expects "next" or "prev", "start" or "end"
+		window.api.removeAllListeners("move-tab");
+		window.api.on(
+			"move-tab",
+			(_e: Event, msg: string) => {
+				const tab = _tabGroup?.getActiveTab();
+				if (tab) {
+					switch (msg) {
+						case "next": {
+							console.log("moving tab to next position");
+							const targetPos = tab.getPosition() + 1;
+							const tabCount = _tabGroup?.tabContainer.childElementCount;
+							console.log("Tab count", tabCount, "targetPos", targetPos);
+							if (tabCount && targetPos < tabCount) {
+								tab.setPosition(targetPos);
+							}
+							break;
+						}
+						case "prev": {
+							console.log("moving tab to previous position");
+							const targetPos = tab.getPosition() - 1;
+							if (targetPos >= 0) {
+								tab.setPosition(targetPos);
+							}
+							break;
+						}
+						case "start":
+							console.log("moving tab to start");
+							tab.setPosition(0);
+							break;
+						case "end":
+							console.log("moving tab to end");
+							tab.setPosition(-1);
+							break;
+					}
+				}
+			},
+		);
 
 		// setup dom listeners
 		_defaultButton.addEventListener("click", (e: Event) => {
@@ -279,6 +419,22 @@ const nightPDF = (async function () {
 		}
 	};
 
+	const _handleTabShortcuts = (e: KeyboardEvent) => {
+		// ctrl / cmd
+		console.info(e.key);
+		if (e.ctrlKey || e.metaKey) {
+			if (_ctrlCmdKeybinds.includes(e.key)) {
+				e.stopPropagation();
+			}
+			// ctrl / cmd + shift
+			if (e.shiftKey) {
+				if (_ctrlCmdPlusShiftKeybinds.includes(e.key)) {					
+					e.stopPropagation();
+				}
+			}
+		}
+	};
+			
 	const _openFile = async (
 		file: string | string[],
 		page: number | null = null,
@@ -304,7 +460,7 @@ const nightPDF = (async function () {
 			if (_tabFilePath.get(tab) === resolved_file) {
 				fileAlreadyOpen = true;
 				console.info("file already open");
-				_tabGroup?.setActiveTab(tab);
+				tab.activate();
 			}
 		});
 
@@ -329,7 +485,7 @@ const nightPDF = (async function () {
 					_appContainerElement.style.display = "block";
 					_splashElement.style.display = "none";
 					window.api.togglePrinting(true);
-					_setupDarkMode(tab);
+					_setupTab(tab);
 					if (!_slidersInitialized) {
 						_setupSliders();
 					}
@@ -567,10 +723,12 @@ const nightPDF = (async function () {
 		_slidersInitialized = true;
 	};
 
-	const _setupDarkMode = (tab: Tab) => {
+	const _setupTab = (tab: Tab) => {
 		tab.once("webview-dom-ready", () => {
 			const style = document.createElement("style");
 			const content = tab.webview;
+			// @ts-ignore
+			content?.executeJavaScript(_keyInterceptor)
 			style.setAttribute("id", "pageStyle");
 			style.textContent = "div#viewer .page {";
 			style.textContent +=
