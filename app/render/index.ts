@@ -411,7 +411,7 @@ const nightPDF = (async function () {
 			_darkConfiguratorElement.style.visibility = "hidden";
 		}
 	};
-			
+
 	const _openFile = async (
 		file: string | string[],
 		page: number | null = null,
