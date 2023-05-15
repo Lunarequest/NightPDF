@@ -21,7 +21,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 import "electron-tabs";
 import { Tab, TabGroup } from "electron-tabs";
 import { API, create } from "nouislider";
-import { List } from "postcss/lib/list";
 
 function _try(func: Function, fallbackValue: number) {
 	try {
@@ -416,22 +415,6 @@ const nightPDF = (async function () {
 	const _hideDarkConfigurator = () => {
 		if (_darkConfiguratorElement.style.visibility === "visible") {
 			_darkConfiguratorElement.style.visibility = "hidden";
-		}
-	};
-
-	const _handleTabShortcuts = (e: KeyboardEvent) => {
-		// ctrl / cmd
-		console.info(e.key);
-		if (e.ctrlKey || e.metaKey) {
-			if (_ctrlCmdKeybinds.includes(e.key)) {
-				e.stopPropagation();
-			}
-			// ctrl / cmd + shift
-			if (e.shiftKey) {
-				if (_ctrlCmdPlusShiftKeybinds.includes(e.key)) {					
-					e.stopPropagation();
-				}
-			}
 		}
 	};
 			
