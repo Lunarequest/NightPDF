@@ -81,7 +81,7 @@ const nightPDF = (async function () {
 	let _slidersInitialized = false;
 	const _tabCssKey: Map<Tab, string> = new Map();
 	const _tabFilePath: Map<Tab, string> = new Map();
-	let _closedFileHistory: string[] = [];
+	const _closedFileHistory: string[] = [];
 
 	// Code to inject into the webview, to prevent jsPDF from intercepting keybinds
 	const _keyInterceptor: string = `
