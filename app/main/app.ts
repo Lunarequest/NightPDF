@@ -312,6 +312,14 @@ app.whenReady().then(() => {
 		}
 	});
 
+	// register "reopen-tab" shortcut
+	globalShortcut.register("CommandOrControl+Shift+t", () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			focusedWin.webContents.send("reopen-tab");
+		}
+	});
+
 	// register all "next-tab" shortcuts
 	globalShortcut.registerAll([
 		"CommandOrControl+Tab",

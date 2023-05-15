@@ -81,6 +81,8 @@ const nightPDF = (async function () {
 	let _slidersInitialized = false;
 	const _tabCssKey: Map<Tab, string> = new Map();
 	const _tabFilePath: Map<Tab, string> = new Map();
+	let _closedFileHistory: string[] = [];
+
 	// Code to inject into the webview, to prevent jsPDF from intercepting keybinds
 	const _keyInterceptor: string = `
 		var _ctrlCmdKeybinds = ["o", "p", "t", "w", "Tab", "F4", "PageUp", "PageDown", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -197,6 +199,20 @@ const nightPDF = (async function () {
 					tab.close(false);
 				}
 		});
+
+		// reopen-tab event
+		window.api.removeAllListeners("reopen-tab");
+		window.api.on(
+			"reopen-tab",
+			(_e: Event, _msg: string) => {
+				if (_closedFileHistory.length > 0) {
+					const lastClosedFile = _closedFileHistory.pop();
+					if (lastClosedFile) {
+						_openFile(lastClosedFile);
+					}
+				}
+			});
+
 
 		// switch-tab event
 		// expects "next", "prev" or a number from 1-9
@@ -454,6 +470,10 @@ const nightPDF = (async function () {
 			});
 			tab?.on("close", () => {
 				console.debug("tab closed");
+				const tabFile = _tabFilePath.get(tab);
+				if (tabFile) {
+					_closedFileHistory.push(tabFile);
+				}
 				_tabFilePath.delete(tab);
 				_tabGroup?.tabs.length;
 				if (_tabGroup?.getTabs().length === 0) {
