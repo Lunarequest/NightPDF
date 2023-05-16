@@ -76,6 +76,21 @@ function setkeybind(id: string, command: string) {
 	store.set(id, command);
 }
 
+function openSettings() {
+	const focusedWin = BrowserWindow.getFocusedWindow();
+	if (focusedWin) {
+		const win = new BrowserWindow({
+			parent: focusedWin,
+			modal: true,
+			webPreferences: {
+				preload: resolve(join(__dirname, "../preload/preload.js")),
+			},
+		});
+		win.loadFile(join(__dirname, "../index.html"));
+		win.show();
+	}
+}
+
 function createWindow(
 	filename: string | string[] | null = null,
 	page: number | null = null,
@@ -251,6 +266,10 @@ function createWindow(
 	ipcMain.removeAllListeners("openNewPDF");
 	ipcMain.on("openNewPDF", (_e: Event, _msg: null) => {
 		openNewPDF();
+	});
+
+	ipcMain.on("openSettings", (_e: Event, _msg: null) => {
+		openSettings();
 	});
 }
 
