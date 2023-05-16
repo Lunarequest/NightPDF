@@ -29,7 +29,11 @@
 		"@types/gulp": "^4.0.11",
 		"@types/gulp-postcss": "^8.0.3",
 		"@types/gulp-sass": "^5.0.1",
+<<<<<<< HEAD
 		"@types/node": "^20.2.5",
+=======
+		"@types/node": "^20.1.5",
+>>>>>>> 58032e5 (wip: add configureabilty)
 		"@types/yargs": "^17.0.24",
 		"cssnano": "^6.0.1",
 		"cssnano-preset-advanced": "^6.0.1",
@@ -49,6 +53,7 @@
 	},
 	"dependencies": {
 		"electron-log": "^4.4.8",
+		"electron-store": "^8.1.0",
 		"electron-tabs": "^1.0.1",
 		"electron-updater": "6.1.0",
 		"nouislider": "^15.7.0",

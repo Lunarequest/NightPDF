@@ -38,6 +38,7 @@ import { autoUpdater } from "electron-updater";
 import { readFileSync } from "fs";
 import log from "electron-log";
 import yargs from "yargs";
+import Store from "electron-store";
 
 let wins = [];
 let menuIsConfigured = false;
@@ -49,6 +50,18 @@ log.transports.file.level = "debug";
 
 const NOTIFICATION_TITLE = "Trans rights";
 const NOTIFICATION_BODY = "Trans rigths are human rigths 🏳️‍⚧️";
+const store = new Store();
+
+//in the future this can be use for migrations
+const store_version = store.get("version");
+if (store_version) {
+	if (store_version !== version) {
+		console.log(`update store to ${version}`);
+		store.set("version", version);
+	}
+} else {
+	store.set("version", version);
+}
 
 function getpath(filePath: string) {
 	return parse(filePath).base;
@@ -57,6 +70,10 @@ function getpath(filePath: string) {
 function versionString(): string {
 	const pdfjsver = readFileSync(join(__dirname, "../../.pdfjs_version"));
 	return `NightPDF: v${version} PDF.js: ${pdfjsver} Electron: v${process.versions.electron}`;
+}
+
+function setkeybind(id: string, command: string) {
+	store.set(id, command);
 }
 
 function createWindow(
@@ -168,7 +185,10 @@ function createWindow(
 
 		ipcMain.on("openExternal", async (_e: Event, url: string) => {
 			await shell.openExternal(url);
-			log.debug(`${url} is 3rd party content opening externally`);
+			log.debug(`${url} is 3rd party content opening externally`)});
+		
+		ipcMain.handle("SetBind", (_e: Event, args: string) => {
+			setkeybind(args[0], args[1]);
 		});
 
 		Menu.setApplicationMenu(menu);
@@ -189,7 +209,11 @@ function createWindow(
 					} else {
 						const focusedWin = BrowserWindow.getFocusedWindow();
 						if (focusedWin) {
-							focusedWin.webContents.send("file-open", filename.toString(), DEBUG);
+							focusedWin.webContents.send(
+								"file-open",
+								filename.toString(),
+								DEBUG,
+							);
 							focusedWin.maximize();
 						}
 					}
@@ -296,7 +320,12 @@ app.whenReady().then(() => {
 	});
 
 	// add "new tab" alias for open file
-	globalShortcut.register("CommandOrControl+t", () => {
+	const open = store.get("OpenWindow") as string;
+	const open_binding = ["CommandOrControl+t"];
+	if (open) {
+		open_binding.push(open);
+	}
+	globalShortcut.registerAll(open_binding, () => {
 		const focusedWin = BrowserWindow.getFocusedWindow();
 		if (focusedWin) {
 			ipcMain.emit("openNewPDF");
@@ -304,7 +333,12 @@ app.whenReady().then(() => {
 	});
 
 	// send "close-tab" to window
-	globalShortcut.registerAll(["CommandOrControl+w", "CommandOrControl+F4"], () => {
+	const close = store.get("CloseWindow") as string;
+	const close_bindings = ["CommandOrControl+w", "CommandOrControl+F4"];
+	if (close) {
+		close_bindings.push(close);
+	}
+	globalShortcut.registerAll(close_bindings, () => {
 		const focusedWin = BrowserWindow.getFocusedWindow();
 		if (focusedWin) {
 			console.log("sending close-tab");
@@ -313,7 +347,12 @@ app.whenReady().then(() => {
 	});
 
 	// register "reopen-tab" shortcut
-	globalShortcut.register("CommandOrControl+Shift+t", () => {
+	const reopen = store.get("ReopenTab") as string;
+	const reopen_bindings = ["CommandOrControl+Shift+t"];
+	if (reopen) {
+		reopen_bindings.push(reopen);
+	}
+	globalShortcut.registerAll(reopen_bindings, () => {
 		const focusedWin = BrowserWindow.getFocusedWindow();
 		if (focusedWin) {
 			focusedWin.webContents.send("reopen-tab");
@@ -321,10 +360,15 @@ app.whenReady().then(() => {
 	});
 
 	// register all "next-tab" shortcuts
-	globalShortcut.registerAll([
+	const switchtab = store.get("SwitchTab") as string;
+	const switchtab_bindings = [
 		"CommandOrControl+Tab",
-		"CommandOrControl+PageDown"	
-	], () => {
+		"CommandOrControl+PageDown",
+	];
+	if (switchtab) {
+		switchtab_bindings.push(switchtab);
+	}
+	globalShortcut.registerAll(switchtab_bindings, () => {
 		const focusedWin = BrowserWindow.getFocusedWindow();
 		if (focusedWin) {
 			focusedWin.webContents.send("switch-tab", "next");
@@ -332,13 +376,70 @@ app.whenReady().then(() => {
 	});
 
 	// register all "previous-tab" shortcuts
-	globalShortcut.registerAll([
+	const previoustab = store.get("PreviousTab") as string;
+	const previoustab_bindings = [
 		"CommandOrControl+Shift+Tab",
-		"CommandOrControl+PageUp"
-	], () => {
+		"CommandOrControl+PageUp",
+	];
+	if (previoustab) {
+		previoustab_bindings.push(previoustab);
+	}
+	globalShortcut.registerAll(previoustab_bindings, () => {
 		const focusedWin = BrowserWindow.getFocusedWindow();
 		if (focusedWin) {
 			focusedWin.webContents.send("switch-tab", "prev");
+		}
+	});
+
+	// register move-tab (left) shortcut
+	const movetab_prev = store.get("PreviousTab") as string;
+	const movetab_bindings_prev = ["CommandOrControl+Shift+PageUp"];
+	if (movetab_prev) {
+		movetab_bindings_prev.push(movetab_prev);
+	}
+	globalShortcut.registerAll(movetab_bindings_prev, () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			focusedWin.webContents.send("move-tab", "prev");
+		}
+	});
+
+	// register move-tab (right) shortcut
+	const movetab_next = store.get("NextTab") as string;
+	const movetab_bindings_next = ["CommandOrControl+Shift+PageDown"];
+	if (movetab_next) {
+		movetab_bindings_next.push(movetab_next);
+	}
+	globalShortcut.registerAll(movetab_bindings_next, () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			focusedWin.webContents.send("move-tab", "next");
+		}
+	});
+
+	// register move-tab (start)
+	const movetab_start = store.get("StartTab") as string;
+	const movetab_bindings_start = ["CommandOrControl+Shift+Home"];
+	if (movetab_start) {
+		movetab_bindings_start.push(movetab_start);
+	}
+	globalShortcut.registerAll(movetab_bindings_start, () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			focusedWin.webContents.send("move-tab", "start");
+		}
+	});
+
+	// register move-tab (end)
+	const movetab_end = store.get("EndTab") as string;
+	const movetab_bindings_end = ["CommandOrControl+Shift+End"];
+	if (movetab_end) {
+		movetab_bindings_end.push(movetab_end);
+	}
+	globalShortcut.registerAll(movetab_bindings_end, () => {
+		const focusedWin = BrowserWindow.getFocusedWindow();
+		if (focusedWin) {
+			focusedWin.webContents.send("move-tab", "end");
 		}
 	});
 
@@ -351,40 +452,6 @@ app.whenReady().then(() => {
 			}
 		});
 	}
-
-	// register move-tab (left) shortcut
-	globalShortcut.register("CommandOrControl+Shift+PageUp", () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			focusedWin.webContents.send("move-tab", "prev");
-		}
-	});
-
-	// register move-tab (right) shortcut
-	globalShortcut.register("CommandOrControl+Shift+PageDown", () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			focusedWin.webContents.send("move-tab", "next");
-		}
-	});
-
-	// register move-tab (start)
-	globalShortcut.register("CommandOrControl+Shift+Home", () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			focusedWin.webContents.send("move-tab", "start");
-		}
-	});
-
-	// register move-tab (end)
-	globalShortcut.register("CommandOrControl+Shift+End", () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			focusedWin.webContents.send("move-tab", "end");
-		}
-	});
-
-
 });
 
 app.on("window-all-closed", () => {

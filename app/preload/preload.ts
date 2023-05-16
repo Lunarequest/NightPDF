@@ -30,6 +30,9 @@ contextBridge.exposeInMainWorld("api", {
 	openExternel: (url: string) => {
 		ipcRenderer.send("openExternal", url);
 	},
+	SetBind: async (key: string, value: string) => {
+		return await ipcRenderer.invoke("SetBind", [key, value]);
+	},
 
 	removeAllListeners: (ListenerType: string) => {
 		ipcRenderer.removeAllListeners(ListenerType);

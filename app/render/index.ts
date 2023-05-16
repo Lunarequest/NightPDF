@@ -36,6 +36,7 @@ declare global {
 		api: {
 			getFileName(arg0: string): Promise<string>;
 			ResolvePath(arg0: string): Promise<string>;
+			SetBind(key: string, value: string): Promise<null>;
 			removeAllListeners(arg0: string): null;
 			openNewPDF(arg0: null | string): null;
 			newWindow(arg0: string | string[]): null;
@@ -55,6 +56,7 @@ declare global {
 	interface webviewTag extends HTMLElement {
 		getURL(): string;
 		stop(): void;
+		insertCSS(css: string): void
 	}
 	interface EventNav extends Event {
 		url: string;
@@ -102,7 +104,7 @@ const nightPDF = (async function () {
 			}
 		};
 		document.addEventListener("keydown", handleKeys, true);
-	`
+	`;
 
 	async function main() {
 		_appContainerElement = document.getElementById(
@@ -190,115 +192,104 @@ const nightPDF = (async function () {
 
 		// close-tab event
 		window.api.removeAllListeners("close-tab");
-		window.api.on(
-			"close-tab",
-			(_e: Event, _msg: string) => {
-				const tab = _tabGroup?.getActiveTab();
-				if (tab) {
-					console.log("Closing active tab.");
-					tab.close(false);
-				}
+		window.api.on("close-tab", (_e: Event, _msg: string) => {
+			const tab = _tabGroup?.getActiveTab();
+			if (tab) {
+				console.log("Closing active tab.");
+				tab.close(false);
+			}
 		});
 
 		// reopen-tab event
 		window.api.removeAllListeners("reopen-tab");
-		window.api.on(
-			"reopen-tab",
-			(_e: Event, _msg: string) => {
-				if (_closedFileHistory.length > 0) {
-					const lastClosedFile = _closedFileHistory.pop();
-					if (lastClosedFile) {
-						_openFile(lastClosedFile);
-					}
+		window.api.on("reopen-tab", (_e: Event, _msg: string) => {
+			if (_closedFileHistory.length > 0) {
+				const lastClosedFile = _closedFileHistory.pop();
+				if (lastClosedFile) {
+					_openFile(lastClosedFile);
 				}
-			});
-
+			}
+		});
 
 		// switch-tab event
 		// expects "next", "prev" or a number from 1-9
 		window.api.removeAllListeners("switch-tab");
-		window.api.on(
-			"switch-tab",
-			(_e: Event, msg: string | number) => {
-				const tab = _tabGroup?.getActiveTab();
-				// There is a bug in electron-tabs where
-				// selecting the previous tab with "getPreviousTab" will never work if the previous
-				// tab position === 0, see:
-				// https://github.com/brrd/electron-tabs/blob/master/src/index.ts#L231
+		window.api.on("switch-tab", (_e: Event, msg: string | number) => {
+			const tab = _tabGroup?.getActiveTab();
+			// There is a bug in electron-tabs where
+			// selecting the previous tab with "getPreviousTab" will never work if the previous
+			// tab position === 0, see:
+			// https://github.com/brrd/electron-tabs/blob/master/src/index.ts#L231
 
-				// tabgroup methods return null if there is no tab
-				let target: Tab | null | undefined = null;
-				if (tab) {
-					if (typeof msg === "string") {
-						switch (msg) {
-							case "next":
-								console.log("switching to next tab");
-								target = _tabGroup?.getNextTab();
-								break;
-							case "prev": {
-								console.log("switching to previous tab");
-								// target = _tabGroup?.getPreviousTab();
-								const targetPos = tab.getPosition() - 1;
-								if (targetPos >= 0) {
-									target = _tabGroup?.getTabByPosition(targetPos);
-								}
-								break;
+			// tabgroup methods return null if there is no tab
+			let target: Tab | null | undefined = null;
+			if (tab) {
+				if (typeof msg === "string") {
+					switch (msg) {
+						case "next":
+							console.log("switching to next tab");
+							target = _tabGroup?.getNextTab();
+							break;
+						case "prev": {
+							console.log("switching to previous tab");
+							// target = _tabGroup?.getPreviousTab();
+							const targetPos = tab.getPosition() - 1;
+							if (targetPos >= 0) {
+								target = _tabGroup?.getTabByPosition(targetPos);
 							}
-						}
-					} else {
-						if (msg >= 1 && msg <= 8) {
-							target = _tabGroup?.getTabByPosition(msg - 1);
-						} else if (msg === 9) {
-							// last tab
-							target = _tabGroup?.getTabByPosition(-1);
+							break;
 						}
 					}
-					if(target) {
-						target.activate();
+				} else {
+					if (msg >= 1 && msg <= 8) {
+						target = _tabGroup?.getTabByPosition(msg - 1);
+					} else if (msg === 9) {
+						// last tab
+						target = _tabGroup?.getTabByPosition(-1);
 					}
 				}
-			},
-		);
+				if (target) {
+					target.activate();
+				}
+			}
+		});
 
 		// move-tab event
 		// expects "next" or "prev", "start" or "end"
 		window.api.removeAllListeners("move-tab");
-		window.api.on(
-			"move-tab",
-			(_e: Event, msg: string) => {
-				const tab = _tabGroup?.getActiveTab();
-				if (tab) {
-					switch (msg) {
-						case "next": {
-							console.log("moving tab to next position");
-							const targetPos = tab.getPosition() + 1;
-							const tabCount = _tabGroup?.tabContainer.childElementCount;
-							console.log("Tab count", tabCount, "targetPos", targetPos);
-							if (tabCount && targetPos < tabCount) {
-								tab.setPosition(targetPos);
-							}
-							break;
+		window.api.on("move-tab", (_e: Event, msg: string) => {
+			const tab = _tabGroup?.getActiveTab();
+			if (tab) {
+				switch (msg) {
+					case "next": {
+						console.log("moving tab to next position");
+						const targetPos = tab.getPosition() + 1;
+						const tabCount = _tabGroup?.tabContainer.childElementCount;
+						console.log("Tab count", tabCount, "targetPos", targetPos);
+						if (tabCount && targetPos < tabCount) {
+							tab.setPosition(targetPos);
 						}
-						case "prev": {
-							console.log("moving tab to previous position");
-							const targetPos = tab.getPosition() - 1;
-							if (targetPos >= 0) {
-								tab.setPosition(targetPos);
-							}
-							break;
-						}
-						case "start":
-							console.log("moving tab to start");
-							tab.setPosition(0);
-							break;
-						case "end":
-							console.log("moving tab to end");
-							tab.setPosition(-1);
-							break;
+						break;
 					}
+					case "prev": {
+						console.log("moving tab to previous position");
+						const targetPos = tab.getPosition() - 1;
+						if (targetPos >= 0) {
+							tab.setPosition(targetPos);
+						}
+						break;
+					}
+					case "start":
+						console.log("moving tab to start");
+						tab.setPosition(0);
+						break;
+					case "end":
+						console.log("moving tab to end");
+						tab.setPosition(-1);
+						break;
 				}
-			},
-		);
+			}
+		});
 
 		// setup dom listeners
 		_defaultButton.addEventListener("click", (e: Event) => {
@@ -713,7 +704,7 @@ const nightPDF = (async function () {
 				content?.openDevTools();
 			}
 			// @ts-ignore
-			content?.executeJavaScript(_keyInterceptor)
+			content?.executeJavaScript(_keyInterceptor);
 			let style = "div#viewer .page {";
 			style +=
 				"filter: brightness(0.91) grayscale(0.95) invert(0.95) sepia(0.55) hue-rotate(180deg);";
@@ -726,7 +717,8 @@ const nightPDF = (async function () {
 			});
 			// .viewerContainer scrollbar dark colors
 			// @ts-ignore
-			content?.insertCSS(`
+			content
+				?.insertCSS(`
 				:root {
 					--dark-scrollbar-color: #1e1e1e;
 					--dark-scrollbar-bg-color: #444444;
@@ -749,7 +741,8 @@ const nightPDF = (async function () {
 				}
 				#viewerContainer::-webkit-scrollbar-corner {
 					background-color: var(--dark-scrollbar-bg-color) !important;
-				}`).then((key: string) => {
+				}`)
+				.then((key: string) => {
 					console.info("inserted style", key);
 				});
 		});
