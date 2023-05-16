@@ -38,59 +38,10 @@ import { autoUpdater } from "electron-updater";
 import { readFileSync } from "fs";
 import log from "electron-log";
 import yargs from "yargs";
-import Store, { Schema } from 'electron-store';
-import { type JSONSchema } from "json-schema-typed";
+import Store from "electron-store";
+import { nightpdf_schema, NightPDFSettings, Keybinds } from "../helpers/settings";
 
-interface NightPDFSchema extends JSONSchema {
-	general: object,
-	keybinds: object,
-}
-
-type Keybinds = {
-	[key: string]: string[],
-}
-
-function keybindPropertyDef(min = 1, max = 2): JSONSchema {
-	return {
-		type: "array",
-		items: {
-			type: "string",
-		},
-		minItems: min,
-		maxItems: max,
-	};
-}
-
-
-const schema: Schema<NightPDFSchema> = {
-	general: {
-		properties: {
-			MaximizeOnOpen: {
-				type: "boolean",
-			},
-		},
-		type: "object",
-	},
-	keybinds: {
-		properties: {
-			OpenWindow: keybindPropertyDef(),
-			CloseWindow: keybindPropertyDef(),
-		},
-		type: "object",
-	},
-};
-
-const store = new Store<NightPDFSchema>({
-	defaults: {
-		general: {
-			MaximizeOnOpen: false,
-		},
-		keybinds: {
-			OpenWindow: ["CommandOrControl+t"],
-			CloseWindow: ["CommandOrControl+w", "CommandOrControl+F4"],
-		},
-	},
-});
+const store = new Store<NightPDFSettings>({ schema: nightpdf_schema });
 
 let wins = [];
 let menuIsConfigured = false;
