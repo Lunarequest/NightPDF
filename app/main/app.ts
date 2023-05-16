@@ -268,7 +268,7 @@ function createWindow(
 		openNewPDF();
 	});
 
-	ipcMain.on("openSettings", (_e: Event, _msg: null) => {
+	ipcMain.on("OpenSettings", (_e: Event, _msg: null) => {
 		openSettings();
 	});
 }

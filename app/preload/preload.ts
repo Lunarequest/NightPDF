@@ -34,6 +34,10 @@ contextBridge.exposeInMainWorld("api", {
 		return await ipcRenderer.invoke("SetBind", [key, value]);
 	},
 
+	OpenSettings: async () => {
+		return await ipcRenderer.invoke("OpenSettings", null);
+	},
+
 	removeAllListeners: (ListenerType: string) => {
 		ipcRenderer.removeAllListeners(ListenerType);
 	},
