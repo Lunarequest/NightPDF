@@ -1,4 +1,4 @@
-<!--
+/*
 NightPDF Dark mode for Pdfs    
 Copyright (C) 2021  Advaith Madhukar
 
@@ -15,28 +15,24 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
--->
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8" />
-		<title>Settings - NightPDF</title>
-        <link href="./css/bundle.css" rel="stylesheet" />
-        <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
-        <meta
-            http-equiv="Content-Security-Policy"
-            content="script-src 'self';"
-        />
-    </head>
-    <body>
-        <div id="settings-panel">
-            <div id="settings-menu">
+*/
+//trans rights
 
-            </div>
-            <div id="settings-content">
+const nightPDFSettings = (async function () {
+	console.log("loading");
 
-            </div>
-        </div>
-        <script type="module" src="./render/settings.js"></script>
-    </body>
-</html>
+    async function main() {
+        console.log("settings page loaded");
+        const container = document.getElementById("settings-content");
+        container.innerHTML = "Hello!!";
+    }
+
+    return {
+		run: main,
+	};
+})();
+
+const s = await nightPDFSettings;
+s.run();
+
+export default nightPDFSettings;

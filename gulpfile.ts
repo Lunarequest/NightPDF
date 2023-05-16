@@ -65,7 +65,8 @@ task("build-render", () => {
 	return src("app/render/*.ts")
 		.pipe(
 			gulpEsbuild({
-				outfile: "render.mjs",
+				// outfile: "render.mjs",
+				outdir: "./",
 				bundle: true,
 				treeShaking: true,
 				format: "esm",

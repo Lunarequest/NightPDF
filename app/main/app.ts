@@ -27,7 +27,6 @@ import {
 	nativeTheme,
 	globalShortcut,
 	Notification,
-	ipcRenderer,
 } from "electron";
 import type {
 	MenuItemConstructorOptions,
@@ -39,7 +38,59 @@ import { autoUpdater } from "electron-updater";
 import { readFileSync } from "fs";
 import log from "electron-log";
 import yargs from "yargs";
-import Store from "electron-store";
+import Store, { Schema } from 'electron-store';
+import { type JSONSchema } from "json-schema-typed";
+
+interface NightPDFSchema extends JSONSchema {
+	general: object,
+	keybinds: object,
+}
+
+type Keybinds = {
+	[key: string]: string[],
+}
+
+function keybindPropertyDef(min = 1, max = 2): JSONSchema {
+	return {
+		type: "array",
+		items: {
+			type: "string",
+		},
+		minItems: min,
+		maxItems: max,
+	};
+}
+
+
+const schema: Schema<NightPDFSchema> = {
+	general: {
+		properties: {
+			MaximizeOnOpen: {
+				type: "boolean",
+			},
+		},
+		type: "object",
+	},
+	keybinds: {
+		properties: {
+			OpenWindow: keybindPropertyDef(),
+			CloseWindow: keybindPropertyDef(),
+		},
+		type: "object",
+	},
+};
+
+const store = new Store<NightPDFSchema>({
+	defaults: {
+		general: {
+			MaximizeOnOpen: false,
+		},
+		keybinds: {
+			OpenWindow: ["CommandOrControl+t"],
+			CloseWindow: ["CommandOrControl+w", "CommandOrControl+F4"],
+		},
+	},
+});
 
 let wins = [];
 let menuIsConfigured = false;
@@ -51,7 +102,7 @@ log.transports.file.level = "debug";
 
 const NOTIFICATION_TITLE = "Trans rights";
 const NOTIFICATION_BODY = "Trans rigths are human rigths 🏳️‍⚧️";
-const store = new Store();
+
 
 //in the future this can be use for migrations
 const store_version = store.get("version");
@@ -83,10 +134,18 @@ function openSettings() {
 		const win = new BrowserWindow({
 			parent: focusedWin,
 			modal: true,
+			icon: join(__dirname, "../assets/icon.png"),
 			webPreferences: {
 				preload: resolve(join(__dirname, "../preload/preload.js")),
 			},
 		});
+		win.webContents.once("did-finish-load", () => {
+			// avoid race condition
+			if (DEBUG) {
+				win.webContents.openDevTools();
+			}
+		});
+		win.removeMenu();
 		win.loadFile(join(__dirname, "../settings.html"));
 		win.show();
 	}
@@ -104,6 +163,7 @@ function createWindow(
 		width: 550,
 		height: 420,
 		minWidth: 565,
+		icon: join(__dirname, "../assets/icon.png"),
 		minHeight: 200,
 		webPreferences: {
 			sandbox: true,
@@ -318,6 +378,8 @@ app.on("open-file", (e: Event, path: string) => {
 });
 
 app.whenReady().then(() => {
+	const keybinds = store.get("keybinds") as Keybinds;
+
 	if (fileToOpen) {
 		if (pageToOpen) {
 			createWindow(fileToOpen, pageToOpen);
@@ -327,6 +389,7 @@ app.whenReady().then(() => {
 	} else {
 		createWindow();
 	}
+
 	globalShortcut.register("alt+CommandOrControl+t", () => {
 		console.log(NOTIFICATION_BODY);
 		new Notification({
@@ -336,11 +399,7 @@ app.whenReady().then(() => {
 	});
 
 	// add "new tab" alias for open file
-	const open = store.get("OpenWindow") as string;
-	const open_binding = ["CommandOrControl+t"];
-	if (open) {
-		open_binding.push(open);
-	}
+	const open_binding = keybinds["OpenWindow"];
 	globalShortcut.registerAll(open_binding, () => {
 		const focusedWin = BrowserWindow.getFocusedWindow();
 		if (focusedWin) {
@@ -349,11 +408,7 @@ app.whenReady().then(() => {
 	});
 
 	// send "close-tab" to window
-	const close = store.get("CloseWindow") as string;
-	const close_bindings = ["CommandOrControl+w", "CommandOrControl+F4"];
-	if (close) {
-		close_bindings.push(close);
-	}
+	const close_bindings = keybinds["CloseWindow"] as string[];
 	globalShortcut.registerAll(close_bindings, () => {
 		const focusedWin = BrowserWindow.getFocusedWindow();
 		if (focusedWin) {
