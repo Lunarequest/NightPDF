@@ -49,6 +49,7 @@ declare global {
 	}
 	interface HTMLElement {
 		noUiSlider: API;
+		insertCSS(css: string): Promise<string>;
 	}
 	interface File {
 		path: string;

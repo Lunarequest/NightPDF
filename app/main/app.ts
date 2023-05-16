@@ -27,6 +27,7 @@ import {
 	nativeTheme,
 	globalShortcut,
 	Notification,
+	ipcRenderer,
 } from "electron";
 import type {
 	MenuItemConstructorOptions,
@@ -86,7 +87,7 @@ function openSettings() {
 				preload: resolve(join(__dirname, "../preload/preload.js")),
 			},
 		});
-		win.loadFile(join(__dirname, "../index.html"));
+		win.loadFile(join(__dirname, "../settings.html"));
 		win.show();
 	}
 }
@@ -266,10 +267,6 @@ function createWindow(
 	ipcMain.removeAllListeners("openNewPDF");
 	ipcMain.on("openNewPDF", (_e: Event, _msg: null) => {
 		openNewPDF();
-	});
-
-	ipcMain.on("OpenSettings", (_e: Event, _msg: null) => {
-		openSettings();
 	});
 }
 
@@ -502,6 +499,14 @@ function createMenu() {
 					id: "file-print",
 					accelerator: "CmdOrCtrl+P",
 					enabled: false,
+				},
+				{
+					label: "Settings",
+					id: "settings",
+					accelerator: "Alt+s",
+					click: async () => {
+						openSettings();
+					},
 				},
 			],
 		},
