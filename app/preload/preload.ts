@@ -30,26 +30,31 @@ contextBridge.exposeInMainWorld("api", {
 	openExternel: (url: string) => {
 		ipcRenderer.send("openExternal", url);
 	},
-	SetBind: async (key: string, value: string) => {
-		return await ipcRenderer.invoke("SetBind", [key, value]);
-	},
 
 	removeAllListeners: (ListenerType: string) => {
 		ipcRenderer.removeAllListeners(ListenerType);
 	},
 
+	SetBind: (key: string, value: string) => {
+		return ipcRenderer.send("SetBind", [key, value]);
+	},
+
 	openNewPDF: (pdf: string) => {
 		ipcRenderer.send("openNewPDF", pdf);
 	},
+
 	newWindow: (file: string) => {
 		ipcRenderer.send("newWindow", file);
 	},
+
 	togglePrinting: (value: boolean) => {
 		ipcRenderer.send("togglePrinting", value);
 	},
+
 	resizeWindow: (value: string) => {
 		ipcRenderer.send("resizeWindow", value);
 	},
+	
 	//rome-ignore lint/suspicious/noExplicitAny: we can pass Function here but vscode freaks out :/
 	on: (eventName: string, callback: any) => {
 		ipcRenderer.on(eventName, callback);

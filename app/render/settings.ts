@@ -18,20 +18,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 //trans rights
 
-import Store from "electron-store";
-
-const store = new Store();
-
 const nightPDFSettings = (async function () {
 	console.log("loading");
 
-    async function main() {
-        console.log("settings page loaded");
-        const container = document.getElementById("settings-content");
-        container.innerHTML = "Hello!!";
-    }
+	async function main() {
+		console.log("settings page loaded");
+		const container = document.getElementById("settings-content");
+		if (container) {
+			container.innerHTML = "Hello!!";
+		}
+	}
 
-    return {
+	return {
 		run: main,
 	};
 })();

@@ -39,7 +39,11 @@ import { readFileSync } from "fs";
 import log from "electron-log";
 import yargs from "yargs";
 import Store from "electron-store";
-import { nightpdf_schema, NightPDFSettings, Keybinds } from "../helpers/settings";
+import {
+	nightpdf_schema,
+	NightPDFSettings,
+	Keybinds,
+} from "../helpers/settings";
 
 const store = new Store<NightPDFSettings>({ schema: nightpdf_schema });
 
@@ -53,7 +57,6 @@ log.transports.file.level = "debug";
 
 const NOTIFICATION_TITLE = "Trans rights";
 const NOTIFICATION_BODY = "Trans rigths are human rigths 🏳️‍⚧️";
-
 
 //in the future this can be use for migrations
 const store_version = store.get("version");
@@ -214,7 +217,7 @@ function createWindow(
 			await shell.openExternal(url);
 			log.debug(`${url} is 3rd party content opening externally`)});
 		
-		ipcMain.handle("SetBind", (_e: Event, args: string) => {
+		ipcMain.on("SetBind", (_e: Event, args: string[]) => {
 			setkeybind(args[0], args[1]);
 		});
 

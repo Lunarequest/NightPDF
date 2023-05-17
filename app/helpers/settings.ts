@@ -1,17 +1,18 @@
-import Store, { Schema } from 'electron-store';
+import Store, { Schema } from "electron-store";
 import { type JSONSchema } from "json-schema-typed";
 
 interface NightPDFSettings extends JSONSchema {
-	general: object,
+	version: string;
+	general: object;
 	keybinds: {
-        OpenWindow: string[],
-        CloseWindow: string[],
-    },
+		OpenWindow: string[];
+		CloseWindow: string[];
+	};
 }
 
 type Keybinds = {
-	[key: string]: string[],
-}
+	[key: string]: string[];
+};
 
 function keybindPropertyDef(init: string[], min = 1, max = 2): JSONSchema {
 	return {
@@ -19,18 +20,21 @@ function keybindPropertyDef(init: string[], min = 1, max = 2): JSONSchema {
 		items: {
 			type: "string",
 		},
-        default: init,
+		default: init,
 		minItems: min,
 		maxItems: max,
 	};
 }
 
 const nightpdf_schema: Schema<NightPDFSettings> = {
+	version: {
+		type: "string",
+	},
 	general: {
 		properties: {
 			MaximizeOnOpen: {
 				type: "boolean",
-                default: false,
+				default: false,
 			},
 		},
 		type: "object",
@@ -38,14 +42,13 @@ const nightpdf_schema: Schema<NightPDFSettings> = {
 	keybinds: {
 		properties: {
 			OpenWindow: keybindPropertyDef(["CommandOrControl+t"]),
-			CloseWindow: keybindPropertyDef(["CommandOrControl+w", "CommandOrControl+F4"]),
+			CloseWindow: keybindPropertyDef([
+				"CommandOrControl+w",
+				"CommandOrControl+F4",
+			]),
 		},
 		type: "object",
 	},
 };
 
-export {
-    NightPDFSettings,
-    nightpdf_schema,
-    Keybinds,
-};
+export { NightPDFSettings, nightpdf_schema, Keybinds };

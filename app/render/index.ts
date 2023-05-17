@@ -57,7 +57,6 @@ declare global {
 	interface webviewTag extends HTMLElement {
 		getURL(): string;
 		stop(): void;
-		insertCSS(css: string): void
 	}
 	interface EventNav extends Event {
 		url: string;
