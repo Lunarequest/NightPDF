@@ -43,9 +43,12 @@ import {
 	nightpdf_schema,
 	NightPDFSettings,
 	Keybinds,
+	nightpdf_default_settings,
 } from "../helpers/settings";
 
-const store = new Store<NightPDFSettings>({ schema: nightpdf_schema });
+const default_settings = nightpdf_default_settings(version);
+
+const store = new Store<NightPDFSettings>({ schema: nightpdf_schema, defaults: default_settings });
 
 let wins = [];
 let menuIsConfigured = false;
@@ -333,7 +336,7 @@ app.on("open-file", (e: Event, path: string) => {
 
 app.whenReady().then(() => {
 	const keybinds = store.get("keybinds") as Keybinds;
-
+	console.log(keybinds);
 	if (fileToOpen) {
 		if (pageToOpen) {
 			createWindow(fileToOpen, pageToOpen);

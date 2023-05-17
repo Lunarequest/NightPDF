@@ -14,13 +14,12 @@ type Keybinds = {
 	[key: string]: string[];
 };
 
-function keybindPropertyDef(init: string[], min = 1, max = 2): JSONSchema {
+function keybindPropertyDef(min = 1, max = 2): JSONSchema {
 	return {
 		type: "array",
 		items: {
 			type: "string",
 		},
-		default: init,
 		minItems: min,
 		maxItems: max,
 	};
@@ -34,21 +33,30 @@ const nightpdf_schema: Schema<NightPDFSettings> = {
 		properties: {
 			MaximizeOnOpen: {
 				type: "boolean",
-				default: false,
 			},
 		},
 		type: "object",
 	},
 	keybinds: {
 		properties: {
-			OpenWindow: keybindPropertyDef(["CommandOrControl+t"]),
-			CloseWindow: keybindPropertyDef([
-				"CommandOrControl+w",
-				"CommandOrControl+F4",
-			]),
+			OpenWindow: keybindPropertyDef(),
+			CloseWindow: keybindPropertyDef(),
 		},
 		type: "object",
 	},
 };
 
-export { NightPDFSettings, nightpdf_schema, Keybinds };
+function nightpdf_default_settings(version: string): NightPDFSettings {
+	return {
+		version: version,
+		general: {
+			MaximizeOnOpen: false,
+		},
+		keybinds: {
+			OpenWindow: ["CommandOrControl+t"],
+			CloseWindow: ["CommandOrControl+w", "CommandOrControl+F4"],
+		},
+	};
+}	
+
+export { NightPDFSettings, nightpdf_schema, Keybinds, nightpdf_default_settings };
