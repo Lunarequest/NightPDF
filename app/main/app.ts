@@ -48,7 +48,10 @@ import {
 
 const default_settings = nightpdf_default_settings(version);
 
-const store = new Store<NightPDFSettings>({ schema: nightpdf_schema, defaults: default_settings });
+const store = new Store<NightPDFSettings>({
+	schema: nightpdf_schema,
+	defaults: default_settings,
+});
 
 let wins = [];
 let menuIsConfigured = false;

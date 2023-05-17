@@ -18,23 +18,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 //trans rights
 
-const nightPDFSettings = (async function () {
+async function nightPDFSettings() {
 	console.log("loading");
 
-	async function main() {
-		console.log("settings page loaded");
-		const container = document.getElementById("settings-content");
-		if (container) {
-			container.innerHTML = "Hello!!";
-		}
+	console.log("settings page loaded");
+	const container = document.getElementById("settings-content");
+	if (container) {
+		container.innerHTML = "Hello!!";
 	}
+}
 
-	return {
-		run: main,
-	};
-})();
-
-const s = await nightPDFSettings;
-s.run();
+nightPDFSettings();
 
 export default nightPDFSettings;

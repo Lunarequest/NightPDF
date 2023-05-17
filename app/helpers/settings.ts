@@ -57,6 +57,11 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 			CloseWindow: ["CommandOrControl+w", "CommandOrControl+F4"],
 		},
 	};
-}	
+}
 
-export { NightPDFSettings, nightpdf_schema, Keybinds, nightpdf_default_settings };
+export {
+	NightPDFSettings,
+	nightpdf_schema,
+	Keybinds,
+	nightpdf_default_settings,
+};
