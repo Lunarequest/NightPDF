@@ -5,7 +5,6 @@ import { setupTab } from "./tab";
 async function openFile(
 	file: string | string[],
 	closedFileHistory: string[],
-	slidersInitialized: boolean,
 
 	tabGroup: TabGroup,
 	tabFilePath: Map<Tab, string>,
@@ -23,8 +22,14 @@ async function openFile(
 
 	page: number | null = null,
 	debug = false,
-): Promise<boolean> {
+) {
 	console.log("opening ", file);
+	let slidersInitialized: boolean;
+	if (sessionStorage.getItem("slidersInitialized")) {
+		slidersInitialized = true;
+	} else {
+		slidersInitialized = false;
+	}
 	const tabs = tabGroup?.getTabs();
 	if (!tabs || tabs.length === 0) {
 		console.debug("No tabs yet, creating new tab");
@@ -72,7 +77,7 @@ async function openFile(
 				window.api.togglePrinting(true);
 				setupTab(tab, tabCssKey, debug);
 				if (!slidersInitialized) {
-					return setupSliders(
+					setupSliders(
 						brightnessSliderElement,
 						grayscaleSliderElement,
 						invertSliderElement,
@@ -82,6 +87,7 @@ async function openFile(
 						tabGroup,
 						tabCssKey,
 					);
+					localStorage.setItem("slidersInitialized", "true");
 				}
 			},
 		});

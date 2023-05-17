@@ -78,7 +78,7 @@ function setupSliders(
 	hueSliderElement: HTMLElement,
 	tabGroup: TabGroup,
 	tabCssKey: Map<Tab, string>,
-): boolean {
+) {
 	create(brightnessSliderElement, {
 		start: 7,
 		step: 1,
@@ -241,7 +241,6 @@ function setupSliders(
 			);
 		});
 	});
-	return true;
 }
 
 export { setupSliders };

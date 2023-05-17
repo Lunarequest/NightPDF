@@ -102,7 +102,6 @@ async function nightPDF() {
 		"custom-button",
 	) as HTMLElement;
 	const tabGroup: TabGroup = document.querySelector("tab-group") as TabGroup;
-	let slidersInitialized = false;
 	const tabCssKey: Map<Tab, string> = new Map();
 	const tabFilePath: Map<Tab, string> = new Map();
 	const closedFileHistory: string[] = [];
@@ -142,10 +141,9 @@ async function nightPDF() {
 		) => {
 			console.log(msg);
 			if (typeof msg === "string") {
-				slidersInitialized = await openFile(
+				await openFile(
 					msg,
 					closedFileHistory,
-					slidersInitialized,
 
 					tabGroup,
 					tabFilePath,
@@ -167,10 +165,9 @@ async function nightPDF() {
 			} else {
 				if (msg.length === 1) {
 					// this case only occurs when launching from a started instance unsure why
-					slidersInitialized = await openFile(
+					await openFile(
 						msg,
 						closedFileHistory,
-						slidersInitialized,
 
 						tabGroup,
 						tabFilePath,
@@ -190,10 +187,9 @@ async function nightPDF() {
 						debug,
 					);
 				} else {
-					slidersInitialized = await openFile(
+					await openFile(
 						msg[0][0],
 						closedFileHistory,
-						slidersInitialized,
 
 						tabGroup,
 						tabFilePath,
@@ -249,7 +245,6 @@ async function nightPDF() {
 					await openFile(
 						lastClosedFile,
 						closedFileHistory,
-						slidersInitialized,
 
 						tabGroup,
 						tabFilePath,
@@ -476,7 +471,6 @@ async function nightPDF() {
 			await openFile(
 				fileToOpen.path,
 				closedFileHistory,
-				slidersInitialized,
 
 				tabGroup,
 				tabFilePath,
