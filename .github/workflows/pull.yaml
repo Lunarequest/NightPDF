@@ -1,0 +1,21 @@
+name: Pull Request
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+jobs:
+  rome:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: yarn
+      - name: install deps
+        run: yarn --immutable
+      - name: lint && format
+        run: yarn ci

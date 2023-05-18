@@ -1,6 +1,8 @@
 name: Release
 on:
   push:
+    branches:
+      - "mistress"
     tags:
       - v*.*.*
 jobs:
