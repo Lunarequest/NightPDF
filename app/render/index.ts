@@ -24,6 +24,7 @@ import { API } from "nouislider";
 import { handlePresetChange } from "../helpers/sliders";
 import { hideDarkConfigurator, toggleDarkConfigurator } from "../helpers/css";
 import { openFile } from "../helpers/file";
+import { NightPDFSettings } from "../helpers/settings";
 
 declare global {
 	interface Window {
@@ -31,6 +32,7 @@ declare global {
 			getFileName(arg0: string): Promise<string>;
 			ResolvePath(arg0: string): Promise<string>;
 			SetBind(key: string, value: string): Promise<null>;
+			GetSettings(): Promise<NightPDFSettings>;
 			removeAllListeners(arg0: string): null;
 			openNewPDF(arg0: null | string): null;
 			newWindow(arg0: string | string[]): null;

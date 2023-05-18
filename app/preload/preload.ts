@@ -38,7 +38,9 @@ contextBridge.exposeInMainWorld("api", {
 	SetBind: (key: string, value: string) => {
 		return ipcRenderer.send("SetBind", [key, value]);
 	},
-
+	GetSetting: () => {
+		return ipcRenderer.send("GetSettings");
+	},
 	openNewPDF: (pdf: string) => {
 		ipcRenderer.send("openNewPDF", pdf);
 	},

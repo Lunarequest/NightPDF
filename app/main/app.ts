@@ -201,7 +201,9 @@ function createWindow(
 		ipcMain.on("SetBind", (_e: Event, args: string[]) => {
 			setkeybind(args[0], args[1]);
 		});
-
+		ipcMain.on("GetSettings", (_e: Event) => {
+			win.webContents.send("GetSettings", store.store);
+		});
 		Menu.setApplicationMenu(menu);
 		menuIsConfigured = true;
 	}
