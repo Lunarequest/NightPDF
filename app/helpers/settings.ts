@@ -1,13 +1,10 @@
-import Store, { Schema } from "electron-store";
+import { Schema } from "electron-store";
 import { type JSONSchema } from "json-schema-typed";
 
 interface NightPDFSettings extends JSONSchema {
 	version: string;
 	general: object;
-	keybinds: {
-		OpenWindow: string[];
-		CloseWindow: string[];
-	};
+	keybinds: Record<string, string[]>;
 }
 
 type Keybinds = {

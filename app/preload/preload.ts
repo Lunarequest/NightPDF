@@ -30,6 +30,10 @@ contextBridge.exposeInMainWorld("api", {
 	openExternel: (url: string) => {
 		ipcRenderer.send("openExternal", url);
 	},
+	
+	GetSettings: () => {
+		return ipcRenderer.invoke("GetSettings");
+	},
 
 	removeAllListeners: (ListenerType: string) => {
 		ipcRenderer.removeAllListeners(ListenerType);
@@ -37,9 +41,6 @@ contextBridge.exposeInMainWorld("api", {
 
 	SetBind: (key: string, value: string) => {
 		return ipcRenderer.send("SetBind", [key, value]);
-	},
-	GetSetting: () => {
-		return ipcRenderer.send("GetSettings");
 	},
 	openNewPDF: (pdf: string) => {
 		ipcRenderer.send("openNewPDF", pdf);
