@@ -9,7 +9,7 @@ interface NightPDFSettings extends JSONSchema {
 
 type Keybinds = {
 	trigger: string[];
-	action: string;
+	readonly action: string;
 };
 
 function keybindPropertyDef(min = 1, max = 2): JSONSchema {

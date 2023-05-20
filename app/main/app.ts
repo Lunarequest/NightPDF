@@ -337,7 +337,6 @@ app.whenReady().then(() => {
 
 	const keys = Object.keys(keybinds);
 	keys.forEach((key) => {
-		console.log(keybinds[key]);
 		globalShortcut.registerAll(keybinds[key].trigger, () => {
 			const focusedWin = BrowserWindow.getFocusedWindow();
 			if (focusedWin) {
