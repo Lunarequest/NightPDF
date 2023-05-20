@@ -315,7 +315,7 @@ app.on("open-file", (e: Event, path: string) => {
 });
 
 app.whenReady().then(() => {
-	const keybinds = store.get("keybinds") as Keybinds;
+	const keybinds = store.get("keybinds") as Record<string, Keybinds>;
 	console.log(keybinds);
 	if (fileToOpen) {
 		if (pageToOpen) {
@@ -335,23 +335,15 @@ app.whenReady().then(() => {
 		}).show();
 	});
 
-	// add "new tab" alias for open file
-	const open_binding = keybinds["OpenWindow"];
-	globalShortcut.registerAll(open_binding, () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			ipcMain.emit("openNewPDF");
-		}
-	});
-
-	// send "close-tab" to window
-	const close_bindings = keybinds["CloseWindow"] as string[];
-	globalShortcut.registerAll(close_bindings, () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			console.log("sending close-tab");
-			focusedWin.webContents.send("close-tab");
-		}
+	const keys = Object.keys(keybinds);
+	keys.forEach((key) => {
+		console.log(keybinds[key]);
+		globalShortcut.registerAll(keybinds[key].trigger, () => {
+			const focusedWin = BrowserWindow.getFocusedWindow();
+			if (focusedWin) {
+				ipcMain.emit(keybinds[key].action);
+			}
+		});
 	});
 
 	// register "reopen-tab" shortcut

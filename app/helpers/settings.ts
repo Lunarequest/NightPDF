@@ -4,11 +4,12 @@ import { type JSONSchema } from "json-schema-typed";
 interface NightPDFSettings extends JSONSchema {
 	version: string;
 	general: object;
-	keybinds: Record<string, string[]>;
+	keybinds: Record<string, Keybinds>;
 }
 
 type Keybinds = {
-	[key: string]: string[];
+	trigger: string[];
+	action: string;
 };
 
 function keybindPropertyDef(min = 1, max = 2): JSONSchema {
@@ -36,8 +37,24 @@ const nightpdf_schema: Schema<NightPDFSettings> = {
 	},
 	keybinds: {
 		properties: {
-			OpenWindow: keybindPropertyDef(),
-			CloseWindow: keybindPropertyDef(),
+			OpenWindow: {
+				properties: {
+					trigger: keybindPropertyDef(),
+					action: {
+						type: "string",
+					},
+				},
+				type: "object",
+			},
+			CloseWindow: {
+				properties: {
+					trigger: keybindPropertyDef(),
+					action: {
+						type: "string",
+					},
+				},
+				type: "object",
+			},
 		},
 		type: "object",
 	},
@@ -50,8 +67,14 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 			MaximizeOnOpen: false,
 		},
 		keybinds: {
-			OpenWindow: ["CommandOrControl+t"],
-			CloseWindow: ["CommandOrControl+w", "CommandOrControl+F4"],
+			OpenWindow: {
+				trigger: ["CommandOrControl+t"],
+				action: "openNewPDF",
+			},
+			CloseWindow: {
+				trigger: ["CommandOrControl+w", "CommandOrControl+F4"],
+				action: "close-tab",
+			},
 		},
 	};
 }
