@@ -165,6 +165,11 @@ function createWindow(
 			return resolve(args);
 		});
 
+		ipcMain.on("openExternal", async (_e: Event, url: string) => {
+			await shell.openExternal(url);
+			log.debug(`${url} is 3rd party content opening externally`);
+		});
+
 		Menu.setApplicationMenu(menu);
 		menuIsConfigured = true;
 	}

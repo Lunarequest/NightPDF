@@ -27,6 +27,10 @@ contextBridge.exposeInMainWorld("api", {
 		return await ipcRenderer.invoke("ResolvePath", filePath);
 	},
 
+	openExternel: (url: string) => {
+		ipcRenderer.send("openExternal", url);
+	},
+
 	removeAllListeners: (ListenerType: string) => {
 		ipcRenderer.removeAllListeners(ListenerType);
 	},
