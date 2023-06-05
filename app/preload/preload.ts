@@ -30,7 +30,7 @@ contextBridge.exposeInMainWorld("api", {
 	openExternel: (url: string) => {
 		ipcRenderer.send("openExternal", url);
 	},
-	
+
 	GetSettings: () => {
 		return ipcRenderer.invoke("GetSettings");
 	},
@@ -57,7 +57,7 @@ contextBridge.exposeInMainWorld("api", {
 	resizeWindow: (value: string) => {
 		ipcRenderer.send("resizeWindow", value);
 	},
-	
+
 	//rome-ignore lint/suspicious/noExplicitAny: we can pass Function here but vscode freaks out :/
 	on: (eventName: string, callback: any) => {
 		ipcRenderer.on(eventName, callback);

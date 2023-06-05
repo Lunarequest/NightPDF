@@ -196,8 +196,9 @@ function createWindow(
 
 		ipcMain.on("openExternal", async (_e: Event, url: string) => {
 			await shell.openExternal(url);
-			log.debug(`${url} is 3rd party content opening externally`)});
-		
+			log.debug(`${url} is 3rd party content opening externally`);
+		});
+
 		ipcMain.on("SetBind", (_e: Event, args: string[]) => {
 			setkeybind(args[0], args[1]);
 		});

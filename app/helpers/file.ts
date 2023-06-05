@@ -90,6 +90,18 @@ async function openFile(
 				}
 			},
 		});
+		const webview = tab?.webview as webviewTag;
+		webview.addEventListener("will-navigate", (e) => {
+			const event = e as EventNav;
+			const url = event.url;
+			if (url !== webview.getURL()) {
+				event.preventDefault();
+				webview.stop();
+				if (url.split("/")[0].indexOf("http") > -1) {
+					window.api.openExternel(url);
+				}
+			}
+		});
 		tab?.on("close", () => {
 			console.debug("tab closed");
 			const tabFile = tabFilePath.get(tab);
