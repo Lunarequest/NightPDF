@@ -338,109 +338,13 @@ app.whenReady().then(() => {
 
 	const keys = Object.keys(keybinds);
 	keys.forEach((key) => {
+		console.log(key);
 		globalShortcut.registerAll(keybinds[key].trigger, () => {
 			const focusedWin = BrowserWindow.getFocusedWindow();
 			if (focusedWin) {
-				ipcMain.emit(keybinds[key].action);
+				focusedWin.webContents.send(keybinds[key].action, keybinds[key].data);
 			}
 		});
-	});
-
-	// register "reopen-tab" shortcut
-	const reopen = store.get("ReopenTab") as string;
-	const reopen_bindings = ["CommandOrControl+Shift+t"];
-	if (reopen) {
-		reopen_bindings.push(reopen);
-	}
-	globalShortcut.registerAll(reopen_bindings, () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			focusedWin.webContents.send("reopen-tab");
-		}
-	});
-
-	// register all "next-tab" shortcuts
-	const switchtab = store.get("SwitchTab") as string;
-	const switchtab_bindings = [
-		"CommandOrControl+Tab",
-		"CommandOrControl+PageDown",
-	];
-	if (switchtab) {
-		switchtab_bindings.push(switchtab);
-	}
-	globalShortcut.registerAll(switchtab_bindings, () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			focusedWin.webContents.send("switch-tab", "next");
-		}
-	});
-
-	// register all "previous-tab" shortcuts
-	const previoustab = store.get("PreviousTab") as string;
-	const previoustab_bindings = [
-		"CommandOrControl+Shift+Tab",
-		"CommandOrControl+PageUp",
-	];
-	if (previoustab) {
-		previoustab_bindings.push(previoustab);
-	}
-	globalShortcut.registerAll(previoustab_bindings, () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			focusedWin.webContents.send("switch-tab", "prev");
-		}
-	});
-
-	// register move-tab (left) shortcut
-	const movetab_prev = store.get("PreviousTab") as string;
-	const movetab_bindings_prev = ["CommandOrControl+Shift+PageUp"];
-	if (movetab_prev) {
-		movetab_bindings_prev.push(movetab_prev);
-	}
-	globalShortcut.registerAll(movetab_bindings_prev, () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			focusedWin.webContents.send("move-tab", "prev");
-		}
-	});
-
-	// register move-tab (right) shortcut
-	const movetab_next = store.get("NextTab") as string;
-	const movetab_bindings_next = ["CommandOrControl+Shift+PageDown"];
-	if (movetab_next) {
-		movetab_bindings_next.push(movetab_next);
-	}
-	globalShortcut.registerAll(movetab_bindings_next, () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			focusedWin.webContents.send("move-tab", "next");
-		}
-	});
-
-	// register move-tab (start)
-	const movetab_start = store.get("StartTab") as string;
-	const movetab_bindings_start = ["CommandOrControl+Shift+Home"];
-	if (movetab_start) {
-		movetab_bindings_start.push(movetab_start);
-	}
-	globalShortcut.registerAll(movetab_bindings_start, () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			focusedWin.webContents.send("move-tab", "start");
-		}
-	});
-
-	// register move-tab (end)
-	const movetab_end = store.get("EndTab") as string;
-	const movetab_bindings_end = ["CommandOrControl+Shift+End"];
-	if (movetab_end) {
-		movetab_bindings_end.push(movetab_end);
-	}
-	globalShortcut.registerAll(movetab_bindings_end, () => {
-		const focusedWin = BrowserWindow.getFocusedWindow();
-		if (focusedWin) {
-			focusedWin.webContents.send("move-tab", "end");
-		}
 	});
 
 	// register Ctrl+1 to Ctrl+9 shortcuts
