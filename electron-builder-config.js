@@ -28,7 +28,7 @@ const config = {
 	],
 	linux: {
 		desktop: {
-			Name: "NightPdf",
+			Name: "NightPDF",
 			Comment: "Dark Mode PDF reader",
 		},
 		synopsis: "Dark Mode PDF reader",
