@@ -2568,16 +2568,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^24.4.1":
-  version: 24.4.1
-  resolution: "electron@npm:24.4.1"
+"electron@npm:^25.1.0":
+  version: 25.1.0
+  resolution: "electron@npm:25.1.0"
   dependencies:
     "@electron/get": ^2.0.0
     "@types/node": ^18.11.18
     extract-zip: ^2.0.1
   bin:
     electron: cli.js
-  checksum: 52c6478d462fc7b1c06c92431c588d31bd375ec480e7053e2364f75a98ab4ff9bdb4db86e0adc5e16f224fda109747565323a9be42d1d5f0b12eb2a945fc8e19
+  checksum: 411af45997f9b27d3981c16285e5f393abf265efde4aaa20c41e76e2a9e959fed4247b7621459682c3b91e60d31b0658659c232fc7ff79a8e28e92d694f89ade
   languageName: node
   linkType: hard
 
@@ -4874,7 +4874,7 @@ __metadata:
     "@types/yargs": ^17.0.24
     cssnano: ^6.0.1
     cssnano-preset-advanced: ^6.0.1
-    electron: ^24.4.1
+    electron: ^25.1.0
     electron-builder: ^24.4.0
     electron-log: ^4.4.8
     electron-tabs: ^1.0.1
@@ -4889,7 +4889,7 @@ __metadata:
     postcss: ^8.4.24
     rimraf: ^5.0.1
     rome: ^12.1.3
-    sass: ^1.62.1
+    sass: ^1.63.2
     ts-node: ^10.9.1
     typescript: ^5.1.3
     yargs: ^17.7.2
@@ -6262,16 +6262,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.62.1":
-  version: 1.62.1
-  resolution: "sass@npm:1.62.1"
+"sass@npm:^1.63.2":
+  version: 1.63.2
+  resolution: "sass@npm:1.63.2"
   dependencies:
     chokidar: ">=3.0.0 <4.0.0"
     immutable: ^4.0.0
     source-map-js: ">=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 1b1b3584b38a63dd94156b65f13b90e3f84b170a38c3d5e3fa578b7a32a37aeb349b4926b0eaf9448d48e955e86b1ee01b13993f19611dad8068af07a607c13b
+  checksum: 7ffc2b789aeae4637f09195f7d24e149fc590e2c69cb209c64fdf0ed0d7f09da28097c48fda7f36d257aeb7dd8e16a9ff77b50cf78830afe6f996e6dcd957280
   languageName: node
   linkType: hard
 

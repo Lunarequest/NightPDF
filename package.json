@@ -1,6 +1,6 @@
 {
 	"name": "nightpdf",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"description": "Dark Mode for PDFs",
 	"main": "out/main/app.js",
 	"packageManager": "yarn@3.5.1",
@@ -33,7 +33,7 @@
 		"@types/yargs": "^17.0.24",
 		"cssnano": "^6.0.1",
 		"cssnano-preset-advanced": "^6.0.1",
-		"electron": "^24.4.1",
+		"electron": "^25.1.0",
 		"electron-builder": "^24.4.0",
 		"esbuild": "^0.17.19",
 		"gulp": "^4.0.2",
@@ -44,7 +44,7 @@
 		"postcss": "^8.4.24",
 		"rimraf": "^5.0.1",
 		"rome": "^12.1.3",
-		"sass": "^1.62.1",
+		"sass": "^1.63.2",
 		"ts-node": "^10.9.1"
 	},
 	"dependencies": {
