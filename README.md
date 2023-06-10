@@ -10,9 +10,12 @@ It uses Electron but my eyes dont care.
 
 ![NightPDF logo](docs/nightpdf_small.png?raw=true)
 
-Binaries for Linux and Windows
+Binaries for Linux, Macos and Windows
 
 -   [Latest release](https://github.com/Lunarequest/NightPDF/releases/latest)
+<br/>
+<br/>
+<a href='https://flathub.org/apps/io.github.lunarequest.NightPDF'><img width='240' alt='Download on Flathub' src='https://dl.flathub.org/assets/badges/flathub-badge-en.png'/></a>
 
 ## Support tiers
 
