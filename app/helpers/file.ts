@@ -56,9 +56,9 @@ async function openFile(
 
 	let pageArg = "";
 	if (page) {
-		pageArg = `page=${page}`;
+		pageArg = `page=${page}&pagemode=thumbs`;
 	} else {
-		pageArg = "pagemode=none";
+		pageArg = "pagemode=thumbs";
 	}
 	if (!fileAlreadyOpen) {
 		const tab = tabGroup?.addTab({
