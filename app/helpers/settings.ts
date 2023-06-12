@@ -155,7 +155,7 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 	return {
 		version: version,
 		general: {
-			MaximizeOnOpen: false,
+			MaximizeOnOpen: true,
 		},
 		keybinds: {
 			OpenWindow: {

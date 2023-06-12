@@ -49,6 +49,7 @@ const default_settings = nightpdf_default_settings(version);
 const store = new Store<NightPDFSettings>({
 	schema: nightpdf_schema,
 	defaults: default_settings,
+	clearInvalidConfig: true,
 });
 
 let wins = [];

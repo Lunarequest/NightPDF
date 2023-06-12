@@ -53,7 +53,8 @@ async function nightPDFSettings() {
 				panel.classList.add("settings-panel");
 				panel.id = key;
 				panel.classList.add("hidden");
-				const title = document.createElement("h1");
+				const title = document.createElement("div");
+				title.classList.add("keybind-title");
 				title.innerText = key;
 				panel.appendChild(title);
 				const input = document.createElement("input");
@@ -62,7 +63,8 @@ async function nightPDFSettings() {
 					e.preventDefault();
 					e.stopPropagation();
 					input.value = e.key;
-					window.api.SetBind(key, e.key);
+					// save later
+					// window.api.SetBind(key, e.key);
 				});
 				panel.appendChild(input);
 			}
