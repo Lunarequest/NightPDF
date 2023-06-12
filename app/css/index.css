@@ -317,3 +317,7 @@ iframe {
 #darkConfigurator .noUi-horizontal {
 	height: 14px;
 }
+
+#settings-panel {
+	overflow-y: scroll;
+}

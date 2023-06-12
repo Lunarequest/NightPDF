@@ -317,7 +317,6 @@ app.on("open-file", (e: Event, path: string) => {
 
 app.whenReady().then(() => {
 	const keybinds = store.get("keybinds") as Record<string, Keybinds>;
-	console.log(keybinds);
 	if (fileToOpen) {
 		if (pageToOpen) {
 			createWindow(fileToOpen, pageToOpen);
@@ -338,7 +337,6 @@ app.whenReady().then(() => {
 
 	const keys = Object.keys(keybinds);
 	keys.forEach((key) => {
-		console.log(key);
 		globalShortcut.registerAll(keybinds[key].trigger, () => {
 			const focusedWin = BrowserWindow.getFocusedWindow();
 			if (focusedWin) {

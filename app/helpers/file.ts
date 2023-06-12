@@ -24,6 +24,7 @@ async function openFile(
 ) {
 	console.log("opening ", file);
 	let slidersInitialized: boolean;
+	console.log(sessionStorage.getItem("slidersInitialized"));
 	if (sessionStorage.getItem("slidersInitialized")) {
 		slidersInitialized = true;
 	} else {
@@ -75,7 +76,9 @@ async function openFile(
 				splashElement.style.display = "none";
 				window.api.togglePrinting(true);
 				setupTab(tab, tabCssKey, debug);
-				if (!slidersInitialized) {
+				if (slidersInitialized === false) {
+					sessionStorage.setItem("slidersInitialized", "true");
+					console.log("setting up sliders");
 					setupSliders(
 						brightnessSliderElement,
 						grayscaleSliderElement,
@@ -86,7 +89,6 @@ async function openFile(
 						tabGroup,
 						tabCssKey,
 					);
-					localStorage.setItem("slidersInitialized", "true");
 				}
 			},
 		});

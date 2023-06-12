@@ -25,6 +25,7 @@ async function nightPDFSettings() {
 	const menu = document.getElementById("settings-menu");
 	const panel = document.getElementById("settings-content");
 	const settings = await window.api.GetSettings();
+	console.log(settings);
 	for (const key in settings) {
 		if (Object.prototype.hasOwnProperty.call(settings, key)) {
 			// add to menu
@@ -56,7 +57,7 @@ async function nightPDFSettings() {
 				title.innerText = key;
 				panel.appendChild(title);
 				const input = document.createElement("input");
-				input.value = element.toString();
+				input.value = element.trigger.toString();
 				input.addEventListener("keydown", (e) => {
 					e.preventDefault();
 					e.stopPropagation();
