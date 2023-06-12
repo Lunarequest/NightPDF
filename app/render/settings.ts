@@ -23,7 +23,7 @@ async function nightPDFSettings() {
 	console.log("settings page loaded");
 	//const container = document.getElementById("settings-panel");
 	const menu = document.getElementById("settings-menu");
-	const panel = document.getElementById("settings-content");
+	const contentWrapper = document.getElementById("settings-content");
 	const settings = await window.api.GetSettings();
 	console.log(settings);
 	for (const key in settings) {
@@ -31,34 +31,46 @@ async function nightPDFSettings() {
 			// add to menu
 			// const element = settings[key];
 			const menuItem = document.createElement("div");
+			const panelId = `settings-${key}`;
 			menuItem.classList.add("menu-item");
 			menuItem.innerText = key;
 			menuItem.addEventListener("click", () => {
+				for (const panel of document.getElementsByClassName("menu-item")) {
+					panel.classList.remove("active");
+				}
+				menuItem.classList.add("active");
 				// hide all panels
 				for (const panel of document.getElementsByClassName("settings-panel")) {
 					panel.classList.add("hidden");
 				}
 				// show current panel
-				document.getElementById(key)?.classList.remove("hidden");
+				document.getElementById(panelId)?.classList.remove("hidden");
 			});
 			menu?.appendChild(menuItem);
+			const panel = document.createElement("div");
+			panel.classList.add("settings-panel", "hidden");
+			panel.id = panelId;
+			contentWrapper?.appendChild(panel);
 		}
 	}
 
 	const keybinds = settings.keybinds;
+	const panel = document.getElementById("settings-keybinds");
 	for (const key in keybinds) {
 		if (Object.prototype.hasOwnProperty.call(keybinds, key)) {
 			if (panel) {
-				const element = keybinds[key];
-				panel.classList.add("settings-panel");
-				panel.id = key;
-				panel.classList.add("hidden");
-				const title = document.createElement("div");
-				title.classList.add("keybind-title");
-				title.innerText = key;
-				panel.appendChild(title);
+				const settingsItem = document.createElement("div");
+				settingsItem.classList.add("settings-item", "keybind-item");
+				const keybind = keybinds[key];
+				const title = document.createElement("label");
+				title.htmlFor = key;
+				title.classList.add("setting-name", "keybind-name");
+				title.innerText = keybind.displayName ?? key;
+				settingsItem.appendChild(title);
 				const input = document.createElement("input");
-				input.value = element.trigger.toString();
+				input.classList.add("setting-input", "keybind-input");
+				input.name = key;
+				input.value = keybind.trigger.toString();
 				input.addEventListener("keydown", (e) => {
 					e.preventDefault();
 					e.stopPropagation();
@@ -66,7 +78,8 @@ async function nightPDFSettings() {
 					// save later
 					// window.api.SetBind(key, e.key);
 				});
-				panel.appendChild(input);
+				settingsItem.appendChild(input);
+				panel.appendChild(settingsItem);
 			}
 		}
 	}

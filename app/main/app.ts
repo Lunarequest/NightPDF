@@ -44,9 +44,25 @@ import {
 } from "../helpers/settings";
 import { createMenu } from "./menutemplate";
 
-const default_settings = nightpdf_default_settings(version);
+// Workaround if the schema is invalid
+// see: https://github.com/sindresorhus/electron-store/issues/116#issuecomment-816515814
+const makeStore = function (options: Store.Options<NightPDFSettings>) {
+	try {
+		return new Store<NightPDFSettings>(options);
+	} catch (e) {
+		console.error(e);
+		console.log("Resetting configuration...");
+		const store = new Store<NightPDFSettings>({
+			...options,
+			schema: undefined,
+		});
+		store.clear();
+		return new Store<NightPDFSettings>(options);
+	}
+};
 
-const store = new Store<NightPDFSettings>({
+const default_settings = nightpdf_default_settings(version);
+const store = makeStore({
 	schema: nightpdf_schema,
 	defaults: default_settings,
 	clearInvalidConfig: true,
