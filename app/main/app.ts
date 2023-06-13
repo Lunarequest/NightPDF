@@ -48,7 +48,9 @@ import { createMenu } from "./menutemplate";
 
 // Workaround if the schema is invalid
 // see: https://github.com/sindresorhus/electron-store/issues/116#issuecomment-816515814
-const makeStore = function (options: Store.Options<NightPDFSettings>) {
+const makeStore = (
+	options: Store.Options<NightPDFSettings>,
+): Store<NightPDFSettings> => {
 	try {
 		return new Store<NightPDFSettings>(options);
 	} catch (e) {

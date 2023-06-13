@@ -323,9 +323,12 @@ iframe {
 
 #settings-page {
 	display: flex;
-	overflow-y: scroll;
+	overflow-y: auto;
 	height: 100vh;
 	width: 100vw;
+	position: relative;
+	margin: 0;
+	padding: 0;
 }
 
 #settings-menu, #settings-content {
@@ -352,9 +355,12 @@ iframe {
 	max-width: 40rem;
     min-width: 30rem;
 	display: grid;
+	grid-template-columns: 100%;
+	grid-auto-flow: row;
+
 }
-.settings-panel.hidden {
-	display: none;
+#settings-page .hidden {
+	display: none !important;
 }
 
 #settings-menu > .menu-item {
@@ -366,7 +372,6 @@ iframe {
 }
 
 .menu-item.active {
-	color: #333;
 	background-color: #111;
 }
 
@@ -375,6 +380,8 @@ iframe {
 	display: grid;
 	width: 100%;
 	padding-top: 0.5rem;
+	grid-template-columns: 1fr 7rem 7rem;
+	grid-auto-flow: column;
 }
 
 .setting-name {
@@ -386,15 +393,35 @@ iframe {
 
 .setting-input {
 	display: grid;
-	grid-column: 2;
 	justify-self: end;
 	background-color: black;
 	color: #ccc;
 	border: 1px solid #666;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
+	width: 4rem;
+}
+
+.setting-input.primary {
+	grid-column: 2;
+}
+
+.setting-input.secondary {
+	grid-column: 3;
 }
 #version {
 	align-self: center;
 	align-items: center;
 	text-align: center;
+}
+
+#settings-page #keybind-overlay {
+	position: absolute;
+	top: 5vh;
+	left: 5vw;
+	width: 87vw;
+	height: 87vh;
+	background-color: rgba(0,0,0,0.8);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }

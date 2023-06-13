@@ -80,23 +80,34 @@ async function nightPDFSettings() {
 				const settingsItem = document.createElement("div");
 				settingsItem.classList.add("settings-item", "keybind-item");
 				const keybind = keybinds[key];
+				const primary = keybind.trigger[0];
+				const secondary = keybind.trigger[1] ?? "";
 				const title = document.createElement("label");
-				title.htmlFor = key;
+				title.htmlFor = `${key}-0`;
 				title.classList.add("setting-name", "keybind-name");
 				title.innerText = keybind.displayName ?? key;
 				settingsItem.appendChild(title);
+				// primary keybind
 				const input = document.createElement("input");
-				input.classList.add("setting-input", "keybind-input");
-				input.name = key;
-				input.value = keybind.trigger.toString();
-				input.addEventListener("keydown", (e) => {
-					const keyCombination = [];
-					e.preventDefault();
-					e.stopPropagation();
-					input.value = e.key;
-					// save later
-					// window.api.SetBind(key, e.key);
-				});
+				input.disabled = true;
+				input.classList.add("setting-input", "keybind-input", "primary");
+				input.name = `${key}-0`;
+				input.value = primary;
+
+				// alternative keybind
+				const altInput = document.createElement("input");
+				altInput.disabled = true;
+				altInput.classList.add("setting-input", "keybind-input", "secondary");
+				altInput.name = `${key}-1`;
+				altInput.value = secondary;
+				settingsItem.appendChild(altInput);
+				// input.addEventListener("keydown", (e) => {
+				// 	e.preventDefault();
+				// 	e.stopPropagation();
+				// 	input.value = e.key;
+				// 	// save later
+				//  window.api.SetBind(key, e.key);
+				//});
 				settingsItem.appendChild(input);
 				panel.appendChild(settingsItem);
 			}
