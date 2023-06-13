@@ -19,6 +19,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //trans rights
 
 async function nightPDFSettings() {
+	const keyCombinationMap: Record<string, String> = {
+		Control: "Ctrl",
+		Alt: "Alt",
+		Shift: "Shift",
+	};
 	console.log("loading");
 	console.log("settings page loaded");
 	//const container = document.getElementById("settings-panel");
@@ -54,6 +59,19 @@ async function nightPDFSettings() {
 		}
 	}
 
+	const version = await window.api.GetVersion();
+	const version_panel = document.getElementById("settings-version");
+
+	console.log(version_panel);
+	if (version_panel) {
+		version_panel.classList.remove("hidden");
+		const div = document.createElement("div");
+		div.classList.add("version");
+		div.innerHTML = version;
+		version_panel.appendChild(div);
+		console.log(version_panel);
+	}
+
 	const keybinds = settings.keybinds;
 	const panel = document.getElementById("settings-keybinds");
 	for (const key in keybinds) {
@@ -72,6 +90,7 @@ async function nightPDFSettings() {
 				input.name = key;
 				input.value = keybind.trigger.toString();
 				input.addEventListener("keydown", (e) => {
+					const keyCombination = [];
 					e.preventDefault();
 					e.stopPropagation();
 					input.value = e.key;

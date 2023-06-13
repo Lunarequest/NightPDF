@@ -27,6 +27,8 @@ import {
 	nativeTheme,
 	globalShortcut,
 	Notification,
+	IpcMainEvent,
+	IpcMainInvokeEvent,
 } from "electron";
 import type { OpenDialogReturnValue } from "electron";
 import { parse, join, resolve } from "path";
@@ -203,24 +205,28 @@ function createWindow(
 			};
 		}
 
-		ipcMain.handle("getPath", (_e: Event, args: string) => {
+		ipcMain.handle("getPath", (_e: IpcMainInvokeEvent, args: string) => {
 			return getpath(args);
 		});
 
-		ipcMain.handle("ResolvePath", (_e: Event, args: string) => {
+		ipcMain.handle("ResolvePath", (_e: IpcMainInvokeEvent, args: string) => {
 			return resolve(args);
 		});
 
-		ipcMain.on("openExternal", async (_e: Event, url: string) => {
+		ipcMain.on("openExternal", async (_e: IpcMainEvent, url: string) => {
 			await shell.openExternal(url);
 			log.debug(`${url} is 3rd party content opening externally`);
 		});
 
-		ipcMain.on("SetBind", (_e: Event, args: string[]) => {
+		ipcMain.on("SetBind", (_e: IpcMainEvent, args: string[]) => {
 			setkeybind(args[0], args[1]);
 		});
-		ipcMain.handle("GetSettings", (_e: Event) => {
+		ipcMain.handle("GetSettings", (_e: IpcMainInvokeEvent) => {
 			return store.store;
+		});
+
+		ipcMain.handle("GetVersion", (_e: IpcMainInvokeEvent) => {
+			return versionString();
 		});
 		Menu.setApplicationMenu(menu);
 		menuIsConfigured = true;
@@ -253,7 +259,7 @@ function createWindow(
 	};
 
 	ipcMain.removeAllListeners("togglePrinting");
-	ipcMain.on("togglePrinting", (_e: Event, msg: string) => {
+	ipcMain.on("togglePrinting", (_e: IpcMainEvent, msg: string) => {
 		const menu = Menu.getApplicationMenu();
 		if (menu) {
 			const print = menu.getMenuItemById("file-print");
@@ -264,13 +270,13 @@ function createWindow(
 	});
 
 	ipcMain.removeAllListeners("newWindow");
-	ipcMain.once("newWindow", (_e: Event, msg: undefined | null) => {
+	ipcMain.once("newWindow", (_e: IpcMainEvent, msg: undefined | null) => {
 		log.debug("opening ", msg, " in new window");
 		createWindow(msg);
 	});
 
 	ipcMain.removeAllListeners("resizeWindow");
-	ipcMain.once("resizeWindow", (_e: Event, _msg: string) => {
+	ipcMain.once("resizeWindow", (_e: IpcMainEvent, _msg: string) => {
 		const { width, height } = win.getBounds();
 		if (width < 1000 || height < 650) {
 			win.setResizable(true);
@@ -280,7 +286,7 @@ function createWindow(
 	});
 
 	ipcMain.removeAllListeners("openNewPDF");
-	ipcMain.on("openNewPDF", (_e: Event, _msg: null) => {
+	ipcMain.on("openNewPDF", (_e: IpcMainEvent, _msg: null) => {
 		openNewPDF();
 	});
 }

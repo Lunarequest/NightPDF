@@ -36,7 +36,7 @@
 		"@types/yargs": "^17.0.24",
 		"cssnano": "^6.0.1",
 		"cssnano-preset-advanced": "^6.0.1",
-		"electron": "24",
+		"electron": "latest",
 		"electron-builder": "^24.4.0",
 		"esbuild": "^0.18.1",
 		"gulp": "^4.0.2",

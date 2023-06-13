@@ -2640,16 +2640,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:24":
-  version: 24.5.0
-  resolution: "electron@npm:24.5.0"
+"electron@npm:latest":
+  version: 25.1.0
+  resolution: "electron@npm:25.1.0"
   dependencies:
     "@electron/get": ^2.0.0
     "@types/node": ^18.11.18
     extract-zip: ^2.0.1
   bin:
     electron: cli.js
-  checksum: 8d7095814fd28d2e4719a2bd21987393610071a217f51d7bbab160395ed31b2c5d214af9081007fbef661e03a9be0ce1db1d76d0acb145c488ebd8e360ca7fd9
+  checksum: 411af45997f9b27d3981c16285e5f393abf265efde4aaa20c41e76e2a9e959fed4247b7621459682c3b91e60d31b0658659c232fc7ff79a8e28e92d694f89ade
   languageName: node
   linkType: hard
 
@@ -5001,7 +5001,7 @@ __metadata:
     "@types/yargs": ^17.0.24
     cssnano: ^6.0.1
     cssnano-preset-advanced: ^6.0.1
-    electron: 24
+    electron: latest
     electron-builder: ^24.4.0
     electron-log: ^4.4.8
     electron-store: ^8.1.0

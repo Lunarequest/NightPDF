@@ -29,6 +29,7 @@ import { NightPDFSettings } from "../helpers/settings";
 declare global {
 	interface Window {
 		api: {
+			GetVersion(): Promise<string>;
 			getFileName(arg0: string): Promise<string>;
 			ResolvePath(arg0: string): Promise<string>;
 			SetBind(key: string, value: string): Promise<null>;
