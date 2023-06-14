@@ -66,4 +66,6 @@ contextBridge.exposeInMainWorld("api", {
 	on: (eventName: string, callback: any) => {
 		ipcRenderer.on(eventName, callback);
 	},
+	// for use in keybind display
+	platform: process.platform,
 });

@@ -42,6 +42,7 @@ declare global {
 			resizeWindow(arg0: null | string): null;
 			on(arg0: string, arg1: CallableFunction): null;
 			openExternel(url: string): null;
+			platform: string;
 		};
 	}
 	interface HTMLElement {

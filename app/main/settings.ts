@@ -12,6 +12,7 @@ function openSettings() {
 			icon: join(__dirname, "../assets/icon.png"),
 			webPreferences: {
 				preload: resolve(join(__dirname, "../preload/preload.js")),
+				contextIsolation: true,
 			},
 		});
 		win.webContents.once("did-finish-load", () => {
