@@ -175,7 +175,9 @@ function createWindow(
 			if (page) {
 				win.webContents.send("file-open", [filename, page]);
 			} else {
-				win.webContents.send("file-open", [filename]);
+				// rome-ignore lint: don't double wrap array
+				filename = Array.isArray(filename) ? filename : [filename];
+				win.webContents.send("file-open", filename);
 			}
 			win.show();
 		} else {
@@ -306,6 +308,7 @@ const argv = yargs
 		type: "string",
 		alias: "pdf",
 	})
+	.array("pdf")
 	.describe("help", "Show help.") // Override --help usage message.
 	.version(versionString())
 	.epilog(`copyright ${new Date().getFullYear()}`)

@@ -22,9 +22,7 @@ async function openFile(
 	page: number | null = null,
 	debug = false,
 ) {
-	console.log("opening ", files);
 	let slidersInitialized: boolean;
-	console.log(sessionStorage.getItem("slidersInitialized"));
 	if (sessionStorage.getItem("slidersInitialized")) {
 		slidersInitialized = true;
 	} else {
@@ -35,7 +33,6 @@ async function openFile(
 		console.debug("No tabs yet, creating new tab");
 	}
 
-	console.debug(files);
 	if (typeof files === "string") {
 		// wrap in array
 		// rome-ignore lint: ensure files is an array to use a for loop
@@ -79,7 +76,7 @@ async function openFile(
 					setupTab(tab, tabCssKey, debug);
 					if (slidersInitialized === false) {
 						sessionStorage.setItem("slidersInitialized", "true");
-						console.log("setting up sliders");
+						console.debug("setting up sliders");
 						setupSliders(
 							brightnessSliderElement,
 							grayscaleSliderElement,
