@@ -237,22 +237,18 @@ function createWindow(
 	const openNewPDF = () => {
 		dialog
 			.showOpenDialog(win, {
-				properties: ["openFile"],
+				properties: ["openFile", "multiSelections"],
 				filters: [{ name: "PDF Files", extensions: ["pdf"] }],
 			})
 			.then((dialogReturn: OpenDialogReturnValue) => {
-				const filename = dialogReturn["filePaths"][0];
-				if (filename) {
+				const filenames = dialogReturn["filePaths"];
+				if (filenames && filenames.length > 0) {
 					if (wins.length === 0) {
-						createWindow(filename.toString());
+						createWindow(filenames);
 					} else {
 						const focusedWin = BrowserWindow.getFocusedWindow();
 						if (focusedWin) {
-							focusedWin.webContents.send(
-								"file-open",
-								filename.toString(),
-								DEBUG,
-							);
+							focusedWin.webContents.send("file-open", filenames, DEBUG);
 							focusedWin.maximize();
 						}
 					}

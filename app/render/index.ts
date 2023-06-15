@@ -143,77 +143,41 @@ async function nightPDF() {
 			msg: string | [string, number] | [string],
 			debug = false,
 		) => {
-			console.log(msg);
-			if (typeof msg === "string") {
-				await openFile(
-					msg,
-					closedFileHistory,
-
-					tabGroup,
-					tabFilePath,
-					tabCssKey,
-
-					appContainerElement,
-					splashElement,
-					headerElement,
-					brightnessSliderElement,
-					grayscaleSliderElement,
-					invertSliderElement,
-					sepiaSliderElement,
-					extraBrightnessSliderElement,
-					hueSliderElement,
-
-					null,
-					debug,
-				);
+			let page: number | null = null;
+			let files: string | string[];
+			if (
+				Array.isArray(msg) &&
+				msg.length === 2 &&
+				typeof msg[1] === "number"
+			) {
+				page = msg[1];
+				files = msg[0];
 			} else {
-				if (msg.length === 1) {
-					// this case only occurs when launching from a started instance unsure why
-					await openFile(
-						msg,
-						closedFileHistory,
-
-						tabGroup,
-						tabFilePath,
-						tabCssKey,
-
-						appContainerElement,
-						splashElement,
-						headerElement,
-						brightnessSliderElement,
-						grayscaleSliderElement,
-						invertSliderElement,
-						sepiaSliderElement,
-						extraBrightnessSliderElement,
-						hueSliderElement,
-
-						null,
-						debug,
-					);
-				} else {
-					await openFile(
-						msg[0][0],
-						closedFileHistory,
-
-						tabGroup,
-						tabFilePath,
-						tabCssKey,
-
-						appContainerElement,
-						splashElement,
-						headerElement,
-						brightnessSliderElement,
-						grayscaleSliderElement,
-						invertSliderElement,
-						sepiaSliderElement,
-						extraBrightnessSliderElement,
-						hueSliderElement,
-
-						msg[1],
-						debug,
-					);
-				}
+				// @ts-ignore we know this is string | string[]
+				files = msg;
 			}
+
+			await openFile(
+				files,
+				closedFileHistory,
+
+				tabGroup,
+				tabFilePath,
+				tabCssKey,
+
+				appContainerElement,
+				splashElement,
+				headerElement,
+				brightnessSliderElement,
+				grayscaleSliderElement,
+				invertSliderElement,
+				sepiaSliderElement,
+				extraBrightnessSliderElement,
+				hueSliderElement,
+
+				page,
+				debug,
+			);
 		},
 	);
 
@@ -469,31 +433,27 @@ async function nightPDF() {
 		if (!files || files.length === 0) {
 			return;
 		}
+		await openFile(
+			files,
+			closedFileHistory,
 
-		const fileToOpen = files[0];
-		if (fileToOpen) {
-			await openFile(
-				fileToOpen.path,
-				closedFileHistory,
+			tabGroup,
+			tabFilePath,
+			tabCssKey,
 
-				tabGroup,
-				tabFilePath,
-				tabCssKey,
+			appContainerElement,
+			splashElement,
+			headerElement,
+			brightnessSliderElement,
+			grayscaleSliderElement,
+			invertSliderElement,
+			sepiaSliderElement,
+			extraBrightnessSliderElement,
+			hueSliderElement,
 
-				appContainerElement,
-				splashElement,
-				headerElement,
-				brightnessSliderElement,
-				grayscaleSliderElement,
-				invertSliderElement,
-				sepiaSliderElement,
-				extraBrightnessSliderElement,
-				hueSliderElement,
-
-				null,
-				debug,
-			);
-		}
+			null,
+			debug,
+		);
 	};
 	splashElement.ondragover = (e: Event) => {
 		console.log("file dragged");
