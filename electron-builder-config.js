@@ -19,8 +19,34 @@ const config = {
 		"!.python-version",
 	],
 	fileAssociations: [
+		// pdf
 		{
 			ext: "pdf",
+			name: "PDF File",
+			icon: "build/icon.icns",
+			role: "viewer",
+			isPackage: false,
+		},
+		// xfa
+		{
+			ext: "xdp",
+			name: "XFA File",
+			icon: "build/icon.icns",
+			role: "viewer",
+			isPackage: false,
+		},
+		// fdf
+		{
+			ext: "fdf",
+			name: "FDF File",
+			icon: "build/icon.icns",
+			role: "viewer",
+			isPackage: false,
+		},
+		// xfdf
+		{
+			ext: "xfdf",
+			name: "XFDF File",
 			icon: "build/icon.icns",
 			role: "viewer",
 			isPackage: false,
@@ -47,7 +73,13 @@ const config = {
 				arch: ["x64", "arm64"],
 			},
 		],
-		mimeTypes: ["application/pdf", "application/x-pdf"],
+		mimeTypes: [
+			"application/pdf",
+			"application/x-pdf", // deprecated mime type
+			"application/vnd.adobe.xdp+xml",
+			"application/vnd.adobe.xfdf",
+			"application/vnd.fdf",
+		],
 		category: "Utilty",
 	},
 	appImage: {
