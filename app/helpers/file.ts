@@ -60,7 +60,7 @@ async function openFile(
 		}
 		if (!fileAlreadyOpen) {
 			const tab = tabGroup?.addTab({
-				title: title,
+				title: `\u202A${title}\u202A`,
 				src: `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
 					resolved_file,
 				)}#${pageArg}`,
