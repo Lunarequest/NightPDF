@@ -249,6 +249,7 @@ async function nightPDFSettings() {
 	 * @param e The click event
 	 */
 	const showOverlay = (
+		key: string,
 		targetKeybind: Keybinds,
 		bindIndex: number,
 		e: MouseEvent,
@@ -264,6 +265,7 @@ async function nightPDFSettings() {
 		settingsPage?.addEventListener("click", hideOverlayOnClick);
 		// add event listener to cancel button
 		const cancelButton = document.getElementById("keybind-overlay-cancel");
+		const saveButton = document.getElementById("keybind-overlay-save");
 		cancelButton?.addEventListener(
 			"click",
 			() => {
@@ -273,7 +275,21 @@ async function nightPDFSettings() {
 		);
 
 		// @todo: add event listener to save button, check for duplicates
-		// ...
+		saveButton?.addEventListener(
+			"click",
+			() => {
+				const values = document.getElementById(
+					"keybind-overlay-key",
+				)?.innerText;
+				if (!values) {
+					alert("Invalid keybind");
+					return;
+				}
+				targetKeybind.trigger[bindIndex] = values;
+				window.api.SetBind(key, targetKeybind);
+			},
+			{ once: true },
+		);
 	};
 
 	const createKeybindSetting = (
@@ -298,7 +314,10 @@ async function nightPDFSettings() {
 		input.classList.add("setting-input", "keybind-input", which);
 		input.name = elementName;
 		input.value = keybindToString(currentBind, window.api.platform);
-		input.addEventListener("click", showOverlay.bind(null, keybind, bindIndex));
+		input.addEventListener(
+			"click",
+			showOverlay.bind(null, key, keybind, bindIndex),
+		);
 		return { title, input };
 	};
 

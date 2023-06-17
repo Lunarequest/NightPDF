@@ -36,7 +36,7 @@ import { version } from "../../package.json";
 import { autoUpdater } from "electron-updater";
 import { readFileSync } from "fs";
 import log from "electron-log";
-import yargs from "yargs";
+import yargs, { command } from "yargs";
 import Store from "electron-store";
 import {
 	nightpdf_schema,
@@ -103,7 +103,7 @@ function versionString(): string {
 	return `NightPDF: v${version} PDF.js: ${pdfjsver} Electron: v${process.versions.electron}`;
 }
 
-function setkeybind(id: string, command: string) {
+function setkeybind(id: string, command: Keybinds) {
 	store.set(id, command);
 }
 
@@ -222,9 +222,12 @@ function createWindow(
 			log.debug(`${url} is 3rd party content opening externally`);
 		});
 
-		ipcMain.on("SetBind", (_e: IpcMainEvent, args: string[]) => {
-			setkeybind(args[0], args[1]);
-		});
+		ipcMain.on(
+			"SetBind",
+			(_e: IpcMainEvent, key: string, keybind: Keybinds) => {
+				setkeybind(key, keybind);
+			},
+		);
 		ipcMain.handle("GetSettings", (_e: IpcMainInvokeEvent) => {
 			return store.store;
 		});
