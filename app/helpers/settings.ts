@@ -9,7 +9,7 @@ type NightPDFSettings = JSONSchema & {
 
 // kebind config
 type Keybinds = {
-	trigger: string[];
+	keybind: Keybind[];
 	readonly action: string;
 	readonly data?: string;
 	readonly displayName?: string;
@@ -19,6 +19,11 @@ type Keybinds = {
 type Keybind = {
 	modifiers: ModifierKeyMap;
 	key: string | null;
+};
+
+// A collection of modifier keys
+type ModifierKeyMap = {
+	[modifierKey: string]: ModifierKey;
 };
 
 // Modifier key definition (for keybinds)
@@ -32,19 +37,167 @@ type ModifierKey = {
 	};
 };
 
-// A collection of modifier keys
-type ModifierKeyMap = {
-	[modifierKey: string]: ModifierKey;
-};
+class KeybindHelper {
+	readonly keybind: Keybind;
+	readonly platform: string;
+	constructor(keybind: Keybind, platform: string) {
+		this.keybind = keybind;
+		this.platform = platform;
+	}
+
+	static fromKeybind(keybind: Keybind, platform: string): KeybindHelper {
+		return new KeybindHelper(keybind, platform);
+	}
+
+	static fromTrigger(trigger: string, platform: string): KeybindHelper {
+		const keybind: Keybind = {
+			key: "",
+			modifiers: {},
+		};
+		const keys = trigger.split("+");
+		// last key is the non-modifier key
+		keybind.key = keys.pop() ?? "";
+		for (const key of keys) {
+			keybind.modifiers[key] = ModifierKeys[key];
+		}
+		return KeybindHelper.fromKeybind(keybind, platform);
+	}
+
+	static keybindFromTriggerArray(
+		triggers: string[],
+		platform: string | null = null,
+	): Keybind[] {
+		if (platform === null) {
+			// rome-ignore lint: if we are using this to create initial config we don't care.
+			platform = "none";
+		}
+		return triggers.map((trigger) =>
+			KeybindHelper.fromTrigger(trigger, platform).getKeybind(),
+		);
+	}
+
+	static fromKeybindArray(
+		keybinds: Keybind[],
+		platform: string,
+	): KeybindHelper[] {
+		return keybinds.map((keybind) =>
+			KeybindHelper.fromKeybind(keybind, platform),
+		);
+	}
+
+	getKeybind(): Keybind {
+		return this.keybind;
+	}
+
+	// This is to store the trigger keybinds in the settings file
+	// the savesAs property is what it should be stored as
+	toTrigger(): string {
+		let trigger = "";
+		if (this.keybind.modifiers) {
+			for (const modifier in this.keybind.modifiers) {
+				if (this.keybind.modifiers[modifier]) {
+					trigger += `${ModifierKeys[modifier].savesAs}+`;
+				}
+			}
+		}
+		trigger += this.keybind.key;
+		return trigger;
+	}
+
+	toString(): string {
+		let keybindString = "";
+		if (this.keybind.key === null) {
+			return keybindString;
+		}
+		if (this.keybind.modifiers) {
+			for (const modifier in this.keybind.modifiers) {
+				keybindString += modifierToString(modifier, this.platform);
+				keybindString += "+";
+			}
+		}
+		keybindString += this.keybind.key;
+		return keybindString;
+	}
+}
+
+// Helper class for keybinds
+class KeybindsHelper {
+	readonly config: Record<string, Keybinds>;
+	readonly platform: string;
+
+	constructor(config: Record<string, Keybinds>, platform: string) {
+		this.config = config;
+		this.platform = platform;
+	}
+
+	getActionKeybinds(action: string): KeybindHelper[] {
+		return KeybindHelper.fromKeybindArray(
+			this.config[action].keybind,
+			this.platform,
+		);
+	}
+
+	getActionKeybind(action: string, index: number): KeybindHelper {
+		return KeybindHelper.fromKeybind(
+			this.config[action].keybind[index],
+			this.platform,
+		);
+	}
+}
 
 function keybindPropertyDef(min = 1, max = 2): JSONSchema {
 	return {
 		properties: {
-			trigger: {
-				type: "array",
-				items: {
-					type: "string",
-				},
+			keybind: {
+				type: "array", // Keybind[]
+				items: [
+					{
+						type: "object", // Keybind
+						properties: {
+							modifiers: {
+								type: "object", // ModifierKeyMap
+								patternProperties: {
+									"^[a-z0-9]+$": {
+										type: "object", // ModifierKey
+										properties: {
+											savesAs: {
+												type: "string",
+											},
+											osDependent: {
+												type: "boolean",
+											},
+											displayAs: {
+												type: "string",
+											},
+											osVariants: {
+												type: "object",
+												properties: {
+													default: {
+														type: "string",
+													},
+												},
+												patternProperties: {
+													"^[a-z0-9]+$": {
+														type: "string",
+													},
+												},
+												additionalProperties: false,
+											},
+										},
+										required: ["savesAs", "osDependent"],
+										additionalProperties: false,
+									},
+								},
+								additionalProperties: false,
+							},
+							key: {
+								type: ["string", "null"],
+							},
+						},
+						required: ["modifiers", "key"],
+						additionalProperties: false,
+					},
+				],
 				minItems: min,
 				maxItems: max,
 			},
@@ -60,6 +213,7 @@ function keybindPropertyDef(min = 1, max = 2): JSONSchema {
 		},
 		type: "object",
 		required: ["trigger", "action"],
+		additionalProperties: false,
 	};
 }
 
@@ -99,52 +253,71 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 		},
 		keybinds: {
 			OpenWindow: {
-				trigger: ["CommandOrControl+t"],
+				keybind: KeybindHelper.keybindFromTriggerArray(["CommandOrControl+t"]),
 				action: "openNewPDF",
 				displayName: "Open New PDF",
 			},
 			CloseWindow: {
-				trigger: ["CommandOrControl+w", "CommandOrControl+F4"],
+				keybind: KeybindHelper.keybindFromTriggerArray([
+					"CommandOrControl+w",
+					"CommandOrControl+F4",
+				]),
 				action: "close-tab",
 				displayName: "Close Tab",
 			},
 			ReOpen: {
-				trigger: ["CommandOrControl+Shift+t"],
+				keybind: KeybindHelper.keybindFromTriggerArray([
+					"CommandOrControl+Shift+t",
+				]),
 				action: "reopen-tab",
 				displayName: "Reopen Tab",
 			},
 			SwitchTab: {
-				trigger: ["CommandOrControl+Tab", "CommandOrControl+PageDown"],
+				keybind: KeybindHelper.keybindFromTriggerArray([
+					"CommandOrControl+Tab",
+					"CommandOrControl+PageDown",
+				]),
 				action: "switch-tab",
 				data: "next",
 				displayName: "Switch Tab",
 			},
 			PreviousTab: {
-				trigger: ["CommandOrControl+Shift+Tab", "CommandOrControl+PageUp"],
+				keybind: KeybindHelper.keybindFromTriggerArray([
+					"CommandOrControl+Shift+Tab",
+					"CommandOrControl+PageUp",
+				]),
 				action: "switch-tab",
 				data: "prev",
 				displayName: "Previous Tab",
 			},
 			LeftTab: {
-				trigger: ["CommandOrControl+Shift+PageUp"],
+				keybind: KeybindHelper.keybindFromTriggerArray([
+					"CommandOrControl+Shift+PageUp",
+				]),
 				action: "move-tab",
 				data: "prev",
 				displayName: "Move Tab Left",
 			},
 			RightTab: {
-				trigger: ["CommandOrControl+Shift+PageDown"],
+				keybind: KeybindHelper.keybindFromTriggerArray([
+					"CommandOrControl+Shift+PageDown",
+				]),
 				action: "move-tab",
 				data: "next",
 				displayName: "Move Tab Right",
 			},
 			StartTab: {
-				trigger: ["CommandOrControl+Shift+Home"],
+				keybind: KeybindHelper.keybindFromTriggerArray([
+					"CommandOrControl+Shift+Home",
+				]),
 				action: "move-tab",
 				data: "start",
 				displayName: "Move Tab to Start",
 			},
 			EndTab: {
-				trigger: ["CommandOrControl+Shift+End"],
+				keybind: KeybindHelper.keybindFromTriggerArray([
+					"CommandOrControl+Shift+End",
+				]),
 				action: "move-tab",
 				data: "end",
 				displayName: "Move Tab to End",
@@ -155,6 +328,14 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 
 // The modifier keys allowed in NightPDF
 const ModifierKeys: ModifierKeyMap = {
+	CommandOrControl: {
+		savesAs: "CommandOrControl",
+		osDependent: true,
+		osVariants: {
+			darwin: "⌘",
+			default: "Ctrl",
+		},
+	},
 	Control: {
 		savesAs: "Control",
 		osDependent: false,
@@ -197,60 +378,6 @@ function modifierToString(name: string, platform: string): string {
 	return displayAs ?? name;
 }
 
-// This is to store the trigger keybinds in the settings file
-// the savesAs property is what it should be stored as
-function keybindToTrigger(keybind: Keybind): string {
-	let trigger = "";
-	if (keybind.modifiers) {
-		for (const modifier in keybind.modifiers) {
-			if (keybind.modifiers[modifier]) {
-				trigger += `${ModifierKeys[modifier].savesAs}+`;
-			}
-		}
-	}
-	trigger += keybind.key;
-	return trigger;
-}
-
-function keybindToString(keybind: Keybind, platform: string): string {
-	let keybindString = "";
-	if (keybind.key === null) {
-		return keybindString;
-	}
-	if (keybind.modifiers) {
-		for (const modifier in keybind.modifiers) {
-			keybindString += modifierToString(modifier, platform);
-			keybindString += "+";
-		}
-	}
-	keybindString += keybind.key;
-	return keybindString;
-}
-
-// This is to convert the trigger keybinds from the settings file
-// to the format that is used by the keybinds
-function triggerToKeybind(trigger: string, platform: string): Keybind {
-	const keybind: Keybind = {
-		key: "",
-		modifiers: {},
-	};
-	const keys = trigger.split("+");
-	// last key is the non-modifier key
-	keybind.key = keys.pop() ?? "";
-	for (const key of keys) {
-		if (key === "CommandOrControl") {
-			if (platform === "darwin") {
-				keybind.modifiers["Meta"] = ModifierKeys["Meta"];
-				continue;
-			}
-			keybind.modifiers["Control"] = ModifierKeys["Control"];
-			continue;
-		}
-		keybind.modifiers[key] = ModifierKeys[key];
-	}
-	return keybind;
-}
-
 export {
 	NightPDFSettings,
 	nightpdf_schema,
@@ -260,7 +387,6 @@ export {
 	ModifierKeys,
 	nightpdf_default_settings,
 	modifierToString as getModifierDisplayAs,
-	keybindToTrigger,
-	keybindToString,
-	triggerToKeybind,
+	KeybindHelper,
+	KeybindsHelper,
 };
