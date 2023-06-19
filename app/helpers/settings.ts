@@ -386,7 +386,7 @@ export {
 	ModifierKeyMap,
 	ModifierKeys,
 	nightpdf_default_settings,
-	modifierToString as getModifierDisplayAs,
+	modifierToString,
 	KeybindHelper,
 	KeybindsHelper,
 };

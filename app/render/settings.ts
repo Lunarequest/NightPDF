@@ -21,10 +21,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 import type { Keybinds, Keybind, ModifierKeyMap } from "../helpers/settings";
 import {
 	ModifierKeys,
-	getModifierDisplayAs,
-	triggerToKeybind,
-	keybindToTrigger,
-	keybindToString,
+	modifierToString,
+	KeybindsHelper,
+	KeybindHelper
 } from "../helpers/settings";
 
 async function nightPDFSettings() {
@@ -206,7 +205,7 @@ async function nightPDFSettings() {
 		// otherwise, display the modifiers
 		const keybindDisplay = currentlyHeldModifiers
 			.flatMap((name) => {
-				const displayAs = getModifierDisplayAs(name, window.api.platform);
+				const displayAs = modifierToString(name, window.api.platform);
 				return keybindDisplayTemplate(displayAs, name);
 			})
 			.filter((v) => v !== null)
