@@ -43,6 +43,7 @@ import {
 	NightPDFSettings,
 	Keybinds,
 	nightpdf_default_settings,
+	KeybindsHelper,
 } from "../helpers/settings";
 import { createMenu } from "./menutemplate";
 
@@ -148,6 +149,7 @@ function createWindow(
 	const wc = win.webContents;
 	// if the window url changes from the inital one,
 	// block the change and use xdg-open to open it
+	// @ts-ignore - will-navigate is not in the type definition
 	wc.on("will-navigate", function (e: Event, url: string) {
 		if (url !== wc.getURL()) {
 			e.preventDefault();
@@ -327,6 +329,7 @@ if (pdf.length > 0) {
 	}
 }
 
+// @ts-ignore - open-file is not in the electron type definitions
 app.on("open-file", (e: Event, path: string) => {
 	e.preventDefault();
 	if (app.isReady()) {
@@ -343,7 +346,10 @@ app.on("open-file", (e: Event, path: string) => {
 });
 
 app.whenReady().then(() => {
-	const keybinds = store.get("keybinds") as Record<string, Keybinds>;
+	const keybinds: KeybindsHelper = new KeybindsHelper(
+		store.get("keybinds") as Record<string, Keybinds>,
+		process.platform,
+	);
 	if (fileToOpen) {
 		if (pageToOpen) {
 			createWindow(fileToOpen, pageToOpen);
@@ -362,14 +368,19 @@ app.whenReady().then(() => {
 		}).show();
 	});
 
-	const keys = Object.keys(keybinds);
-	keys.forEach((key) => {
-		globalShortcut.registerAll(keybinds[key].trigger, () => {
-			const focusedWin = BrowserWindow.getFocusedWindow();
-			if (focusedWin) {
-				focusedWin.webContents.send(keybinds[key].action, keybinds[key].data);
-			}
-		});
+	keybinds.actions.forEach((action) => {
+		globalShortcut.registerAll(
+			keybinds.getActionKeybindsTrigger(action),
+			() => {
+				const focusedWin = BrowserWindow.getFocusedWindow();
+				if (focusedWin) {
+					focusedWin.webContents.send(
+						keybinds.getAction(action),
+						keybinds.getActionData(action),
+					);
+				}
+			},
+		);
 	});
 
 	// register Ctrl+1 to Ctrl+9 shortcuts

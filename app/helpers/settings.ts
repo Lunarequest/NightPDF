@@ -72,6 +72,7 @@ class KeybindHelper {
 			platform = "none";
 		}
 		return triggers.map((trigger) =>
+			// @ts-ignore platform is never null here
 			KeybindHelper.fromTrigger(trigger, platform).getKeybind(),
 		);
 	}
@@ -124,10 +125,12 @@ class KeybindHelper {
 class KeybindsHelper {
 	readonly config: Record<string, Keybinds>;
 	readonly platform: string;
+	readonly actions: string[];
 
 	constructor(config: Record<string, Keybinds>, platform: string) {
 		this.config = config;
 		this.platform = platform;
+		this.actions = Object.keys(config);
 	}
 
 	getActionKeybinds(action: string): KeybindHelper[] {
@@ -142,6 +145,35 @@ class KeybindsHelper {
 			this.config[action].keybind[index],
 			this.platform,
 		);
+	}
+
+	getActionKeybindsString(action: string): string[] {
+		return this.getActionKeybinds(action).map((keybind) => keybind.toString());
+	}
+
+	getActionKeybindsTrigger(action: string): string[] {
+		return this.getActionKeybinds(action).map((keybind) => keybind.toTrigger());
+	}
+
+	getActionDisplayName(action: string): string {
+		return this.config[action].displayName ?? action;
+	}
+
+	getActionData(action: string): string | undefined {
+		return this.config[action].data;
+	}
+
+	getAction(action: string): string {
+		return this.config[action].action;
+	}
+
+	updateActionKeybind(
+		action: string,
+		index: number,
+		keybind: Keybind,
+	): Keybinds {
+		this.config[action].keybind[index] = keybind;
+		return this.config[action];
 	}
 }
 

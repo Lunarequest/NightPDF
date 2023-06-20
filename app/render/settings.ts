@@ -23,7 +23,7 @@ import {
 	ModifierKeys,
 	modifierToString,
 	KeybindsHelper,
-	KeybindHelper
+	KeybindHelper,
 } from "../helpers/settings";
 
 async function nightPDFSettings() {
@@ -92,7 +92,7 @@ async function nightPDFSettings() {
 		version_panel.appendChild(div);
 	}
 
-	const keybinds = settings.keybinds;
+	const keybinds = new KeybindsHelper(settings.keybinds, window.api.platform);
 	const panel = document.getElementById("settings-keybinds");
 
 	const resetNewKeyBind = () => {
@@ -249,7 +249,7 @@ async function nightPDFSettings() {
 	 */
 	const showOverlay = (
 		key: string,
-		targetKeybind: Keybinds,
+		targetKeybind: KeybindHelper,
 		bindIndex: number,
 		e: MouseEvent,
 	) => {
@@ -284,8 +284,12 @@ async function nightPDFSettings() {
 					alert("Invalid keybind");
 					return;
 				}
-				targetKeybind.trigger[bindIndex] = values;
-				window.api.SetBind(key, targetKeybind);
+				const updatedKeybind = keybinds.updateActionKeybind(
+					key,
+					bindIndex,
+					newKeybind,
+				);
+				window.api.SetBind(key, updatedKeybind);
 			},
 			{ once: true },
 		);
@@ -293,40 +297,44 @@ async function nightPDFSettings() {
 
 	const createKeybindSetting = (
 		key: string,
-		keybind: Keybinds,
+		keybind: KeybindHelper[],
 		bindIndex: number,
 	): { title: HTMLLabelElement; input: HTMLInputElement } => {
 		const elementName = `${key}-${bindIndex}`;
 		const which = bindIndex === 0 ? "primary" : "secondary";
-		const currentBind: Keybind = keybind.trigger[bindIndex]
-			? triggerToKeybind(keybind.trigger[bindIndex], window.api.platform)
-			: { key: null, modifiers: {} };
+		const currentBind: KeybindHelper | null = keybind[bindIndex]
+			? keybind[bindIndex]
+			: null;
 		const title = document.createElement("label");
 
 		title.htmlFor = elementName;
 		title.classList.add("setting-name", "keybind-name");
-		title.innerText = keybind.displayName ?? key;
+		title.innerText = keybinds.getActionDisplayName(key);
 
 		// keybind
 		const input = document.createElement("input");
 		input.readOnly = true;
 		input.classList.add("setting-input", "keybind-input", which);
 		input.name = elementName;
-		input.value = keybindToString(currentBind, window.api.platform);
+		input.value = currentBind?.toString() ?? "";
 		input.addEventListener(
 			"click",
-			showOverlay.bind(null, key, keybind, bindIndex),
+			showOverlay.bind(null, key, keybind[bindIndex], bindIndex),
 		);
 		return { title, input };
 	};
 
-	for (const key in keybinds) {
-		if (Object.prototype.hasOwnProperty.call(keybinds, key)) {
+	for (const action in keybinds.actions) {
+		if (Object.prototype.hasOwnProperty.call(keybinds, action)) {
 			if (panel) {
-				const primaryBindSetting = createKeybindSetting(key, keybinds[key], 0);
+				const primaryBindSetting = createKeybindSetting(
+					action,
+					keybinds.getActionKeybinds(action),
+					0,
+				);
 				const secondaryBindSetting = createKeybindSetting(
-					key,
-					keybinds[key],
+					action,
+					keybinds.getActionKeybinds(action),
 					1,
 				);
 				const settingsItem = document.createElement("div");
