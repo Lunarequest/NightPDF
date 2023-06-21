@@ -324,27 +324,26 @@ async function nightPDFSettings() {
 		return { title, input };
 	};
 
-	for (const action in keybinds.actions) {
-		if (Object.prototype.hasOwnProperty.call(keybinds, action)) {
-			if (panel) {
-				const primaryBindSetting = createKeybindSetting(
-					action,
-					keybinds.getActionKeybinds(action),
-					0,
-				);
-				const secondaryBindSetting = createKeybindSetting(
-					action,
-					keybinds.getActionKeybinds(action),
-					1,
-				);
-				const settingsItem = document.createElement("div");
-				settingsItem.classList.add("settings-item", "keybind-item");
-				settingsItem.appendChild(primaryBindSetting.title);
-				settingsItem.appendChild(primaryBindSetting.input);
-				settingsItem.appendChild(secondaryBindSetting.input);
+	for (const action of keybinds.actions) {
+		console.log(action);
+		if (panel) {
+			const primaryBindSetting = createKeybindSetting(
+				action,
+				keybinds.getActionKeybinds(action),
+				0,
+			);
+			const secondaryBindSetting = createKeybindSetting(
+				action,
+				keybinds.getActionKeybinds(action),
+				1,
+			);
+			const settingsItem = document.createElement("div");
+			settingsItem.classList.add("settings-item", "keybind-item");
+			settingsItem.appendChild(primaryBindSetting.title);
+			settingsItem.appendChild(primaryBindSetting.input);
+			settingsItem.appendChild(secondaryBindSetting.input);
 
-				panel.appendChild(settingsItem);
-			}
+			panel.appendChild(settingsItem);
 		}
 	}
 }

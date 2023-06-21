@@ -182,54 +182,47 @@ function keybindPropertyDef(min = 1, max = 2): JSONSchema {
 		properties: {
 			keybind: {
 				type: "array", // Keybind[]
-				items: [
-					{
-						type: "object", // Keybind
-						properties: {
-							modifiers: {
-								type: "object", // ModifierKeyMap
-								patternProperties: {
-									"^[a-z0-9]+$": {
-										type: "object", // ModifierKey
-										properties: {
-											savesAs: {
-												type: "string",
-											},
-											osDependent: {
-												type: "boolean",
-											},
-											displayAs: {
-												type: "string",
-											},
-											osVariants: {
-												type: "object",
-												properties: {
-													default: {
-														type: "string",
-													},
-												},
-												patternProperties: {
-													"^[a-z0-9]+$": {
-														type: "string",
-													},
-												},
-												additionalProperties: false,
-											},
+				items: {
+					type: "object", // Keybind
+					properties: {
+						modifiers: {
+							type: "object", // ModifierKeyMap
+							patternProperties: {
+								"^[a-zA-Z0-9]+$": {
+									type: "object", // ModifierKey
+									properties: {
+										savesAs: {
+											type: "string",
 										},
-										required: ["savesAs", "osDependent"],
-										additionalProperties: false,
+										osDependent: {
+											type: "boolean",
+										},
+										displayAs: {
+											type: "string",
+										},
+										osVariants: {
+											type: "object",
+											patternProperties: {
+												"^[a-zA-Z0-9]+$": {
+													type: "string",
+												},
+											},
+											additionalProperties: false,
+										},
 									},
+									required: ["savesAs", "osDependent"],
+									additionalProperties: false,
 								},
-								additionalProperties: false,
 							},
-							key: {
-								type: ["string", "null"],
-							},
+							additionalProperties: false,
 						},
-						required: ["modifiers", "key"],
-						additionalProperties: false,
+						key: {
+							type: ["string", "null"],
+						},
 					},
-				],
+					required: ["modifiers", "key"],
+					additionalProperties: false,
+				},
 				minItems: min,
 				maxItems: max,
 			},
@@ -244,7 +237,7 @@ function keybindPropertyDef(min = 1, max = 2): JSONSchema {
 			},
 		},
 		type: "object",
-		required: ["trigger", "action"],
+		required: ["keybind", "action"],
 		additionalProperties: false,
 	};
 }
