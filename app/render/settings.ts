@@ -227,8 +227,7 @@ async function nightPDFSettings() {
 			modifiers[modifier] = ModifierKeys[modifier];
 		}
 		newKeybind.modifiers = modifiers;
-		keyDisplay.innerHTML =
-			keybindDisplay + keybindJoinDisplay + currentlyHeldNormal;
+		keyDisplay.innerHTML = `${keybindDisplay}${keybindJoinDisplay}<span class=\"keybind-key\">${currentlyHeldNormal}</span>`;
 		return true;
 	};
 
@@ -291,13 +290,14 @@ async function nightPDFSettings() {
 					newKeybind,
 				);
 				window.api.SetBind(key, updatedKeybind);
-				const bindInput: HTMLInputElement = document.getElementById(
-					`${key}-${bindIndex}`,
-				) as HTMLInputElement;
-				if (bindInput) {
-					const kbh = keybinds.getActionKeybind(key, bindIndex);
-					bindInput.value = kbh.toString();
-				}
+				const kbWrap = document.getElementById(`${key}-${bindIndex}`);
+				const newKeybindDisplay = createKeybindSetting(
+					key,
+					keybinds.getActionKeybinds(key),
+					bindIndex,
+				);
+				kbWrap?.replaceWith(newKeybindDisplay.kbWrap);
+
 				hideOverlay();
 			},
 			{ once: true },
@@ -308,7 +308,7 @@ async function nightPDFSettings() {
 		key: string,
 		keybind: KeybindHelper[],
 		bindIndex: number,
-	): { title: HTMLLabelElement; input: HTMLInputElement } => {
+	): { title: HTMLLabelElement; kbWrap: HTMLElement } => {
 		const elementName = `${key}-${bindIndex}`;
 		const which = bindIndex === 0 ? "primary" : "secondary";
 		const currentBind: KeybindHelper | null = keybind[bindIndex]
@@ -321,17 +321,45 @@ async function nightPDFSettings() {
 		title.innerText = keybinds.getActionDisplayName(key);
 
 		// keybind
-		const input = document.createElement("input");
-		input.readOnly = true;
-		input.classList.add("setting-input", "keybind-input", which);
-		input.name = elementName;
-		input.id = elementName;
-		input.value = currentBind?.toString() ?? "";
-		input.addEventListener(
+		const kbWrap = document.createElement("div");
+		if (!currentBind) {
+			return { title, kbWrap };
+		}
+		kbWrap.classList.add("setting-value", which);
+		kbWrap.id = `${key}-${bindIndex}`;
+		const keybindParts = currentBind.toStringArray();
+		const keybindKey = keybindParts.pop();
+		for (const modifier of currentBind.getModifierKeys()) {
+			const modifierSpan = document.createElement("span");
+			modifierSpan.classList.add(
+				"keybind-modifier",
+				window.api.platform,
+				modifier.savesAs,
+			);
+			modifierSpan.innerText = modifierToString(
+				modifier.savesAs,
+				window.api.platform,
+			);
+
+			kbWrap.appendChild(modifierSpan);
+			// add span with '+'
+			const plusSpan = document.createElement("span");
+			plusSpan.classList.add("keybind-join");
+			plusSpan.innerText = "+";
+			kbWrap.appendChild(plusSpan);
+		}
+
+		kbWrap.addEventListener(
 			"click",
 			showOverlay.bind(null, key, keybind[bindIndex], bindIndex),
 		);
-		return { title, input };
+
+		const keySpan = document.createElement("span");
+		keySpan.classList.add("keybind-key");
+		keySpan.innerText = currentBind.getKey() ?? "";
+		kbWrap.appendChild(keySpan);
+
+		return { title, kbWrap };
 	};
 
 	for (const action of keybinds.actions) {
@@ -350,8 +378,8 @@ async function nightPDFSettings() {
 			const settingsItem = document.createElement("div");
 			settingsItem.classList.add("settings-item", "keybind-item");
 			settingsItem.appendChild(primaryBindSetting.title);
-			settingsItem.appendChild(primaryBindSetting.input);
-			settingsItem.appendChild(secondaryBindSetting.input);
+			settingsItem.appendChild(primaryBindSetting.kbWrap);
+			settingsItem.appendChild(secondaryBindSetting.kbWrap);
 
 			panel.appendChild(settingsItem);
 		}

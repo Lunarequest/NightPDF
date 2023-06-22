@@ -380,7 +380,7 @@ iframe {
 	display: grid;
 	width: 100%;
 	padding-top: 0.5rem;
-	grid-template-columns: 1fr 7rem 7rem;
+	grid-template-columns: 8rem 0.5fr 0.5fr;
 	grid-auto-flow: column;
 }
 
@@ -391,23 +391,43 @@ iframe {
 	align-self: center;
 }
 
-.setting-input {
+.setting-value {
 	display: grid;
 	justify-self: end;
 	background-color: black;
 	color: #ccc;
-	border: 1px solid #666;
+	border: none;
     padding: 0.5rem;
-	width: 4rem;
+	cursor: pointer !important;
 }
 
-.setting-input.primary {
+.setting-value.primary {
 	grid-column: 2;
 }
 
-.setting-input.secondary {
+.setting-value.secondary {
 	grid-column: 3;
 }
+
+.setting-value > .keybind-join {
+	display: inline-block;
+	grid-row: 1;
+	margin: 0 0.25rem;
+}
+
+
+.setting-value > .keybind-modifier, .setting-value > .keybind-key {
+	display: inline-block;
+	padding: 0.25rem;
+	text-align: center;
+	border: 1px outset #ccc;
+	text-transform: uppercase;
+	grid-row: 1;
+	font-size: 0.75rem;
+	border-top: none;
+	border-left: none;
+}
+
 #version {
 	align-self: center;
 	align-items: center;
@@ -416,12 +436,52 @@ iframe {
 
 #settings-page #keybind-overlay {
 	position: absolute;
-	top: 5vh;
+	top: 25vh;
 	left: 5vw;
 	width: 87vw;
-	height: 87vh;
+	height: 47vh;
 	background-color: rgba(0,0,0,0.8);
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+#keybind-overlay-key {
+	padding: 1rem;
+
+}
+
+#keybind-overlay-key > .keybind-join {
+	display: inline-block;
+	margin: 0 0.5rem;
+}
+
+
+#keybind-overlay-key > .keybind-modifier, #keybind-overlay-key > .keybind-key {
+	display: inline-block;
+	padding: 0.25rem;
+	text-align: center;
+	border: 3px outset #ccc;
+	text-transform: uppercase;
+	border-top: none;
+	border-left: none;
+}
+
+.keybind-overlay-buttons {
+	text-align: right;	
+}
+
+.keybind-overlay-buttons > button {
+    margin: 0.5rem;
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.keybind-overlay-content {
+	width: 100%;
+	text-align: center;
+	margin-right: 10vw;
 }

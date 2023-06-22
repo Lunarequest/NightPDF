@@ -106,18 +106,29 @@ class KeybindHelper {
 	}
 
 	toString(): string {
-		let keybindString = "";
+		return this.toStringArray().join(" + ");
+	}
+
+	toStringArray(): string[] {
+		const keybindStrings: string[] = [];
 		if (this.keybind.key === null) {
-			return keybindString;
+			return keybindStrings;
 		}
 		if (this.keybind.modifiers) {
 			for (const modifier in this.keybind.modifiers) {
-				keybindString += modifierToString(modifier, this.platform);
-				keybindString += "+";
+				keybindStrings.push(modifierToString(modifier, this.platform));
 			}
 		}
-		keybindString += this.keybind.key;
-		return keybindString;
+		keybindStrings.push(this.keybind.key);
+		return keybindStrings;
+	}
+
+	getModifierKeys(): ModifierKey[] {
+		return Object.values(this.keybind.modifiers);
+	}
+
+	getKey(): string | null {
+		return this.keybind.key;
 	}
 }
 
