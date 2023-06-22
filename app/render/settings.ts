@@ -226,6 +226,7 @@ async function nightPDFSettings() {
 			}
 			modifiers[modifier] = ModifierKeys[modifier];
 		}
+		newKeybind.modifiers = modifiers;
 		keyDisplay.innerHTML =
 			keybindDisplay + keybindJoinDisplay + currentlyHeldNormal;
 		return true;
@@ -290,6 +291,14 @@ async function nightPDFSettings() {
 					newKeybind,
 				);
 				window.api.SetBind(key, updatedKeybind);
+				const bindInput: HTMLInputElement = document.getElementById(
+					`${key}-${bindIndex}`,
+				) as HTMLInputElement;
+				if (bindInput) {
+					const kbh = keybinds.getActionKeybind(key, bindIndex);
+					bindInput.value = kbh.toString();
+				}
+				hideOverlay();
 			},
 			{ once: true },
 		);
@@ -316,6 +325,7 @@ async function nightPDFSettings() {
 		input.readOnly = true;
 		input.classList.add("setting-input", "keybind-input", which);
 		input.name = elementName;
+		input.id = elementName;
 		input.value = currentBind?.toString() ?? "";
 		input.addEventListener(
 			"click",

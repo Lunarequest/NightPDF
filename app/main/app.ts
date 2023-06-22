@@ -105,7 +105,15 @@ function versionString(): string {
 }
 
 function setkeybind(id: string, command: Keybinds) {
-	store.set(id, command);
+	const storeKeybinds = store.get("keybinds");
+	if (!storeKeybinds) {
+		throw new Error("keybinds not found in store");
+	}
+	storeKeybinds[id] = command;
+	console.debug("id", id);
+	console.debug("command", command);
+	console.debug(storeKeybinds);
+	store.set("keybinds", storeKeybinds);
 }
 
 function createWindow(
@@ -226,8 +234,8 @@ function createWindow(
 
 		ipcMain.on(
 			"SetBind",
-			(_e: IpcMainEvent, key: string, keybind: Keybinds) => {
-				setkeybind(key, keybind);
+			(_e: IpcMainEvent, newKeybind: [string, Keybinds]) => {
+				setkeybind(newKeybind[0], newKeybind[1]);
 			},
 		);
 		ipcMain.handle("GetSettings", (_e: IpcMainInvokeEvent) => {
