@@ -322,10 +322,10 @@ async function nightPDFSettings() {
 
 		// keybind
 		const kbWrap = document.createElement("div");
+		kbWrap.classList.add("setting-value", which);
 		if (!currentBind) {
 			return { title, kbWrap };
 		}
-		kbWrap.classList.add("setting-value", which);
 		kbWrap.id = `${key}-${bindIndex}`;
 		const keybindParts = currentBind.toStringArray();
 		const keybindKey = keybindParts.pop();

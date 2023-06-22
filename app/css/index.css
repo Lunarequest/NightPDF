@@ -399,6 +399,7 @@ iframe {
 	border: none;
     padding: 0.5rem;
 	cursor: pointer !important;
+	min-width: 6vw;
 }
 
 .setting-value.primary {
