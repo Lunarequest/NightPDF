@@ -304,11 +304,45 @@ async function nightPDFSettings() {
 		);
 	};
 
+	const toggleClearButton = (
+		container: HTMLElement,
+		cls: string,
+		visible: boolean,
+		clearClass: string,
+	) => {
+		const keybindValues = container.getElementsByClassName(cls);
+		if (!keybindValues.length) {
+			return;
+		}
+		for (const keybindValue of keybindValues) {
+			const empty = keybindValue.classList.contains("empty");
+			if (empty) {
+				continue;
+			}
+			const primary = keybindValue.classList.contains("primary");
+			const clearbutton = container.querySelector(
+				`.${clearClass}.${primary ? "primary" : "secondary"}`,
+			);
+			if (!clearbutton) {
+				continue;
+			}
+			if (visible) {
+				clearbutton.classList.remove("hidden");
+			} else {
+				clearbutton.classList.add("hidden");
+			}
+		}
+	};
+
 	const createKeybindSetting = (
 		key: string,
 		keybind: KeybindHelper[],
 		bindIndex: number,
-	): { title: HTMLLabelElement; kbWrap: HTMLElement } => {
+	): {
+		title: HTMLLabelElement;
+		kbWrap: HTMLElement;
+		bound: boolean | null;
+	} => {
 		const elementName = `${key}-${bindIndex}`;
 		const which = bindIndex === 0 ? "primary" : "secondary";
 		const currentBind: KeybindHelper | null = keybind[bindIndex]
@@ -324,11 +358,12 @@ async function nightPDFSettings() {
 		const kbWrap = document.createElement("div");
 		kbWrap.classList.add("setting-value", which);
 		if (!currentBind) {
-			return { title, kbWrap };
+			kbWrap.classList.add("empty");
+			return { title, kbWrap, bound: false };
 		}
 		kbWrap.id = `${key}-${bindIndex}`;
-		const keybindParts = currentBind.toStringArray();
-		const keybindKey = keybindParts.pop();
+		// const keybindParts = currentBind.toStringArray();
+		// const keybindKey = keybindParts.pop();
 		for (const modifier of currentBind.getModifierKeys()) {
 			const modifierSpan = document.createElement("span");
 			modifierSpan.classList.add(
@@ -359,7 +394,7 @@ async function nightPDFSettings() {
 		keySpan.innerText = currentBind.getKey() ?? "";
 		kbWrap.appendChild(keySpan);
 
-		return { title, kbWrap };
+		return { title, kbWrap, bound: true };
 	};
 
 	for (const action of keybinds.actions) {
@@ -377,9 +412,37 @@ async function nightPDFSettings() {
 			);
 			const settingsItem = document.createElement("div");
 			settingsItem.classList.add("settings-item", "keybind-item");
+			const keybindClear = document.createElement("div");
+			keybindClear.innerText = "X";
+			keybindClear.classList.add("keybind-clear-button", "hidden");
+			const keybindClearSecondary = keybindClear.cloneNode(true) as HTMLElement;
+			keybindClear.classList.add("primary");
+			keybindClearSecondary.classList.add("secondary");
 			settingsItem.appendChild(primaryBindSetting.title);
 			settingsItem.appendChild(primaryBindSetting.kbWrap);
+			settingsItem.appendChild(keybindClear);
 			settingsItem.appendChild(secondaryBindSetting.kbWrap);
+			settingsItem.appendChild(keybindClearSecondary);
+			settingsItem.addEventListener(
+				"pointerenter",
+				toggleClearButton.bind(
+					null,
+					settingsItem,
+					"setting-value",
+					true,
+					"keybind-clear-button",
+				),
+			);
+			settingsItem.addEventListener(
+				"pointerleave",
+				toggleClearButton.bind(
+					null,
+					settingsItem,
+					"setting-value",
+					false,
+					"keybind-clear-button",
+				),
+			);
 
 			panel.appendChild(settingsItem);
 		}

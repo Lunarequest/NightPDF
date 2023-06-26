@@ -380,7 +380,7 @@ iframe {
 	display: grid;
 	width: 100%;
 	padding-top: 0.5rem;
-	grid-template-columns: 8rem 0.5fr 0.5fr;
+	grid-template-columns: 8rem 0.5fr 1.5rem 0.5fr 1.5rem;
 	grid-auto-flow: column;
 }
 
@@ -407,7 +407,7 @@ iframe {
 }
 
 .setting-value.secondary {
-	grid-column: 3;
+	grid-column: 4;
 }
 
 .setting-value > .keybind-join {
@@ -486,3 +486,29 @@ iframe {
 	text-align: center;
 	margin-right: 10vw;
 }
+
+.keybind-clear-button {
+    background-color: transparent;
+    border: none;
+    color: #991900;
+    font-weight: 700;
+    height: 1.5rem;
+    width: 1.5rem;
+    font-size: 1.5rem;
+    margin-top: 0.25rem;
+    margin-left: 0.25rem;
+    text-shadow: 1px 1px #000;
+	cursor: pointer;
+}
+
+.keybind-clear-button.primary {
+	grid-column: 3;
+}
+.keybind-clear-button.secondary {
+	grid-column: 5;
+}
+
+.keybind-clear-button.hidden {
+	display: none;
+}
+
