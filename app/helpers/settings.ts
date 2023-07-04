@@ -3,7 +3,9 @@ import { type JSONSchema } from "json-schema-typed";
 
 type NightPDFSettings = JSONSchema & {
 	version: string;
-	general: object;
+	general: {
+		MaximizeOnOpen: boolean;
+	};
 	keybinds: Record<string, Keybinds>;
 };
 

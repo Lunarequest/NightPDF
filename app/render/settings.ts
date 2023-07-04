@@ -92,6 +92,34 @@ async function nightPDFSettings() {
 		version_panel.appendChild(div);
 	}
 
+	const general_panel = document.getElementById("settings-general");
+	if (general_panel) {
+		// only one setting for now
+		const maximizeOnOpenContainer = document.createElement("div");
+		maximizeOnOpenContainer.classList.add("settings-item");
+		const maximizeOnOpenLabel = document.createElement("label");
+		maximizeOnOpenLabel.classList.add("setting-name");
+		maximizeOnOpenLabel.innerText = "Maximize on open";
+		const maximizeOnOpenCheckbox = document.createElement(
+			"input",
+		) as HTMLInputElement;
+		maximizeOnOpenCheckbox.type = "checkbox";
+		maximizeOnOpenCheckbox.classList.add("setting-value");
+		maximizeOnOpenCheckbox.id = "maximize-on-open";
+		maximizeOnOpenCheckbox.checked = settings.general.MaximizeOnOpen;
+		maximizeOnOpenCheckbox.addEventListener("change", () => {
+			settings.general.MaximizeOnOpen = maximizeOnOpenCheckbox.checked;
+			window.api.SetSetting(
+				"general",
+				"MaximizeOnOpen",
+				maximizeOnOpenCheckbox.checked,
+			);
+		});
+		maximizeOnOpenContainer.appendChild(maximizeOnOpenLabel);
+		maximizeOnOpenContainer.appendChild(maximizeOnOpenCheckbox);
+		general_panel.appendChild(maximizeOnOpenContainer);
+	}
+
 	const keybinds = new KeybindsHelper(settings.keybinds, window.api.platform);
 	const panel = document.getElementById("settings-keybinds");
 

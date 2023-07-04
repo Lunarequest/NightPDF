@@ -36,7 +36,7 @@ import { version } from "../../package.json";
 import { autoUpdater } from "electron-updater";
 import { readFileSync } from "fs";
 import log from "electron-log";
-import yargs, { command } from "yargs";
+import yargs from "yargs";
 import Store from "electron-store";
 import {
 	nightpdf_schema,
@@ -194,7 +194,9 @@ function createWindow(
 			win.show();
 		}
 		if (fileToOpen) {
-			win.maximize();
+			if (store.store.general.MaximizeOnOpen) {
+				win.maximize();
+			}
 		}
 	});
 
@@ -238,6 +240,23 @@ function createWindow(
 				setkeybind(newKeybind[0], newKeybind[1]);
 			},
 		);
+		ipcMain.on(
+			"SetSetting",
+			(_e: IpcMainEvent, newSetting: [string, string, unknown]) => {
+				const [settingGroup, key, value] = newSetting;
+				const storeSettings = store.get(settingGroup);
+				if (!storeSettings) {
+					throw new Error(`${settingGroup} not found in store`);
+				}
+				if (!Object.prototype.hasOwnProperty.call(storeSettings, key)) {
+					throw new Error(`${key} not found in ${settingGroup} in store`);
+				}
+				// @ts-ignore
+				storeSettings[key] = value;
+				store.set(settingGroup, storeSettings);
+			},
+		);
+
 		ipcMain.handle("GetSettings", (_e: IpcMainInvokeEvent) => {
 			return store.store;
 		});
@@ -264,7 +283,9 @@ function createWindow(
 						const focusedWin = BrowserWindow.getFocusedWindow();
 						if (focusedWin) {
 							focusedWin.webContents.send("file-open", filenames, DEBUG);
-							focusedWin.maximize();
+							if (store.store.general.MaximizeOnOpen) {
+								focusedWin.maximize();
+							}
 						}
 					}
 				}
