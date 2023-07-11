@@ -416,6 +416,9 @@ iframe {
 	margin: 0 0.25rem;
 }
 
+.setting-value.empty {
+	min-height: 1rem;
+}
 
 .setting-value > .keybind-modifier, .setting-value > .keybind-key {
 	display: inline-block;

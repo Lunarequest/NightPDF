@@ -98,6 +98,7 @@ async function nightPDFSettings() {
 		const maximizeOnOpenContainer = document.createElement("div");
 		maximizeOnOpenContainer.classList.add("settings-item");
 		const maximizeOnOpenLabel = document.createElement("label");
+		maximizeOnOpenLabel.htmlFor = "maximize-on-open";
 		maximizeOnOpenLabel.classList.add("setting-name");
 		maximizeOnOpenLabel.innerText = "Maximize on open";
 		const maximizeOnOpenCheckbox = document.createElement(
@@ -385,11 +386,15 @@ async function nightPDFSettings() {
 		// keybind
 		const kbWrap = document.createElement("div");
 		kbWrap.classList.add("setting-value", which);
+		kbWrap.id = `${key}-${bindIndex}`;
+		kbWrap.addEventListener(
+			"click",
+			showOverlay.bind(null, key, keybind[bindIndex], bindIndex),
+		);
 		if (!currentBind) {
 			kbWrap.classList.add("empty");
 			return { title, kbWrap, bound: false };
 		}
-		kbWrap.id = `${key}-${bindIndex}`;
 		// const keybindParts = currentBind.toStringArray();
 		// const keybindKey = keybindParts.pop();
 		for (const modifier of currentBind.getModifierKeys()) {
@@ -412,11 +417,6 @@ async function nightPDFSettings() {
 			kbWrap.appendChild(plusSpan);
 		}
 
-		kbWrap.addEventListener(
-			"click",
-			showOverlay.bind(null, key, keybind[bindIndex], bindIndex),
-		);
-
 		const keySpan = document.createElement("span");
 		keySpan.classList.add("keybind-key");
 		keySpan.innerText = currentBind.getKey() ?? "";
@@ -425,53 +425,80 @@ async function nightPDFSettings() {
 		return { title, kbWrap, bound: true };
 	};
 
-	for (const action of keybinds.actions) {
+	const createKeybindAction = (action: string): HTMLElement => {
 		console.log(action);
-		if (panel) {
-			const primaryBindSetting = createKeybindSetting(
-				action,
-				keybinds.getActionKeybinds(action),
-				0,
-			);
-			const secondaryBindSetting = createKeybindSetting(
-				action,
-				keybinds.getActionKeybinds(action),
-				1,
-			);
-			const settingsItem = document.createElement("div");
-			settingsItem.classList.add("settings-item", "keybind-item");
-			const keybindClear = document.createElement("div");
-			keybindClear.innerText = "X";
-			keybindClear.classList.add("keybind-clear-button", "hidden");
-			const keybindClearSecondary = keybindClear.cloneNode(true) as HTMLElement;
-			keybindClear.classList.add("primary");
-			keybindClearSecondary.classList.add("secondary");
-			settingsItem.appendChild(primaryBindSetting.title);
-			settingsItem.appendChild(primaryBindSetting.kbWrap);
-			settingsItem.appendChild(keybindClear);
-			settingsItem.appendChild(secondaryBindSetting.kbWrap);
-			settingsItem.appendChild(keybindClearSecondary);
-			settingsItem.addEventListener(
-				"pointerenter",
-				toggleClearButton.bind(
-					null,
-					settingsItem,
-					"setting-value",
-					true,
-					"keybind-clear-button",
-				),
-			);
-			settingsItem.addEventListener(
-				"pointerleave",
-				toggleClearButton.bind(
-					null,
-					settingsItem,
-					"setting-value",
-					false,
-					"keybind-clear-button",
-				),
-			);
 
+		const primaryBindSetting = createKeybindSetting(
+			action,
+			keybinds.getActionKeybinds(action),
+			0,
+		);
+		const secondaryBindSetting = createKeybindSetting(
+			action,
+			keybinds.getActionKeybinds(action),
+			1,
+		);
+		const settingsItem = document.createElement("div");
+		settingsItem.classList.add("settings-item", "keybind-item");
+		const keybindClear = document.createElement("div");
+		keybindClear.innerText = "X";
+		keybindClear.classList.add("keybind-clear-button", "hidden");
+		const keybindClearSecondary = keybindClear.cloneNode(true) as HTMLElement;
+		keybindClear.classList.add("primary");
+		keybindClear.addEventListener(
+			"click",
+			keybindClearEventListener.bind(null, action, true, settingsItem),
+		);
+		keybindClearSecondary.classList.add("secondary");
+		keybindClearSecondary.addEventListener(
+			"click",
+			keybindClearEventListener.bind(null, action, false, settingsItem),
+		);
+		settingsItem.appendChild(primaryBindSetting.title);
+		settingsItem.appendChild(primaryBindSetting.kbWrap);
+		settingsItem.appendChild(keybindClear);
+		settingsItem.appendChild(secondaryBindSetting.kbWrap);
+		settingsItem.appendChild(keybindClearSecondary);
+		settingsItem.addEventListener(
+			"pointerenter",
+			toggleClearButton.bind(
+				null,
+				settingsItem,
+				"setting-value",
+				true,
+				"keybind-clear-button",
+			),
+		);
+		settingsItem.addEventListener(
+			"pointerleave",
+			toggleClearButton.bind(
+				null,
+				settingsItem,
+				"setting-value",
+				false,
+				"keybind-clear-button",
+			),
+		);
+		return settingsItem;
+	};
+
+	const keybindClearEventListener = (
+		action: string,
+		primary: boolean,
+		settingsItem: HTMLElement,
+		e: MouseEvent,
+	) => {
+		const updatedKeybind = keybinds.removeActionKeybind(
+			action,
+			primary ? 0 : 1,
+		);
+		window.api.SetBind(action, updatedKeybind);
+		const replacementSettingsItem = createKeybindAction(action);
+		settingsItem.replaceWith(replacementSettingsItem);
+	};
+	for (const action of keybinds.actions) {
+		if (panel) {
+			const settingsItem = createKeybindAction(action);
 			panel.appendChild(settingsItem);
 		}
 	}

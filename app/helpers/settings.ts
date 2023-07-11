@@ -188,9 +188,14 @@ class KeybindsHelper {
 		this.config[action].keybind[index] = keybind;
 		return this.config[action];
 	}
+
+	removeActionKeybind(action: string, index: number): Keybinds {
+		this.config[action].keybind.splice(index, 1);
+		return this.config[action];
+	}
 }
 
-function keybindPropertyDef(min = 1, max = 2): JSONSchema {
+function keybindPropertyDef(min = 0, max = 2): JSONSchema {
 	return {
 		properties: {
 			keybind: {
