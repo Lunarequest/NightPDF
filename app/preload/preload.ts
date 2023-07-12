@@ -17,8 +17,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 import { contextBridge, ipcRenderer } from "electron";
+import type { Keybinds, Keybind, ModifierKeyMap } from "../helpers/settings";
 
 contextBridge.exposeInMainWorld("api", {
+	GetVersion: async () => {
+		return await ipcRenderer.invoke("GetVersion");
+	},
+
 	getFileName: async (filePath: string) => {
 		return await ipcRenderer.invoke("getPath", filePath);
 	},
@@ -31,24 +36,40 @@ contextBridge.exposeInMainWorld("api", {
 		ipcRenderer.send("openExternal", url);
 	},
 
+	GetSettings: () => {
+		return ipcRenderer.invoke("GetSettings");
+	},
+
 	removeAllListeners: (ListenerType: string) => {
 		ipcRenderer.removeAllListeners(ListenerType);
 	},
 
+	SetBind: (key: string, value: Keybinds) => {
+		return ipcRenderer.send("SetBind", [key, value]);
+	},
+	SetSetting: (group: string, key: string, value: unknown) => {
+		return ipcRenderer.send("SetSetting", [group, key, value]);
+	},
 	openNewPDF: (pdf: string) => {
 		ipcRenderer.send("openNewPDF", pdf);
 	},
+
 	newWindow: (file: string) => {
 		ipcRenderer.send("newWindow", file);
 	},
+
 	togglePrinting: (value: boolean) => {
 		ipcRenderer.send("togglePrinting", value);
 	},
+
 	resizeWindow: (value: string) => {
 		ipcRenderer.send("resizeWindow", value);
 	},
+
 	//rome-ignore lint/suspicious/noExplicitAny: we can pass Function here but vscode freaks out :/
 	on: (eventName: string, callback: any) => {
 		ipcRenderer.on(eventName, callback);
 	},
+	// for use in keybind display
+	platform: process.platform,
 });

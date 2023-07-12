@@ -1,0 +1,56 @@
+<!--
+NightPDF Dark mode for Pdfs    
+Copyright (C) 2021  Advaith Madhukar
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2
+of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Settings - NightPDF</title>
+        <link href="./css/bundle.css" rel="stylesheet" />
+        <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="script-src 'self';"
+        />
+    </head>
+    <body>
+        <div id="settings-page">
+            <div id="settings-menu">
+
+            </div>
+            <div id="settings-content">
+
+            </div>
+            <div id="keybind-overlay" class="hidden">
+                <div class="keybind-overlay-content">
+                    <div class="keybind-overlay-title">
+                        <h1>Press a key</h1>
+                    </div>
+                    <div class="keybind-overlay-key">
+                        <h1 id="keybind-overlay-key"></h1>
+                    </div>
+                    <div class="keybind-overlay-buttons">
+                        <button id="keybind-overlay-cancel">Cancel</button>
+                        <button id="keybind-overlay-save">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="module" src="./render/settings.js"></script>
+    </body>
+</html>

@@ -27,17 +27,51 @@ import {
 	nativeTheme,
 	globalShortcut,
 	Notification,
+	IpcMainEvent,
+	IpcMainInvokeEvent,
 } from "electron";
-import type {
-	MenuItemConstructorOptions,
-	OpenDialogReturnValue,
-} from "electron";
+import type { OpenDialogReturnValue } from "electron";
 import { parse, join, resolve } from "path";
 import { version } from "../../package.json";
 import { autoUpdater } from "electron-updater";
 import { readFileSync } from "fs";
 import log from "electron-log";
 import yargs from "yargs";
+import Store from "electron-store";
+import {
+	nightpdf_schema,
+	NightPDFSettings,
+	Keybinds,
+	nightpdf_default_settings,
+	KeybindsHelper,
+} from "../helpers/settings";
+import { createMenu } from "./menutemplate";
+
+// Workaround if the schema is invalid
+// see: https://github.com/sindresorhus/electron-store/issues/116#issuecomment-816515814
+const makeStore = (
+	options: Store.Options<NightPDFSettings>,
+): Store<NightPDFSettings> => {
+	try {
+		return new Store<NightPDFSettings>(options);
+	} catch (e) {
+		console.error(e);
+		console.log("Resetting configuration...");
+		const store = new Store<NightPDFSettings>({
+			...options,
+			schema: undefined,
+		});
+		store.clear();
+		return new Store<NightPDFSettings>(options);
+	}
+};
+
+const default_settings = nightpdf_default_settings(version);
+const store = makeStore({
+	schema: nightpdf_schema,
+	defaults: default_settings,
+	clearInvalidConfig: true,
+});
 
 let wins = [];
 let menuIsConfigured = false;
@@ -50,6 +84,17 @@ log.transports.file.level = "debug";
 const NOTIFICATION_TITLE = "Trans rights";
 const NOTIFICATION_BODY = "Trans rigths are human rigths 🏳️‍⚧️";
 
+//in the future this can be use for migrations
+const store_version = store.get("version");
+if (store_version) {
+	if (store_version !== version) {
+		console.log(`update store to ${version}`);
+		store.set("version", version);
+	}
+} else {
+	store.set("version", version);
+}
+
 function getpath(filePath: string) {
 	return parse(filePath).base;
 }
@@ -57,6 +102,18 @@ function getpath(filePath: string) {
 function versionString(): string {
 	const pdfjsver = readFileSync(join(__dirname, "../../.pdfjs_version"));
 	return `NightPDF: v${version} PDF.js: ${pdfjsver} Electron: v${process.versions.electron}`;
+}
+
+function setkeybind(id: string, command: Keybinds) {
+	const storeKeybinds = store.get("keybinds");
+	if (!storeKeybinds) {
+		throw new Error("keybinds not found in store");
+	}
+	storeKeybinds[id] = command;
+	console.debug("id", id);
+	console.debug("command", command);
+	console.debug(storeKeybinds);
+	store.set("keybinds", storeKeybinds);
 }
 
 function createWindow(
@@ -71,6 +128,7 @@ function createWindow(
 		width: 550,
 		height: 420,
 		minWidth: 565,
+		icon: join(__dirname, "../assets/icon.png"),
 		minHeight: 200,
 		webPreferences: {
 			sandbox: true,
@@ -96,12 +154,10 @@ function createWindow(
 	// and load the index.html of the app.
 
 	win.loadFile(join(__dirname, "../index.html"));
-	if (DEBUG) {
-		win.webContents.openDevTools();
-	}
 	const wc = win.webContents;
 	// if the window url changes from the inital one,
 	// block the change and use xdg-open to open it
+	// @ts-ignore - will-navigate is not in the type definition
 	wc.on("will-navigate", function (e: Event, url: string) {
 		if (url !== wc.getURL()) {
 			e.preventDefault();
@@ -121,18 +177,26 @@ function createWindow(
 
 	win.webContents.removeAllListeners("did-finish-load");
 	win.webContents.once("did-finish-load", () => {
+		// avoid race condition
+		if (DEBUG) {
+			win.webContents.openDevTools();
+		}
 		if (filename) {
 			if (page) {
 				win.webContents.send("file-open", [filename, page]);
 			} else {
-				win.webContents.send("file-open", [filename]);
+				// rome-ignore lint: don't double wrap array
+				filename = Array.isArray(filename) ? filename : [filename];
+				win.webContents.send("file-open", filename);
 			}
 			win.show();
 		} else {
 			win.show();
 		}
 		if (fileToOpen) {
-			win.maximize();
+			if (store.store.general.MaximizeOnOpen) {
+				win.maximize();
+			}
 		}
 	});
 
@@ -157,19 +221,49 @@ function createWindow(
 			};
 		}
 
-		ipcMain.handle("getPath", (_e: Event, args: string) => {
+		ipcMain.handle("getPath", (_e: IpcMainInvokeEvent, args: string) => {
 			return getpath(args);
 		});
 
-		ipcMain.handle("ResolvePath", (_e: Event, args: string) => {
+		ipcMain.handle("ResolvePath", (_e: IpcMainInvokeEvent, args: string) => {
 			return resolve(args);
 		});
 
-		ipcMain.on("openExternal", async (_e: Event, url: string) => {
+		ipcMain.on("openExternal", async (_e: IpcMainEvent, url: string) => {
 			await shell.openExternal(url);
 			log.debug(`${url} is 3rd party content opening externally`);
 		});
 
+		ipcMain.on(
+			"SetBind",
+			(_e: IpcMainEvent, newKeybind: [string, Keybinds]) => {
+				setkeybind(newKeybind[0], newKeybind[1]);
+			},
+		);
+		ipcMain.on(
+			"SetSetting",
+			(_e: IpcMainEvent, newSetting: [string, string, unknown]) => {
+				const [settingGroup, key, value] = newSetting;
+				const storeSettings = store.get(settingGroup);
+				if (!storeSettings) {
+					throw new Error(`${settingGroup} not found in store`);
+				}
+				if (!Object.prototype.hasOwnProperty.call(storeSettings, key)) {
+					throw new Error(`${key} not found in ${settingGroup} in store`);
+				}
+				// @ts-ignore
+				storeSettings[key] = value;
+				store.set(settingGroup, storeSettings);
+			},
+		);
+
+		ipcMain.handle("GetSettings", (_e: IpcMainInvokeEvent) => {
+			return store.store;
+		});
+
+		ipcMain.handle("GetVersion", (_e: IpcMainInvokeEvent) => {
+			return versionString();
+		});
 		Menu.setApplicationMenu(menu);
 		menuIsConfigured = true;
 	}
@@ -177,19 +271,21 @@ function createWindow(
 	const openNewPDF = () => {
 		dialog
 			.showOpenDialog(win, {
-				properties: ["openFile"],
+				properties: ["openFile", "multiSelections"],
 				filters: [{ name: "PDF Files", extensions: ["pdf"] }],
 			})
 			.then((dialogReturn: OpenDialogReturnValue) => {
-				const filename = dialogReturn["filePaths"][0];
-				if (filename) {
+				const filenames = dialogReturn["filePaths"];
+				if (filenames && filenames.length > 0) {
 					if (wins.length === 0) {
-						createWindow(filename.toString());
+						createWindow(filenames);
 					} else {
 						const focusedWin = BrowserWindow.getFocusedWindow();
 						if (focusedWin) {
-							focusedWin.webContents.send("file-open", filename.toString());
-							focusedWin.maximize();
+							focusedWin.webContents.send("file-open", filenames, DEBUG);
+							if (store.store.general.MaximizeOnOpen) {
+								focusedWin.maximize();
+							}
 						}
 					}
 				}
@@ -197,7 +293,7 @@ function createWindow(
 	};
 
 	ipcMain.removeAllListeners("togglePrinting");
-	ipcMain.on("togglePrinting", (_e: Event, msg: string) => {
+	ipcMain.on("togglePrinting", (_e: IpcMainEvent, msg: string) => {
 		const menu = Menu.getApplicationMenu();
 		if (menu) {
 			const print = menu.getMenuItemById("file-print");
@@ -208,13 +304,13 @@ function createWindow(
 	});
 
 	ipcMain.removeAllListeners("newWindow");
-	ipcMain.once("newWindow", (_e: Event, msg: undefined | null) => {
+	ipcMain.once("newWindow", (_e: IpcMainEvent, msg: undefined | null) => {
 		log.debug("opening ", msg, " in new window");
 		createWindow(msg);
 	});
 
 	ipcMain.removeAllListeners("resizeWindow");
-	ipcMain.once("resizeWindow", (_e: Event, _msg: string) => {
+	ipcMain.once("resizeWindow", (_e: IpcMainEvent, _msg: string) => {
 		const { width, height } = win.getBounds();
 		if (width < 1000 || height < 650) {
 			win.setResizable(true);
@@ -224,7 +320,7 @@ function createWindow(
 	});
 
 	ipcMain.removeAllListeners("openNewPDF");
-	ipcMain.on("openNewPDF", (_e: Event, _msg: null) => {
+	ipcMain.on("openNewPDF", (_e: IpcMainEvent, _msg: null) => {
 		openNewPDF();
 	});
 }
@@ -246,6 +342,7 @@ const argv = yargs
 		type: "string",
 		alias: "pdf",
 	})
+	.array("pdf")
 	.describe("help", "Show help.") // Override --help usage message.
 	.version(versionString())
 	.epilog(`copyright ${new Date().getFullYear()}`)
@@ -261,6 +358,7 @@ if (pdf.length > 0) {
 	}
 }
 
+// @ts-ignore - open-file is not in the electron type definitions
 app.on("open-file", (e: Event, path: string) => {
 	e.preventDefault();
 	if (app.isReady()) {
@@ -277,6 +375,10 @@ app.on("open-file", (e: Event, path: string) => {
 });
 
 app.whenReady().then(() => {
+	const keybinds: KeybindsHelper = new KeybindsHelper(
+		store.get("keybinds") as Record<string, Keybinds>,
+		process.platform,
+	);
 	if (fileToOpen) {
 		if (pageToOpen) {
 			createWindow(fileToOpen, pageToOpen);
@@ -286,6 +388,7 @@ app.whenReady().then(() => {
 	} else {
 		createWindow();
 	}
+
 	globalShortcut.register("alt+CommandOrControl+t", () => {
 		console.log(NOTIFICATION_BODY);
 		new Notification({
@@ -293,6 +396,31 @@ app.whenReady().then(() => {
 			body: NOTIFICATION_BODY,
 		}).show();
 	});
+
+	keybinds.actions.forEach((action) => {
+		globalShortcut.registerAll(
+			keybinds.getActionKeybindsTrigger(action),
+			() => {
+				const focusedWin = BrowserWindow.getFocusedWindow();
+				if (focusedWin) {
+					focusedWin.webContents.send(
+						keybinds.getAction(action),
+						keybinds.getActionData(action),
+					);
+				}
+			},
+		);
+	});
+
+	// register Ctrl+1 to Ctrl+9 shortcuts
+	for (let i = 1; i <= 9; i++) {
+		globalShortcut.register(`CommandOrControl+${i}`, () => {
+			const focusedWin = BrowserWindow.getFocusedWindow();
+			if (focusedWin) {
+				focusedWin.webContents.send("switch-tab", i);
+			}
+		});
+	}
 });
 
 app.on("window-all-closed", () => {
@@ -306,90 +434,3 @@ app.on("activate", () => {
 		createWindow();
 	}
 });
-
-function createMenu() {
-	const menuTemplate: MenuItemConstructorOptions[] = [];
-	menuTemplate.push(
-		{
-			role: "fileMenu",
-			label: "File",
-			submenu: [
-				{
-					label: "Open...",
-					id: "file-open",
-					accelerator: "CmdOrCtrl+O",
-				},
-				{
-					label: "Print",
-					id: "file-print",
-					accelerator: "CmdOrCtrl+P",
-					enabled: false,
-				},
-			],
-		},
-		{
-			role: "editMenu",
-			label: "Edit",
-			submenu: [
-				{ role: "undo" },
-				{ role: "redo" },
-				{ type: "separator" },
-				{ role: "cut" },
-				{ role: "copy" },
-				{ role: "paste" },
-			],
-		},
-		{
-			role: "viewMenu",
-			label: "View",
-			submenu: [
-				{ role: "resetZoom" },
-				{ role: "zoomIn" },
-				{ role: "zoomOut" },
-				{ type: "separator" },
-				{ role: "togglefullscreen" },
-			],
-		},
-		{
-			role: "windowMenu",
-			label: "Window",
-			submenu: [{ role: "minimize" }],
-		},
-		{
-			role: "help",
-			submenu: [
-				{
-					label: "Learn More",
-					click: async () => {
-						await shell.openExternal(
-							"https://github.com/Lunarequest/NightPDF#readme",
-						);
-					},
-				},
-				{
-					label: "License",
-					click: async () => {
-						await shell.openExternal(
-							"https://github.com/Lunarequest/NightPDF/blob/mistress/LICENSE",
-						);
-					},
-				},
-				{
-					label: "Bugs",
-					click: async () => {
-						await shell.openExternal(
-							"https://github.com/Lunarequest/NightPDF/issues",
-						);
-					},
-				},
-				{
-					label: "Contact",
-					click: async () => {
-						await shell.openExternal("mailto:luna@nullrequest.com");
-					},
-				},
-			],
-		},
-	);
-	return menuTemplate;
-}

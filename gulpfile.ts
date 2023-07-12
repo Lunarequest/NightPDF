@@ -65,7 +65,8 @@ task("build-render", () => {
 	return src("app/render/*.ts")
 		.pipe(
 			gulpEsbuild({
-				outfile: "render.mjs",
+				// outfile: "render.mjs",
+				outdir: "./",
 				bundle: true,
 				treeShaking: true,
 				format: "esm",
@@ -73,6 +74,21 @@ task("build-render", () => {
 			}),
 		)
 		.pipe(dest("out/render"));
+});
+
+task("build-helpers", () => {
+	return src("app/helpers/*.ts")
+		.pipe(
+			gulpEsbuild({
+				bundle: false,
+				treeShaking: true,
+				minify: production,
+				format: "cjs",
+				platform: "node",
+				packages: "external",
+			}),
+		)
+		.pipe(dest("out/helpers"));
 });
 
 task("build-preload", () => {
@@ -109,7 +125,7 @@ task("build-main", () => {
 task(
 	"default",
 	parallel(
-		parallel("build-main", "build-preload", "build-render"),
+		parallel("build-main", "build-preload", "build-render", "build-helpers"),
 		parallel("bundle-css", "copy-assets", "gulp-copy-html", "gulp-copy-libs"),
 	),
 );
