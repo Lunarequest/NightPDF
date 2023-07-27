@@ -158,6 +158,8 @@ async function nightPDF() {
 				files = msg;
 			}
 
+			const settings = await window.api.GetSettings();
+
 			await openFile(
 				files,
 				closedFileHistory,
@@ -175,7 +177,7 @@ async function nightPDF() {
 				sepiaSliderElement,
 				extraBrightnessSliderElement,
 				hueSliderElement,
-
+				settings.general.DisplayThumbs,
 				page,
 				debug,
 			);
@@ -211,6 +213,7 @@ async function nightPDF() {
 			if (closedFileHistory.length > 0) {
 				const lastClosedFile = closedFileHistory.pop();
 				if (lastClosedFile) {
+					const settings = await window.api.GetSettings();
 					await openFile(
 						lastClosedFile,
 						closedFileHistory,
@@ -228,7 +231,7 @@ async function nightPDF() {
 						sepiaSliderElement,
 						extraBrightnessSliderElement,
 						hueSliderElement,
-
+						settings.general.DisplayThumbs,
 						null,
 						debug,
 					);
@@ -434,6 +437,7 @@ async function nightPDF() {
 		if (!files || files.length === 0) {
 			return;
 		}
+		const settings = await window.api.GetSettings();
 		await openFile(
 			files,
 			closedFileHistory,
@@ -451,7 +455,7 @@ async function nightPDF() {
 			sepiaSliderElement,
 			extraBrightnessSliderElement,
 			hueSliderElement,
-
+			settings.general.DisplayThumbs,
 			null,
 			debug,
 		);

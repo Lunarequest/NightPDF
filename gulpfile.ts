@@ -55,6 +55,12 @@ task("bundle-css", () => {
 			],
 		}),
 	];
+
+	src("app/css/settings.scss")
+		.pipe(sass())
+		.pipe(postcss(plugins))
+		.pipe(dest("out/css"));
+
 	return src("app/css/bundle.scss")
 		.pipe(sass())
 		.pipe(postcss(plugins))

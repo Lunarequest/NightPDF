@@ -18,6 +18,7 @@ async function openFile(
 	sepiaSliderElement: HTMLElement,
 	extraBrightnessSliderElement: HTMLElement,
 	hueSliderElement: HTMLElement,
+	DisplayThumbs: boolean,
 
 	page: number | null = null,
 	debug = false,
@@ -54,17 +55,24 @@ async function openFile(
 
 		let pageArg = "";
 		if (page) {
-			pageArg = `page=${page}&pagemode=thumbs`;
+			pageArg = `page=${page}`;
 		} else {
-			pageArg = "pagemode=thumbs";
+			pageArg = "";
 		}
+
+		if (DisplayThumbs) {
+			if (pageArg) {
+				pageArg = `${pageArg}&pagemode=thumbs`;
+			} else {
+				pageArg = "pagemode=thumbs";
+			}
+		}
+
 		if (!fileAlreadyOpen) {
-			const tab = tabGroup?.addTab({
+			const entry = {
 				title: `\u202A${title}\u202A`,
-				src: `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
-					resolved_file,
-				)}#${pageArg}`,
 				active: true,
+				src: "",
 				ready: (tab: Tab) => {
 					console.info("tab loaded");
 					tabFilePath.set(tab, resolved_file);
@@ -90,7 +98,17 @@ async function openFile(
 						slidersInitialized = true;
 					}
 				},
-			});
+			};
+			if (pageArg) {
+				entry["src"] = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
+					resolved_file,
+				)}#${pageArg}`;
+			} else {
+				entry["src"] = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
+					resolved_file,
+				)}`;
+			}
+			const tab = tabGroup?.addTab(entry);
 			const webview = tab?.webview as webviewTag;
 			webview.addEventListener("will-navigate", (e) => {
 				const event = e as EventNav;

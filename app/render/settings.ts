@@ -118,7 +118,35 @@ async function nightPDFSettings() {
 		});
 		maximizeOnOpenContainer.appendChild(maximizeOnOpenLabel);
 		maximizeOnOpenContainer.appendChild(maximizeOnOpenCheckbox);
+
+		const ThumbsOnOpenContainer = document.createElement("div");
+		ThumbsOnOpenContainer.classList.add("settings-item");
+		const ThumbsOnOpenLabel = document.createElement("label");
+		ThumbsOnOpenLabel.htmlFor = "Thumbs-on-open";
+		ThumbsOnOpenLabel.classList.add("setting-name");
+		ThumbsOnOpenLabel.innerText = "Thumbs on open";
+		const ThumbsOnOpenCheckbox = document.createElement(
+			"input",
+		) as HTMLInputElement;
+		ThumbsOnOpenCheckbox.type = "checkbox";
+		ThumbsOnOpenCheckbox.classList.add("setting-value");
+		ThumbsOnOpenCheckbox.id = "Thumbs-on-open";
+		ThumbsOnOpenCheckbox.checked = settings.general.DisplayThumbs;
+		ThumbsOnOpenCheckbox.addEventListener("change", () => {
+			settings.general.DisplayThumbs = ThumbsOnOpenCheckbox.checked;
+			window.api.SetSetting(
+				"general",
+				"DisplayThumbs",
+				ThumbsOnOpenCheckbox.checked,
+			);
+		});
+
+		ThumbsOnOpenContainer.appendChild(ThumbsOnOpenLabel);
+		ThumbsOnOpenContainer.appendChild(ThumbsOnOpenCheckbox);
+
+		console.log(settings);
 		general_panel.appendChild(maximizeOnOpenContainer);
+		general_panel.appendChild(ThumbsOnOpenContainer);
 	}
 
 	const keybinds = new KeybindsHelper(settings.keybinds, window.api.platform);

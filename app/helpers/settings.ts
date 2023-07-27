@@ -5,6 +5,7 @@ type NightPDFSettings = JSONSchema & {
 	version: string;
 	general: {
 		MaximizeOnOpen: boolean;
+		DisplayThumbs: boolean;
 	};
 	keybinds: Record<string, Keybinds>;
 };
@@ -293,6 +294,7 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 		version: version,
 		general: {
 			MaximizeOnOpen: true,
+			DisplayThumbs: true,
 		},
 		keybinds: {
 			OpenWindow: {

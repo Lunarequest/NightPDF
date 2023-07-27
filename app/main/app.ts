@@ -89,6 +89,13 @@ const store_version = store.get("version");
 if (store_version) {
 	if (store_version !== version) {
 		console.log(`update store to ${version}`);
+		const general = store.get("general");
+		if (general) {
+			if (typeof general.DisplayThumbs !== "boolean") {
+				general["DisplayThumbs"] = true;
+				store.set("general", general);
+			}
+		}
 		store.set("version", version);
 	}
 } else {
