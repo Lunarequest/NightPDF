@@ -3,10 +3,7 @@ import { type JSONSchema } from "json-schema-typed";
 
 type NightPDFSettings = JSONSchema & {
 	version: string;
-	general: {
-		MaximizeOnOpen: boolean;
-		DisplayThumbs: boolean;
-	};
+	general: Record<string, boolean>;
 	keybinds: Record<string, Keybinds>;
 };
 
@@ -268,6 +265,9 @@ const nightpdf_schema: Schema<NightPDFSettings> = {
 	general: {
 		properties: {
 			MaximizeOnOpen: {
+				type: "boolean",
+			},
+			DisplayThumbs: {
 				type: "boolean",
 			},
 		},

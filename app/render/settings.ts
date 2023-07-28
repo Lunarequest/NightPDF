@@ -18,7 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 //trans rights
 
-import type { Keybinds, Keybind, ModifierKeyMap } from "../helpers/settings";
+import type { Keybind, ModifierKeyMap } from "../helpers/settings";
 import {
 	ModifierKeys,
 	modifierToString,
@@ -94,59 +94,33 @@ async function nightPDFSettings() {
 
 	const general_panel = document.getElementById("settings-general");
 	if (general_panel) {
-		// only one setting for now
-		const maximizeOnOpenContainer = document.createElement("div");
-		maximizeOnOpenContainer.classList.add("settings-item");
-		const maximizeOnOpenLabel = document.createElement("label");
-		maximizeOnOpenLabel.htmlFor = "maximize-on-open";
-		maximizeOnOpenLabel.classList.add("setting-name");
-		maximizeOnOpenLabel.innerText = "Maximize on open";
-		const maximizeOnOpenCheckbox = document.createElement(
-			"input",
-		) as HTMLInputElement;
-		maximizeOnOpenCheckbox.type = "checkbox";
-		maximizeOnOpenCheckbox.classList.add("setting-value");
-		maximizeOnOpenCheckbox.id = "maximize-on-open";
-		maximizeOnOpenCheckbox.checked = settings.general.MaximizeOnOpen;
-		maximizeOnOpenCheckbox.addEventListener("change", () => {
-			settings.general.MaximizeOnOpen = maximizeOnOpenCheckbox.checked;
-			window.api.SetSetting(
-				"general",
-				"MaximizeOnOpen",
-				maximizeOnOpenCheckbox.checked,
-			);
-		});
-		maximizeOnOpenContainer.appendChild(maximizeOnOpenLabel);
-		maximizeOnOpenContainer.appendChild(maximizeOnOpenCheckbox);
+		let key: string;
+		const keys = Object.keys(settings.general);
+		for (key in keys) {
+			const div = document.createElement("div");
+			div.classList.add("settings-item");
+			const label = document.createElement("label");
+			label.htmlFor = keys[key];
+			label.classList.add("setting-name");
+			if (keys[key] === "MaximizeOnOpen") {
+				label.innerText = "Maximize On Open";
+			} else {
+				label.innerText = "Display PDF page thumbnails";
+			}
 
-		const ThumbsOnOpenContainer = document.createElement("div");
-		ThumbsOnOpenContainer.classList.add("settings-item");
-		const ThumbsOnOpenLabel = document.createElement("label");
-		ThumbsOnOpenLabel.htmlFor = "Thumbs-on-open";
-		ThumbsOnOpenLabel.classList.add("setting-name");
-		ThumbsOnOpenLabel.innerText = "Thumbs on open";
-		const ThumbsOnOpenCheckbox = document.createElement(
-			"input",
-		) as HTMLInputElement;
-		ThumbsOnOpenCheckbox.type = "checkbox";
-		ThumbsOnOpenCheckbox.classList.add("setting-value");
-		ThumbsOnOpenCheckbox.id = "Thumbs-on-open";
-		ThumbsOnOpenCheckbox.checked = settings.general.DisplayThumbs;
-		ThumbsOnOpenCheckbox.addEventListener("change", () => {
-			settings.general.DisplayThumbs = ThumbsOnOpenCheckbox.checked;
-			window.api.SetSetting(
-				"general",
-				"DisplayThumbs",
-				ThumbsOnOpenCheckbox.checked,
-			);
-		});
-
-		ThumbsOnOpenContainer.appendChild(ThumbsOnOpenLabel);
-		ThumbsOnOpenContainer.appendChild(ThumbsOnOpenCheckbox);
-
-		console.log(settings);
-		general_panel.appendChild(maximizeOnOpenContainer);
-		general_panel.appendChild(ThumbsOnOpenContainer);
+			const checkbox = document.createElement("input") as HTMLInputElement;
+			checkbox.type = "checkbox";
+			checkbox.classList.add("setting-value");
+			checkbox.id = keys[key];
+			checkbox.checked = settings.general[keys[key]];
+			checkbox.addEventListener("change", () => {
+				settings.general[keys[key]] = checkbox.checked;
+				window.api.SetSetting("general", keys[key], checkbox.checked);
+			});
+			div.appendChild(label);
+			div.appendChild(checkbox);
+			general_panel.appendChild(div);
+		}
 	}
 
 	const keybinds = new KeybindsHelper(settings.keybinds, window.api.platform);

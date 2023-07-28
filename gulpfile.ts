@@ -61,7 +61,7 @@ task("bundle-css", () => {
 		.pipe(postcss(plugins))
 		.pipe(dest("out/css"));
 
-	return src("app/css/bundle.scss")
+	return src("app/css/index.scss")
 		.pipe(sass())
 		.pipe(postcss(plugins))
 		.pipe(dest("out/css"));

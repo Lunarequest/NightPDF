@@ -92,9 +92,9 @@ if (store_version) {
 		const general = store.get("general");
 		if (general) {
 			if (typeof general.DisplayThumbs !== "boolean") {
-				general["DisplayThumbs"] = true;
-				store.set("general", general);
+				general.DisplayThumbs = true;
 			}
+			store.set("general", general);
 		}
 		store.set("version", version);
 	}
@@ -108,7 +108,7 @@ function getpath(filePath: string) {
 
 function versionString(): string {
 	const pdfjsver = readFileSync(join(__dirname, "../../.pdfjs_version"));
-	return `NightPDF: v${version} PDF.js: ${pdfjsver} Electron: v${process.versions.electron}`;
+	return `NightPDF: ${version} PDF.js: ${pdfjsver} Electron: v${process.versions.electron}`;
 }
 
 function setkeybind(id: string, command: Keybinds) {
