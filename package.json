@@ -13,7 +13,7 @@
 	"scripts": {
 		"typecheck": "tsc --noEmit",
 		"build": "rimraf out && gulp",
-		"dev": "yarn build && DEBUG=1 electron .",
+		"dev": "yarn typecheck && yarn build && DEBUG=1 electron .",
 		"dist": "NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' yarn build && NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' electron-builder --config electron-builder-config.js",
 		"lint": "rome check .",
 		"format": "rome format . --write",
