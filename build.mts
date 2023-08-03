@@ -12,17 +12,23 @@ type Css = {
 	in: string;
 	out: string;
 };
+
 type Assets = {
 	src: string;
 	dest: string;
 };
 
 const plugins: Processor[] = [];
-const assets = [
+const files: Css[] = [
+	{ in: "app/css/index.scss", out: "out/css/index.css" },
+	{ in: "app/css/settings.scss", out: "out/css/settings.css" },
+];
+const assets: Assets[] = [
 	{ src: "app/assets/*", dest: "out/assets" },
 	{ src: "app/*html", dest: "out" },
 	{ src: "app/libs/**/**", dest: "out/libs" },
 ];
+const ts_dirs = ["helpers", "preload", "main", "render"];
 const production = process.env.NODE_ENV === "production";
 
 console.log(chalk.blue(figlet.textSync("NightPDF")));
@@ -66,12 +72,6 @@ async function copy_asset(fn: Assets): Promise<void> {
 		if (err) throw err;
 	});
 }
-
-const files = [
-	{ in: "app/css/index.scss", out: "out/css/index.css" },
-	{ in: "app/css/settings.scss", out: "out/css/settings.css" },
-];
-const ts_dirs = ["helpers", "preload", "main", "render"];
 
 ts_dirs.forEach((dir) => {
 	if (dir === "render") {

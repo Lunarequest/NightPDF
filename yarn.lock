@@ -517,7 +517,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/figlet@npm:^1":
+"@types/figlet@npm:^1.5.6":
   version: 1.5.6
   resolution: "@types/figlet@npm:1.5.6"
   checksum: 7f39978ba4ece2c3eacf4034348d1738060da542dde62f1b6ef53bb216a12bdad62be1a45f635e33e5a01626543b9c3f2271cebd256465219f24b176afaf37ee
@@ -3532,7 +3532,7 @@ __metadata:
   resolution: "nightpdf@workspace:."
   dependencies:
     "@types/copy": "npm:^0.3.2"
-    "@types/figlet": "npm:^1"
+    "@types/figlet": "npm:^1.5.6"
     "@types/node": "npm:^20.4.5"
     "@types/yargs": "npm:^17.0.24"
     chalk: "npm:^5.3.0"
