@@ -570,10 +570,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.4.5":
-  version: 20.4.5
-  resolution: "@types/node@npm:20.4.5"
-  checksum: aa31081f82a2d377f00cfd7ced73925753db1f542fca19e6b0442585a7322b8eacd957fdccaaff65d9976454d213af0980c12390c59a975cf8a368e3f872717a
+"@types/node@npm:^20.4.6":
+  version: 20.4.6
+  resolution: "@types/node@npm:20.4.6"
+  checksum: fd8423181df18a8b62ef3760bf2fbaae28e078dba5d8c39976875bb19dc16a3dd8d68531d8431429ec8a39bb57701af73ea260a71eeaabc7602ee837b6f1a8cd
   languageName: node
   linkType: hard
 
@@ -1902,16 +1902,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^25.3.2":
-  version: 25.3.2
-  resolution: "electron@npm:25.3.2"
+"electron@npm:^25.4.0":
+  version: 25.4.0
+  resolution: "electron@npm:25.4.0"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^18.11.18"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: c46f1136a327febe3f18dc3c89063a6f45c666301874430e621923add0ccc4ef57bbb74bfe400dca6c5e10608c0d6bd4df89ba7d9accec26ee393ec24c72b59e
+  checksum: 9bf5982e374c4ca18e0c6835852f1a239426c59ec8e28291d9984a29c26f3a38e7cc4b9d7c31fa292afcbbecf64f9a7790574c035e1095fdd4644f694d49f0ea
   languageName: node
   linkType: hard
 
@@ -3030,6 +3030,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"json-schema-typed@npm:8.0.1":
+  version: 8.0.1
+  resolution: "json-schema-typed@npm:8.0.1"
+  checksum: 7f73246d4b7d93404701630f8063c83a24d477faa6d7300bf957cb6261ef03ca33f73547115582ca57976f059c274c8a95dd0a71a10efcf444a8d7b8d5ec5ba8
+  languageName: node
+  linkType: hard
+
 "json-schema-typed@npm:^7.0.3":
   version: 7.0.3
   resolution: "json-schema-typed@npm:7.0.3"
@@ -3533,13 +3540,13 @@ __metadata:
   dependencies:
     "@types/copy": "npm:^0.3.2"
     "@types/figlet": "npm:^1.5.6"
-    "@types/node": "npm:^20.4.5"
+    "@types/node": "npm:^20.4.6"
     "@types/yargs": "npm:^17.0.24"
     chalk: "npm:^5.3.0"
     copy: "npm:^0.3.2"
     cssnano: "npm:^6.0.1"
     cssnano-preset-advanced: "npm:^6.0.1"
-    electron: "npm:^25.3.2"
+    electron: "npm:^25.4.0"
     electron-builder: "npm:^24.6.3"
     electron-log: "npm:^4.4.8"
     electron-store: "npm:^8.1.0"
@@ -3549,6 +3556,7 @@ __metadata:
     esbuild-plugin-glob: "npm:^2.2.2"
     figlet: "npm:^1.6.0"
     husky: "npm:^8.0.3"
+    json-schema-typed: "npm:8.0.1"
     nouislider: "npm:^15.7.1"
     pinst: "npm:^3.0.0"
     postcss: "npm:^8.4.27"

@@ -11,12 +11,13 @@ const config = {
 		"!.husky",
 		"!.vscode",
 		"!.github",
-		"!gulp*",
+		"!build.mts",
 		"!update_pdfjs.py",
 		"!.rtx.toml",
 		"!.yarnclean",
 		"!electron-builder-config.js",
 		"!.python-version",
+		"!*.pdf",
 	],
 	fileAssociations: [
 		// pdf

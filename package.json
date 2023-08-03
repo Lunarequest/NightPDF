@@ -31,13 +31,13 @@
 	"devDependencies": {
 		"@types/copy": "^0.3.2",
 		"@types/figlet": "^1.5.6",
-		"@types/node": "^20.4.5",
+		"@types/node": "^20.4.6",
 		"@types/yargs": "^17.0.24",
 		"chalk": "^5.3.0",
 		"copy": "^0.3.2",
 		"cssnano": "^6.0.1",
 		"cssnano-preset-advanced": "^6.0.1",
-		"electron": "^25.3.2",
+		"electron": "^25.4.0",
 		"electron-builder": "^24.6.3",
 		"esbuild": "^0.18.17",
 		"esbuild-plugin-glob": "^2.2.2",
@@ -55,6 +55,7 @@
 		"electron-store": "^8.1.0",
 		"electron-tabs": "^1.0.1",
 		"electron-updater": "6.1.4",
+		"json-schema-typed": "8.0.1",
 		"nouislider": "^15.7.1",
 		"typescript": "^5.1.6",
 		"yargs": "^17.7.2"

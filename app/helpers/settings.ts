@@ -193,7 +193,7 @@ class KeybindsHelper {
 	}
 }
 
-function keybindPropertyDef(min = 0, max = 2): JSONSchema {
+function keybindPropertyDef(min = 0, max = 2): object {
 	return {
 		properties: {
 			keybind: {
