@@ -1,5 +1,5 @@
-@import "../../node_modules/nouislider/dist/nouislider.min";
-@import "./common.scss";
+@use "nouislider/dist/nouislider.css";
+@use "common.scss";
 
 .views {
 	height: calc(100vh - 40px);

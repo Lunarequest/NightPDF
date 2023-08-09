@@ -56,7 +56,9 @@ if (production) {
 }
 
 async function assemble(fn: Css): Promise<void> {
-	const css = await sass.compileAsync(fn.in);
+	const css = await sass.compileAsync(fn.in, {
+		loadPaths: ["node_modules"],
+	});
 	const postcss_out = await postcss(plugins).process(css.css, {
 		from: fn.in,
 		to: fn.out,

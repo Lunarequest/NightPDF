@@ -1,7 +1,9 @@
 /* Settings Page */
 /* @todo: move all repeated, hard-coded values to variables, both for settings and the rest of this file */
 
-@import "./common.scss";
+@use "common.scss";
+
+$bg_color: black;
 
 #settings-page {
 	display: flex;
@@ -54,7 +56,7 @@
 }
 
 .menu-item.active {
-	background-color: #111;
+	background-color: $bg_color;
 }
 
 .settings-item {
@@ -76,7 +78,7 @@
 .setting-value {
 	display: grid;
 	justify-self: end;
-	background-color: black;
+	background-color: $bg_color;
 	color: #ccc;
 	border: none;
     padding: 0.5rem;
@@ -126,7 +128,7 @@
 	left: 5vw;
 	width: 87vw;
 	height: 47vh;
-	background-color: rgba(0,0,0,0.8);
+	background-color: $bg_color;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -159,7 +161,7 @@
 
 .keybind-overlay-buttons > button {
     margin: 0.5rem;
-    background-color: black;
+    background-color: $bg_color;
     color: white;
     border: 1px solid white;
     padding: 0.5rem 1rem;
@@ -182,7 +184,7 @@
     font-size: 1.5rem;
     margin-top: 0.25rem;
     margin-left: 0.25rem;
-    text-shadow: 1px 1px #000;
+    text-shadow: 1px 1px $bg_color;
 	cursor: pointer;
 }
 

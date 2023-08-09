@@ -12,7 +12,7 @@
 	},
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "rimraf out && node --loader ts-node/esm ./build.mts",
+		"build": "rimraf out && yarn node --loader ts-node/esm ./build.mts",
 		"dev": "yarn typecheck && yarn build && DEBUG=1 electron .",
 		"dist": "NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' yarn build && NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' electron-builder --config electron-builder-config.js",
 		"lint": "rome check .",
@@ -31,7 +31,7 @@
 	"devDependencies": {
 		"@types/copy": "^0.3.2",
 		"@types/figlet": "^1.5.6",
-		"@types/node": "^20.4.6",
+		"@types/node": "^20.4.8",
 		"@types/yargs": "^17.0.24",
 		"chalk": "^5.3.0",
 		"copy": "^0.3.2",
@@ -39,7 +39,7 @@
 		"cssnano-preset-advanced": "^6.0.1",
 		"electron": "^25.4.0",
 		"electron-builder": "^24.6.3",
-		"esbuild": "^0.18.17",
+		"esbuild": "^0.19.0",
 		"esbuild-plugin-glob": "^2.2.2",
 		"figlet": "^1.6.0",
 		"husky": "^8.0.3",
