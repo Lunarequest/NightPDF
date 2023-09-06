@@ -419,7 +419,7 @@ function modifierToString(name: string, platform: string): string {
 				: name
 			: platform in modifier.osVariants
 			? modifier.osVariants[platform]
-			: modifier.osVariants?.["default"];
+			: modifier.osVariants?.default;
 	return displayAs ?? name;
 }
 

@@ -20,8 +20,8 @@ type Assets = {
 
 const plugins: Processor[] = [];
 const files: Css[] = [
-	{ in: "app/css/index.scss", out: "out/css/index.css" },
-	{ in: "app/css/settings.scss", out: "out/css/settings.css" },
+	{ in: "app/css/index.sass", out: "out/css/index.css" },
+	{ in: "app/css/settings.sass", out: "out/css/settings.css" },
 ];
 const assets: Assets[] = [
 	{ src: "app/assets/*", dest: "out/assets" },
@@ -100,11 +100,15 @@ ts_dirs.forEach((dir) => {
 });
 
 files.forEach((pair) => {
-	assemble(pair);
+	assemble(pair).catch((e) => {
+		console.error(e);
+	});
 });
 
 assets.forEach((asset) => {
-	copy_asset(asset);
+	copy_asset(asset).catch((e) => {
+		console.error(e);
+	});
 });
 
 console.log(chalk.blue("Done...."));

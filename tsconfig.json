@@ -9,11 +9,7 @@
 		"strict": true /* Enable all strict type-checking options. */,
 		"skipLibCheck": true
 	},
-	"ts-node": {
-		"compilerOptions": {
-			"target": "ES2022",
-			"module": "ES2022",
-			"esModuleInterop": true
-		}
-	}
+	"exclude": [
+		"app/libs"
+	]
 }

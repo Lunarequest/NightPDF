@@ -1,0 +1,144 @@
+/* Settings Page */
+/* @todo: move all repeated, hard-coded values to variables, both for settings and the rest of this file */
+
+@use "common.sass"
+$bg_color: black
+
+#settings-page
+		display: flex
+		overflow-y: auto
+		height: 100vh
+		width: 100vw
+		position: relative
+		margin: 0
+		padding: 0
+#settings-menu, #settings-content
+	display: flex
+	flex-direction: column
+	padding-left: 3rem
+#settings-menu
+	text-align: right
+	padding-left: 2rem
+	margin-left: 0rem
+	display: flex
+	min-width: 6rem
+	& > .menu-item
+		margin-top: 1rem
+		cursor: pointer
+		padding: 0.5rem 1rem
+		border-right: 1px solid #ccc
+		border-top: 1px solid #ccc
+#settings-content
+	flex-grow: 1
+	margin-right: 3rem
+.settings-panel
+	max-width: 40rem
+	min-width: 30rem
+	display: grid
+	grid-template-columns: 100%
+	grid-auto-flow: row
+#settings-page
+	.hidden
+		display: none !important
+	#keybind-overlay
+		position: absolute
+		top: 25vh
+		left: 5vw
+		width: 87vw
+		height: 47vh
+		background-color: $bg_color
+		display: flex
+		align-items: center
+		justify-content: center
+.menu-item
+	&.active
+		background-color: $bg_color
+.settings-item
+	margin-top: 1rem
+	display: grid
+	width: 100%
+	padding-top: 0.5rem
+	grid-template-columns: 8rem 0.5fr 1.5rem 0.5fr 1.5rem
+	grid-auto-flow: column
+.setting-name
+	display: grid
+	grid-column: 1
+	justify-self: start
+	align-self: center
+.setting-value
+	display: grid
+	justify-self: end
+	background-color: $bg_color
+	color: #ccc
+	border: none
+	padding: 0.5rem
+	cursor: pointer !important
+	min-width: 6vw
+	&.primary
+		grid-column: 2
+	&.secondary
+		grid-column: 4
+	& > .keybind-join
+		display: inline-block
+		grid-row: 1
+		margin: 0 0.25rem
+	&.empty
+		min-height: 1rem
+.setting-value > .keybind-modifier, .setting-value > .keybind-key
+	display: inline-block
+	padding: 0.25rem
+	text-align: center
+	border: 1px outset #ccc
+	text-transform: uppercase
+	grid-row: 1
+	font-size: 0.75rem
+	border-top: none
+	border-left: none
+#version
+	align-self: center
+	align-items: center
+	text-align: center
+#keybind-overlay-key
+	padding: 1rem
+	& > .keybind-join
+		display: inline-block
+		margin: 0 0.5rem
+#keybind-overlay-key > .keybind-modifier, #keybind-overlay-key > .keybind-key
+	display: inline-block
+	padding: 0.25rem
+	text-align: center
+	border: 3px outset #ccc
+	text-transform: uppercase
+	border-top: none
+	border-left: none
+.keybind-overlay-buttons
+	text-align: right
+	& > button
+		margin: 0.5rem
+		background-color: $bg_color
+		color: white
+		border: 1px solid white
+		padding: 0.5rem 1rem
+		cursor: pointer
+.keybind-overlay-content
+	width: 100%
+	text-align: center
+	margin-right: 10vw
+.keybind-clear-button
+	background-color: transparent
+	border: none
+	color: #991900
+	font-weight: 700
+	height: 1.5rem
+	width: 1.5rem
+	font-size: 1.5rem
+	margin-top: 0.25rem
+	margin-left: 0.25rem
+	text-shadow: 1px 1px $bg_color
+	cursor: pointer
+	&.primary
+		grid-column: 3
+	&.secondary
+		grid-column: 5
+	&.hidden
+		display: none

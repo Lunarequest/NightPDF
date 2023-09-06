@@ -100,11 +100,11 @@ async function openFile(
 				},
 			};
 			if (pageArg) {
-				entry["src"] = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
+				entry.src = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
 					resolved_file,
 				)}#${pageArg}`;
 			} else {
-				entry["src"] = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
+				entry.src = `libs/pdfjs/web/viewer.html?file=${encodeURIComponent(
 					resolved_file,
 				)}`;
 			}

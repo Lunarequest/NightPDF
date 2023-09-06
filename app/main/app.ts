@@ -282,7 +282,7 @@ function createWindow(
 				filters: [{ name: "PDF Files", extensions: ["pdf"] }],
 			})
 			.then((dialogReturn: OpenDialogReturnValue) => {
-				const filenames = dialogReturn["filePaths"];
+				const filenames = dialogReturn.filePaths;
 				if (filenames && filenames.length > 0) {
 					if (wins.length === 0) {
 						createWindow(filenames);
@@ -387,6 +387,14 @@ app.whenReady().then(() => {
 		process.platform,
 	);
 	if (fileToOpen) {
+		if (typeof fileToOpen === "string") {
+			fileToOpen.replace("file://", "");
+		} else {
+			let i;
+			for (i in fileToOpen) {
+				fileToOpen[i] = fileToOpen[i].replace("file://", "");
+			}
+		}
 		if (pageToOpen) {
 			createWindow(fileToOpen, pageToOpen);
 		} else {
