@@ -10,6 +10,7 @@
 		"skipLibCheck": true
 	},
 	"exclude": [
-		"app/libs"
+		"app/libs",
+		"electron-builder-config.json"
 	]
 }
