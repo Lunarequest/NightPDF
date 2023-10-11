@@ -52,7 +52,8 @@ async function nightPDFSettings() {
 
 	// how to display the join between keys (i.e. " + ")
 	const keybindJoinDisplay = '<span class="keybind-join"> + </span>';
-	const invalidKeybindDisplay = '<span class="keybind-invalid">Invalid</span>';
+	const invalidKeybindDisplay =
+		'<span class="keybind-invalid">Invalid</span>';
 
 	for (const setting in settings) {
 		if (Object.prototype.hasOwnProperty.call(settings, setting)) {
@@ -62,12 +63,16 @@ async function nightPDFSettings() {
 			menuItem.classList.add("menu-item");
 			menuItem.innerText = setting;
 			menuItem.addEventListener("click", () => {
-				for (const panel of document.getElementsByClassName("menu-item")) {
+				for (const panel of document.getElementsByClassName(
+					"menu-item",
+				)) {
 					panel.classList.remove("active");
 				}
 				menuItem.classList.add("active");
 				// hide all panels
-				for (const panel of document.getElementsByClassName("settings-panel")) {
+				for (const panel of document.getElementsByClassName(
+					"settings-panel",
+				)) {
 					panel.classList.add("hidden");
 				}
 				// show current panel
@@ -108,7 +113,9 @@ async function nightPDFSettings() {
 				label.innerText = "Display PDF page thumbnails";
 			}
 
-			const checkbox = document.createElement("input") as HTMLInputElement;
+			const checkbox = document.createElement(
+				"input",
+			) as HTMLInputElement;
 			checkbox.type = "checkbox";
 			checkbox.classList.add("setting-value");
 			checkbox.id = keys[key];
@@ -445,7 +452,9 @@ async function nightPDFSettings() {
 		const keybindClear = document.createElement("div");
 		keybindClear.innerText = "X";
 		keybindClear.classList.add("keybind-clear-button", "hidden");
-		const keybindClearSecondary = keybindClear.cloneNode(true) as HTMLElement;
+		const keybindClearSecondary = keybindClear.cloneNode(
+			true,
+		) as HTMLElement;
 		keybindClear.classList.add("primary");
 		keybindClear.addEventListener(
 			"click",

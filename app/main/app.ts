@@ -192,7 +192,7 @@ function createWindow(
 			if (page) {
 				win.webContents.send("file-open", [filename, page]);
 			} else {
-				// rome-ignore lint: don't double wrap array
+				// biome-ignore lint: don't double wrap array
 				filename = Array.isArray(filename) ? filename : [filename];
 				win.webContents.send("file-open", filename);
 			}
@@ -232,9 +232,12 @@ function createWindow(
 			return getpath(args);
 		});
 
-		ipcMain.handle("ResolvePath", (_e: IpcMainInvokeEvent, args: string) => {
-			return resolve(args);
-		});
+		ipcMain.handle(
+			"ResolvePath",
+			(_e: IpcMainInvokeEvent, args: string) => {
+				return resolve(args);
+			},
+		);
 
 		ipcMain.on("openExternal", async (_e: IpcMainEvent, url: string) => {
 			await shell.openExternal(url);
@@ -256,7 +259,9 @@ function createWindow(
 					throw new Error(`${settingGroup} not found in store`);
 				}
 				if (!Object.prototype.hasOwnProperty.call(storeSettings, key)) {
-					throw new Error(`${key} not found in ${settingGroup} in store`);
+					throw new Error(
+						`${key} not found in ${settingGroup} in store`,
+					);
 				}
 				// @ts-ignore
 				storeSettings[key] = value;
@@ -289,7 +294,11 @@ function createWindow(
 					} else {
 						const focusedWin = BrowserWindow.getFocusedWindow();
 						if (focusedWin) {
-							focusedWin.webContents.send("file-open", filenames, DEBUG);
+							focusedWin.webContents.send(
+								"file-open",
+								filenames,
+								DEBUG,
+							);
 							if (store.store.general.MaximizeOnOpen) {
 								focusedWin.maximize();
 							}

@@ -34,12 +34,16 @@ declare global {
 			ResolvePath(arg0: string): Promise<string>;
 			SetBind(key: string, value: Keybinds): Promise<null>;
 			GetSettings(): Promise<NightPDFSettings>;
-			SetSetting(group: string, key: string, value: unknown): Promise<null>;
+			SetSetting(
+				group: string,
+				key: string,
+				value: unknown,
+			): Promise<null>;
 			removeAllListeners(arg0: string): null;
 			openNewPDF(arg0: null | string): null;
 			newWindow(arg0: string | string[]): null;
 			newTab(arg0: string | string[]): null;
-			togglePrinting(arg0: Boolean): null;
+			togglePrinting(arg0: boolean): null;
 			resizeWindow(arg0: null | string): null;
 			on(arg0: string, arg1: CallableFunction): null;
 			openExternel(url: string): null;
@@ -114,14 +118,16 @@ async function nightPDF() {
 	appContainerElement.style.display = "none";
 	tabGroup?.on("ready", (tabGroup: TabGroup) => {
 		// replace new tabe default "click" event handler
-		tabGroup.buttonContainer.getElementsByTagName("button")[0].addEventListener(
-			"click",
-			(e: Event) => {
-				e.stopImmediatePropagation();
-				window.api.openNewPDF(null);
-			},
-			true,
-		);
+		tabGroup.buttonContainer
+			.getElementsByTagName("button")[0]
+			.addEventListener(
+				"click",
+				(e: Event) => {
+					e.stopImmediatePropagation();
+					window.api.openNewPDF(null);
+				},
+				true,
+			);
 
 		console.info("TabGroup is ready, moving container");
 		appContainerElement.appendChild(tabGroup.viewContainer);

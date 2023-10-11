@@ -66,7 +66,7 @@ contextBridge.exposeInMainWorld("api", {
 		ipcRenderer.send("resizeWindow", value);
 	},
 
-	//rome-ignore lint/suspicious/noExplicitAny: we can pass Function here but vscode freaks out :/
+	//biome-ignore lint/suspicious/noExplicitAny: we can pass Function here but vscode freaks out :/
 	on: (eventName: string, callback: any) => {
 		ipcRenderer.on(eventName, callback);
 	},

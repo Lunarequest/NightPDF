@@ -36,7 +36,7 @@ async function openFile(
 
 	if (typeof files === "string") {
 		// wrap in array
-		// rome-ignore lint: ensure files is an array to use a for loop
+		// biome-ignore lint: ensure files is an array to use a for loop
 		files = [files];
 	}
 	for (const file of files) {

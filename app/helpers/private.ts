@@ -22,7 +22,7 @@ function handleKeys(e) {
 document.addEventListener("keydown", handleKeys, true);
 `;
 
-function _try(func: Function, fallbackValue: number) {
+function _try(func: CallableFunction, fallbackValue: number) {
 	try {
 		const value = func();
 		return value === null || value === undefined ? fallbackValue : value;

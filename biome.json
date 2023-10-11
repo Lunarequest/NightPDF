@@ -1,0 +1,21 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"organizeImports": {
+		"enabled": false
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentSize": 4,
+		"ignore": ["app/libs/**/**"]
+	},
+	"files": {
+		"ignore": ["app/libs/**/**", "out/**/**"]
+	}
+}

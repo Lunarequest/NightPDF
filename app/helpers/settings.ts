@@ -68,7 +68,7 @@ class KeybindHelper {
 		platform: string | null = null,
 	): Keybind[] {
 		if (platform === null) {
-			// rome-ignore lint: if we are using this to create initial config we don't care.
+			// biome-ignore lint: if we are using this to create initial config we don't care.
 			platform = "none";
 		}
 		return triggers.map((trigger) =>
@@ -159,11 +159,15 @@ class KeybindsHelper {
 	}
 
 	getActionKeybindsString(action: string): string[] {
-		return this.getActionKeybinds(action).map((keybind) => keybind.toString());
+		return this.getActionKeybinds(action).map((keybind) =>
+			keybind.toString(),
+		);
 	}
 
 	getActionKeybindsTrigger(action: string): string[] {
-		return this.getActionKeybinds(action).map((keybind) => keybind.toTrigger());
+		return this.getActionKeybinds(action).map((keybind) =>
+			keybind.toTrigger(),
+		);
 	}
 
 	getActionDisplayName(action: string): string {
@@ -298,7 +302,9 @@ function nightpdf_default_settings(version: string): NightPDFSettings {
 		},
 		keybinds: {
 			OpenWindow: {
-				keybind: KeybindHelper.keybindFromTriggerArray(["CommandOrControl+t"]),
+				keybind: KeybindHelper.keybindFromTriggerArray([
+					"CommandOrControl+t",
+				]),
 				action: "openNewPDF",
 				displayName: "Open New PDF",
 			},
