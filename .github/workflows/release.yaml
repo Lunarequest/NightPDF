@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        node: ["20.x"]
+        node: ["21.x"]
         os: [macos-12, windows-latest, ubuntu-20.04]
         arch: [x64]
         include:
