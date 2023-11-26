@@ -1,6 +1,6 @@
 import * as esbuild from "esbuild";
 import { globPlugin } from "esbuild-plugin-glob";
-import fs from "node:fs/promises";
+import fs from "node:fs";
 import postcss, { Processor } from "postcss";
 import cssnano from "cssnano";
 import copy from "copy";
@@ -34,8 +34,8 @@ const production = process.env.NODE_ENV === "production";
 console.log(chalk.blue(figlet.textSync("NightPDF")));
 console.log(chalk.blue("Building...."));
 
-await fs.mkdir("out");
-await fs.mkdir("out/css");
+fs.mkdirSync("out");
+fs.mkdirSync("out/css");
 
 if (production) {
 	plugins.push(
@@ -63,9 +63,9 @@ async function assemble(fn: Css): Promise<void> {
 		from: fn.in,
 		to: fn.out,
 	});
-	fs.writeFile(fn.out, postcss_out.css);
+	fs.writeFileSync(fn.out, postcss_out.css);
 	if (postcss_out.map) {
-		fs.writeFile(`${fn.out}.map`, postcss_out.map.toString());
+		fs.writeFileSync(`${fn.out}.map`, postcss_out.map.toString());
 	}
 }
 
@@ -75,7 +75,7 @@ async function copy_asset(fn: Assets): Promise<void> {
 	});
 }
 
-ts_dirs.forEach((dir) => {
+for (const dir of ts_dirs) {
 	if (dir === "render") {
 		esbuild.build({
 			entryPoints: ["app/render/*.ts"],
@@ -97,18 +97,18 @@ ts_dirs.forEach((dir) => {
 			plugins: [globPlugin()],
 		});
 	}
-});
+}
 
-files.forEach((pair) => {
+for (const pair of files) {
 	assemble(pair).catch((e) => {
 		console.error(e);
 	});
-});
+}
 
-assets.forEach((asset) => {
+for (const asset of assets) {
 	copy_asset(asset).catch((e) => {
 		console.error(e);
 	});
-});
+}
 
 console.log(chalk.blue("Done...."));

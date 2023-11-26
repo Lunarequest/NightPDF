@@ -421,7 +421,7 @@ app.whenReady().then(() => {
 		}).show();
 	});
 
-	keybinds.actions.forEach((action) => {
+	for (const action of keybinds.actions) {
 		globalShortcut.registerAll(
 			keybinds.getActionKeybindsTrigger(action),
 			() => {
@@ -434,7 +434,7 @@ app.whenReady().then(() => {
 				}
 			},
 		);
-	});
+	}
 
 	// register Ctrl+1 to Ctrl+9 shortcuts
 	for (let i = 1; i <= 9; i++) {

@@ -12,7 +12,7 @@
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
-		"indentSize": 4,
+		"indentWidth": 4,
 		"ignore": ["app/libs/**/**"]
 	},
 	"files": {

@@ -1,6 +1,6 @@
 [tools]
-node = ['20']
-python = ["3.11"]
+node = ['21']
+python = ["3.12"]
 
 
 [settings]

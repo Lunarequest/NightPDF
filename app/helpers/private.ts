@@ -51,7 +51,6 @@ function setupTab(tab: Tab, tabCssKey: Map<Tab, string>, debug = false) {
 			tabCssKey.set(tab, key);
 		});
 		// .viewerContainer scrollbar dark colors
-		// @ts-ignore
 		content
 			?.insertCSS(`
 			:root {
