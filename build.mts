@@ -1,6 +1,6 @@
 import * as esbuild from "esbuild";
 import { globPlugin } from "esbuild-plugin-glob";
-import fs from "node:fs";
+import fs from "node:fs/promises";
 import postcss, { Processor } from "postcss";
 import cssnano from "cssnano";
 import copy from "copy";
@@ -34,8 +34,8 @@ const production = process.env.NODE_ENV === "production";
 console.log(chalk.blue(figlet.textSync("NightPDF")));
 console.log(chalk.blue("Building...."));
 
-fs.mkdirSync("out");
-fs.mkdirSync("out/css");
+await fs.mkdir("out");
+await fs.mkdir("out/css");
 
 if (production) {
 	plugins.push(
@@ -63,9 +63,9 @@ async function assemble(fn: Css): Promise<void> {
 		from: fn.in,
 		to: fn.out,
 	});
-	fs.writeFileSync(fn.out, postcss_out.css);
+	fs.writeFile(fn.out, postcss_out.css);
 	if (postcss_out.map) {
-		fs.writeFileSync(`${fn.out}.map`, postcss_out.map.toString());
+		fs.writeFile(`${fn.out}.map`, postcss_out.map.toString());
 	}
 }
 
