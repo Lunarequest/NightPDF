@@ -19,9 +19,9 @@ Binaries for Linux, Macos and Windows
 
 ## Support tiers
 
-- Tier 1: Linux, garunteed builds and garunteed 100% functionality
-- Tier 2: Windows, garunteed builds. Functionality is not garunteed
-- Tier 3: Macos, builds are not garunteed if it breaks fix is not garunteed.
+- Tier 1: Linux, guaranteed builds and guaranteed 100% functionality
+- Tier 2: Tier 2: Windows, guaranteed builds. Functionality is not guaranteed
+- Tier 3: Tier 3: Macos, builds are not guaranteed if it breaks fix is not guaranteed
 
 ## Limitations
 

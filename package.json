@@ -40,7 +40,7 @@
 		"cssnano-preset-advanced": "^6.0.1",
 		"electron": "^27.1.2",
 		"electron-builder": "^24.9.1",
-		"esbuild": "^0.19.7",
+		"esbuild": "^0.19.8",
 		"esbuild-plugin-glob": "^2.2.3",
 		"figlet": "^1.7.0",
 		"husky": "^8.0.3",
