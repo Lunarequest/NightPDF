@@ -12,16 +12,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomejs/biome@npm:^1.3.3":
-  version: 1.3.3
-  resolution: "@biomejs/biome@npm:1.3.3"
+"@biomejs/biome@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "@biomejs/biome@npm:1.4.1"
   dependencies:
-    "@biomejs/cli-darwin-arm64": "npm:1.3.3"
-    "@biomejs/cli-darwin-x64": "npm:1.3.3"
-    "@biomejs/cli-linux-arm64": "npm:1.3.3"
-    "@biomejs/cli-linux-x64": "npm:1.3.3"
-    "@biomejs/cli-win32-arm64": "npm:1.3.3"
-    "@biomejs/cli-win32-x64": "npm:1.3.3"
+    "@biomejs/cli-darwin-arm64": "npm:1.4.1"
+    "@biomejs/cli-darwin-x64": "npm:1.4.1"
+    "@biomejs/cli-linux-arm64": "npm:1.4.1"
+    "@biomejs/cli-linux-x64": "npm:1.4.1"
+    "@biomejs/cli-win32-arm64": "npm:1.4.1"
+    "@biomejs/cli-win32-x64": "npm:1.4.1"
   dependenciesMeta:
     "@biomejs/cli-darwin-arm64":
       optional: true
@@ -37,48 +37,48 @@ __metadata:
       optional: true
   bin:
     biome: bin/biome
-  checksum: 525404f2a62a00bbea732a61530a23c7ac4fd82df1cf5da8544dc4205bdc395435c57c6d8c0766b475fb4d1f1698bca4e33e2e472e8f35a5e7f15015e269399f
+  checksum: fad12f5fdca7fe51f5ebf0cd559cd6ab67a6ffdb6c4b834cbd3221c1e0ca86c5ea80a565cb3bcdba0901f1055a9050db0a399c43e8c3d469cfd8bc31b95a5aca
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-arm64@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@biomejs/cli-darwin-arm64@npm:1.3.3"
+"@biomejs/cli-darwin-arm64@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@biomejs/cli-darwin-arm64@npm:1.4.1"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-x64@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@biomejs/cli-darwin-x64@npm:1.3.3"
+"@biomejs/cli-darwin-x64@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@biomejs/cli-darwin-x64@npm:1.4.1"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@biomejs/cli-linux-arm64@npm:1.3.3"
+"@biomejs/cli-linux-arm64@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@biomejs/cli-linux-arm64@npm:1.4.1"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@biomejs/cli-linux-x64@npm:1.3.3"
+"@biomejs/cli-linux-x64@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@biomejs/cli-linux-x64@npm:1.4.1"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-arm64@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@biomejs/cli-win32-arm64@npm:1.3.3"
+"@biomejs/cli-win32-arm64@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@biomejs/cli-win32-arm64@npm:1.4.1"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-x64@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@biomejs/cli-win32-x64@npm:1.3.3"
+"@biomejs/cli-win32-x64@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@biomejs/cli-win32-x64@npm:1.4.1"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -693,12 +693,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.10.0":
-  version: 20.10.0
-  resolution: "@types/node@npm:20.10.0"
+"@types/node@npm:^20.10.3":
+  version: 20.10.3
+  resolution: "@types/node@npm:20.10.3"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: c7d5ddbdbf3491e2363135c9611eb6bfae90eda2957279237fa232bcb29cd0df1cc3ee149d6de9915b754262a531ee2d57d33c9ecd58d763e8ad4856113822f3
+  checksum: 7cb506abb0d570bb5133bd06a47115109a813b507323c985c3b4aef2993eed79b6bb62b82194cb5c558b4d349de3d199ee2e8c693b913065a1cd7f526cc65a68
   languageName: node
   linkType: hard
 
@@ -910,9 +910,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app-builder-lib@npm:24.9.1":
-  version: 24.9.1
-  resolution: "app-builder-lib@npm:24.9.1"
+"app-builder-lib@npm:24.9.3":
+  version: 24.9.3
+  resolution: "app-builder-lib@npm:24.9.3"
   dependencies:
     7zip-bin: "npm:~5.2.0"
     "@develar/schema-utils": "npm:~2.6.5"
@@ -942,7 +942,7 @@ __metadata:
     semver: "npm:^7.3.8"
     tar: "npm:^6.1.12"
     temp-file: "npm:^3.4.0"
-  checksum: 4592c348f370940a70bb844665b90c102bc7ebccde42cd9df340ffccfbbad13900a0f6f6da850ac7bf39d3a361acd4a9639acbbef11b998c16c989a2e6634d5c
+  checksum: c000ca304d99973ae57bd78a1d6ead37a09c4957f9e679630be97143ef15134e170f3f91818c329ea331762131f8411e15df845f1fb698898d583fd456c5afbd
   languageName: node
   linkType: hard
 
@@ -1791,11 +1791,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dmg-builder@npm:24.9.1":
-  version: 24.9.1
-  resolution: "dmg-builder@npm:24.9.1"
+"dmg-builder@npm:24.9.3":
+  version: 24.9.3
+  resolution: "dmg-builder@npm:24.9.3"
   dependencies:
-    app-builder-lib: "npm:24.9.1"
+    app-builder-lib: "npm:24.9.3"
     builder-util: "npm:24.8.1"
     builder-util-runtime: "npm:9.2.3"
     dmg-license: "npm:^1.0.11"
@@ -1805,7 +1805,7 @@ __metadata:
   dependenciesMeta:
     dmg-license:
       optional: true
-  checksum: 9a5725215e734b82bb06beb44380c4a8faabc26fb0dcb58cdd537ed69e1c3d51c32bcfa2a8730482a3f5525cc142febe3e48c07267021a68b6d03d5c35cb1033
+  checksum: f24342b643cc4ec2c2cc900a00f451cd8094a4a31dfd35204bbf5f4046350edc5a4d645bc693057a1f0e7ffe91a49647578a830e6380b74654c92fe5ba76bc32
   languageName: node
   linkType: hard
 
@@ -1906,15 +1906,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-builder@npm:^24.9.1":
-  version: 24.9.1
-  resolution: "electron-builder@npm:24.9.1"
+"electron-builder@npm:^24.9.3":
+  version: 24.9.3
+  resolution: "electron-builder@npm:24.9.3"
   dependencies:
-    app-builder-lib: "npm:24.9.1"
+    app-builder-lib: "npm:24.9.3"
     builder-util: "npm:24.8.1"
     builder-util-runtime: "npm:9.2.3"
     chalk: "npm:^4.1.2"
-    dmg-builder: "npm:24.9.1"
+    dmg-builder: "npm:24.9.3"
     fs-extra: "npm:^10.1.0"
     is-ci: "npm:^3.0.0"
     lazy-val: "npm:^1.0.5"
@@ -1924,7 +1924,7 @@ __metadata:
   bin:
     electron-builder: cli.js
     install-app-deps: install-app-deps.js
-  checksum: e29cf9e212626159ee8ff7ea1fd0fc7d8dcde2962bb1b28ccc375708f04c1a8e1b586c17a5becc2ef9ed55a88a5e29f7e18e12d8d5df0fa7f0c133c5da8c7a32
+  checksum: 152e9ce14ef87b844772fb3ef8f63aa4e9eb25671c9dfb0bc0f6629872544a6d10c6a5473ef84fffd7c1310309ab8d630df712537d37baa4354a11addb91e82f
   languageName: node
   linkType: hard
 
@@ -1990,16 +1990,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^27.1.2":
-  version: 27.1.2
-  resolution: "electron@npm:27.1.2"
+"electron@npm:^27.1.3":
+  version: 27.1.3
+  resolution: "electron@npm:27.1.3"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^18.11.18"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: c24cbdee2ea7e219d2224e3b3f9760a248723490442dcdf28a5c5419c693127bc0ab169945bd6e7ff7db84c69b3ed4db65e2691dd2f7e15b2b0eea905a1e8863
+  checksum: 2c68b664886acb4435c4a13143ddf03e22bd6ea88914192d147d13aa2dc5f0e296c972351cab258ac97ee4f263ffb820015bb3ab827d74e4804943089e8fb418
   languageName: node
   linkType: hard
 
@@ -3704,12 +3704,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.3.6":
-  version: 3.3.6
-  resolution: "nanoid@npm:3.3.6"
+"nanoid@npm:^3.3.7":
+  version: 3.3.7
+  resolution: "nanoid@npm:3.3.7"
   bin:
     nanoid: bin/nanoid.cjs
-  checksum: 67235c39d1bc05851383dadde5cf77ae1c90c2a1d189e845c7f20f646f0488d875ad5f5226bbba072a88cebbb085a3f784a6673117daf785bdf614a852550362
+  checksum: ac1eb60f615b272bccb0e2b9cd933720dad30bf9708424f691b8113826bb91aca7e9d14ef5d9415a6ba15c266b37817256f58d8ce980c82b0ba3185352565679
   languageName: node
   linkType: hard
 
@@ -3724,17 +3724,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nightpdf@workspace:."
   dependencies:
-    "@biomejs/biome": "npm:^1.3.3"
+    "@biomejs/biome": "npm:^1.4.1"
     "@types/copy": "npm:^0.3.5"
     "@types/figlet": "npm:^1.5.8"
-    "@types/node": "npm:^20.10.0"
+    "@types/node": "npm:^20.10.3"
     "@types/yargs": "npm:^17.0.32"
     chalk: "npm:^5.3.0"
     copy: "npm:^0.3.2"
     cssnano: "npm:^6.0.1"
     cssnano-preset-advanced: "npm:^6.0.1"
-    electron: "npm:^27.1.2"
-    electron-builder: "npm:^24.9.1"
+    electron: "npm:^27.1.3"
+    electron-builder: "npm:^24.9.3"
     electron-log: "npm:^5.0.1"
     electron-store: "npm:^8.1.0"
     electron-tabs: "npm:^1.0.2"
@@ -3746,10 +3746,10 @@ __metadata:
     json-schema-typed: "npm:8.0.1"
     nouislider: "npm:^15.7.1"
     pinst: "npm:^3.0.0"
-    postcss: "npm:^8.4.31"
+    postcss: "npm:^8.4.32"
     rimraf: "npm:^5.0.5"
     sass: "npm:^1.69.5"
-    tsx: "npm:^4.5.0"
+    tsx: "npm:^4.6.2"
     typescript: "npm:^5.3.2"
     yargs: "npm:^17.7.2"
   languageName: unknown
@@ -4384,14 +4384,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.31":
-  version: 8.4.31
-  resolution: "postcss@npm:8.4.31"
+"postcss@npm:^8.4.32":
+  version: 8.4.32
+  resolution: "postcss@npm:8.4.32"
   dependencies:
-    nanoid: "npm:^3.3.6"
+    nanoid: "npm:^3.3.7"
     picocolors: "npm:^1.0.0"
     source-map-js: "npm:^1.0.2"
-  checksum: 1a6653e72105907377f9d4f2cd341d8d90e3fde823a5ddea1e2237aaa56933ea07853f0f2758c28892a1d70c53bbaca200eb8b80f8ed55f13093003dbec5afa0
+  checksum: 28084864122f29148e1f632261c408444f5ead0e0b9ea9bd9729d0468818ebe73fe5dc0075acd50c1365dbe639b46a79cba27d355ec857723a24bc9af0f18525
   languageName: node
   linkType: hard
 
@@ -5101,9 +5101,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "tsx@npm:4.5.0"
+"tsx@npm:^4.6.2":
+  version: 4.6.2
+  resolution: "tsx@npm:4.6.2"
   dependencies:
     esbuild: "npm:~0.18.20"
     fsevents: "npm:~2.3.3"
@@ -5113,7 +5113,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: 49576a8e20799f01e7eb282aec0dca3faa2d841fea688374e981e2a9ad433ac63397939bf787065450501a49f9bd84d7ce7f095fef2d11b6003fec3d426fc757
+  checksum: 451b23ed999a3bf3592181f3411d67bfe6d4269f2171ca627c5acbe442fd08d8864585eb67095c0dc8462e35ee8427de37c9bb2b4f6ffc629d5a05f0c66983d4
   languageName: node
   linkType: hard
 

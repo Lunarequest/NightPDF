@@ -424,7 +424,7 @@ async function nightPDF() {
 		window.api.openNewPDF(null);
 	});
 
-	window.addEventListener("blur", function () {
+	window.addEventListener("blur", () => {
 		const activeElement = document.activeElement;
 		if (activeElement) {
 			if (activeElement.id === "pdfjs") {

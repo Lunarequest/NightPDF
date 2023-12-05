@@ -424,8 +424,8 @@ function modifierToString(name: string, platform: string): string {
 				? modifier.displayAs
 				: name
 			: platform in modifier.osVariants
-			? modifier.osVariants[platform]
-			: modifier.osVariants?.default;
+			  ? modifier.osVariants[platform]
+			  : modifier.osVariants?.default;
 	return displayAs ?? name;
 }
 

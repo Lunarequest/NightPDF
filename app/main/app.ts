@@ -165,7 +165,7 @@ function createWindow(
 	// if the window url changes from the inital one,
 	// block the change and use xdg-open to open it
 	// @ts-ignore - will-navigate is not in the type definition
-	wc.on("will-navigate", function (e: Event, url: string) {
+	wc.on("will-navigate", (e: Event, url: string) => {
 		if (url !== wc.getURL()) {
 			e.preventDefault();
 			if (url.split("/")[0].indexOf("http") > -1) {

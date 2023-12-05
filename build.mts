@@ -70,7 +70,7 @@ async function assemble(fn: Css): Promise<void> {
 }
 
 async function copy_asset(fn: Assets): Promise<void> {
-	copy(fn.src, fn.dest, function (err, files) {
+	copy(fn.src, fn.dest, (err, _) => {
 		if (err) throw err;
 	});
 }

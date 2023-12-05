@@ -168,12 +168,12 @@ function setupSliders(
 		tooltips: [
 			{
 				// 'to' the formatted value. Receives a number.
-				to: function (value) {
+				to: (value: number) => {
 					return `${Math.round(value)}%`;
 				},
 				// 'from' the formatted value.
 				// Receives a string, should return a number.
-				from: function (value) {
+				from: (value: string) => {
 					return Number(value.replace("%", ""));
 				},
 			},
@@ -191,12 +191,12 @@ function setupSliders(
 		tooltips: [
 			{
 				// 'to' the formatted value. Receives a number.
-				to: function (value) {
+				to: (value: number) => {
 					return `${Math.round(value)}%`;
 				},
 				// 'from' the formatted value.
 				// Receives a string, should return a number.
-				from: function (value) {
+				from: (value: string) => {
 					return Number(value.replace("%", ""));
 				},
 			},
@@ -214,12 +214,12 @@ function setupSliders(
 		tooltips: [
 			{
 				// 'to' the formatted value. Receives a number.
-				to: function (value) {
+				to: (value: number) => {
 					return `${Math.round(value)}%`;
 				},
 				// 'from' the formatted value.
 				// Receives a string, should return a number.
-				from: function (value) {
+				from: (value: string) => {
 					return Number(value.replace("%", ""));
 				},
 			},
@@ -237,12 +237,12 @@ function setupSliders(
 		tooltips: [
 			{
 				// 'to' the formatted value. Receives a number.
-				to: function (value: number) {
+				to: (value: number) => {
 					return `${Math.round(value)}%`;
 				},
 				// 'from' the formatted value.
 				// Receives a string, should return a number.
-				from: function (value: string) {
+				from: (value: string) => {
 					return Number(value.replace("%", ""));
 				},
 			},
@@ -260,12 +260,12 @@ function setupSliders(
 		tooltips: [
 			{
 				// 'to' the formatted value. Receives a number.
-				to: function (value: number) {
+				to: (value: number) => {
 					return `${Math.round(value)}%`;
 				},
 				// 'from' the formatted value.
 				// Receives a string, should return a number.
-				from: function (value: string) {
+				from: (value: string) => {
 					return Number(value.replace("°", ""));
 				},
 			},
@@ -283,12 +283,12 @@ function setupSliders(
 		tooltips: [
 			{
 				// 'to' the formatted value. Receives a number.
-				to: function (value: number) {
+				to: (value: number) => {
 					return `${Math.round(value)}%`;
 				},
 				// 'from' the formatted value.
 				// Receives a string, should return a number.
-				from: function (value: string) {
+				from: (value: string) => {
 					return Number(value.replace("%", ""));
 				},
 			},
