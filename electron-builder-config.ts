@@ -1,4 +1,6 @@
-const config = {
+import { Configuration } from "electron-builder";
+
+const config: Configuration = {
 	appId: "io.github.lunarequest.NightPDF",
 	productName: "NightPDF",
 	files: [
@@ -61,18 +63,9 @@ const config = {
 		synopsis: "Dark Mode PDF reader",
 		publish: ["github"],
 		target: [
-			{
-				target: "AppImage",
-				arch: ["x64", "arm64"],
-			},
-			{
-				target: "deb",
-				arch: ["x64", "arm64"],
-			},
-			{
-				target: "rpm",
-				arch: ["x64", "arm64"],
-			},
+			{ target: "AppImage", arch: ["x64", "arm64"] },
+			{ target: "deb", arch: ["x64", "arm64"] },
+			{ target: "rpm", arch: ["x64", "arm64"] },
 		],
 		mimeTypes: [
 			"application/pdf",
@@ -88,16 +81,7 @@ const config = {
 	},
 	win: {
 		publish: ["github"],
-		target: [
-			{
-				target: "nsis",
-				arch: ["x64", "arm64"],
-			},
-			{
-				target: "portable",
-				arch: ["x64", "arm64"],
-			},
-		],
+		target: ["nsis", "portable"],
 		icon: "build/icon.ico",
 	},
 	nsis: {
@@ -130,9 +114,11 @@ const config = {
 		sign: false,
 	},
 };
-
 if (process.env.OUTPUTDIR === "1") {
-	config.linux.target = ["dir"];
+	if (config.linux && config.target) {
+		//@ts-ignore
+		config.linux.target = ["dir"];
+	}
 }
 
-module.exports = config;
+export default config;

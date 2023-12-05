@@ -11,6 +11,5 @@
 	},
 	"exclude": [
 		"app/libs",
-		"electron-builder-config.json"
 	]
 }
