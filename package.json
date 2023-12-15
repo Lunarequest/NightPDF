@@ -14,7 +14,7 @@
 		"typecheck": "tsc --noEmit",
 		"build": "rimraf out && tsx ./build.mts",
 		"dev": "yarn typecheck && yarn build && DEBUG=1 electron .",
-		"dist": "NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' yarn build && NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' electron-builder --config electron-builder.js",
+		"dist": "NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' yarn build && NODE_ENV='production' NODE_OPTIONS='--max-old-space-size=4096' electron-builder --config electron-builder-config.js",
 		"lint": "biome check .",
 		"format": "biome format . --write",
 		"ci": "biome ci .",
