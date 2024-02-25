@@ -399,7 +399,7 @@ app.whenReady().then(() => {
 		if (typeof fileToOpen === "string") {
 			fileToOpen.replace("file://", "");
 		} else {
-			let i;
+			let i: string;
 			for (i in fileToOpen) {
 				fileToOpen[i] = fileToOpen[i].replace("file://", "");
 			}

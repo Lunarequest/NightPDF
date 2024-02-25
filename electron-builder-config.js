@@ -1,3 +1,7 @@
+const path = require("path");
+const builder = require("electron-builder");
+const { flipFuses, FuseVersion, FuseV1Options } = require("@electron/fuses");
+
 /** @type electron-builder.Configuration */
 const config = {
 	appId: "io.github.lunarequest.NightPDF",
@@ -112,12 +116,48 @@ const config = {
 	dmg: {
 		sign: false,
 	},
+	/** @param {builder.AfterPackContext} context */
+	afterPack: async (context) => {
+		await addElectronFuses(context);
+	},
 };
 if (process.env.OUTPUTDIR === "1") {
-	if (config.linux && config.target) {
+	if (config.linux) {
 		//@ts-ignore
 		config.linux.target = ["dir"];
 	}
+}
+/** @param {builder.AfterPackContext} context  */
+async function addElectronFuses(context) {
+	const {
+		appOutDir,
+		packager: { appInfo },
+		electronPlatformName,
+		arch,
+	} = context;
+	const ext = {
+		darwin: ".dmg",
+		win32: ".exe",
+		linux: [""],
+	}[electronPlatformName];
+
+	const electronBinaryPath = path.join(
+		appOutDir,
+		`${appInfo.productFilename.toLowerCase()}${ext}`,
+	);
+	console.log("Flipping fuses for: ", electronBinaryPath);
+
+	await flipFuses(electronBinaryPath, {
+		version: FuseVersion.V1,
+		resetAdHocDarwinSignature:
+			electronPlatformName === "darwin" &&
+			arch === builder.Arch.universal,
+		[FuseV1Options.RunAsNode]: false,
+		[FuseV1Options.EnableCookieEncryption]: true,
+		[FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
+		[FuseV1Options.EnableNodeCliInspectArguments]: false,
+		[FuseV1Options.OnlyLoadAppFromAsar]: true,
+	});
 }
 
 module.exports = config;
