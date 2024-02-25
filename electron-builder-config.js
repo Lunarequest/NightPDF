@@ -136,7 +136,7 @@ async function addElectronFuses(context) {
 		arch,
 	} = context;
 	const ext = {
-		darwin: ".dmg",
+		darwin: ".app",
 		win32: ".exe",
 		linux: [""],
 	}[electronPlatformName];
