@@ -84,7 +84,10 @@ const config = {
 	},
 	win: {
 		publish: ["github"],
-		target: ["nsis", "portable"],
+		target: [
+			{ target: "nsis", arch: ["x64", "arm64"] },
+			{ target: "portable", arch: ["x64", "arm64"] },
+		],
 		icon: "build/icon.ico",
 	},
 	nsis: {
