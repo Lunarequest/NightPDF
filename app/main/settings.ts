@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import { join, resolve } from "path";
+import { join, resolve } from "node:path";
 
 const DEBUG = process.env.DEBUG;
 

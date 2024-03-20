@@ -1,5 +1,5 @@
-import { Schema } from "electron-store";
-import { type JSONSchema } from "json-schema-typed";
+import type { Schema } from "electron-store";
+import type { JSONSchema } from "json-schema-typed";
 
 type NightPDFSettings = JSONSchema & {
 	version: string;
@@ -430,11 +430,11 @@ function modifierToString(name: string, platform: string): string {
 }
 
 export {
-	NightPDFSettings,
+	type NightPDFSettings,
 	nightpdf_schema,
-	Keybind,
-	Keybinds,
-	ModifierKeyMap,
+	type Keybind,
+	type Keybinds,
+	type ModifierKeyMap,
 	ModifierKeys,
 	nightpdf_default_settings,
 	modifierToString,

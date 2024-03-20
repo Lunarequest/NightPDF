@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-/* eslint no-unused-vars: [ "error", { "argsIgnorePattern": "^_" } ] */
 import {
 	app,
 	BrowserWindow,
@@ -27,21 +26,21 @@ import {
 	nativeTheme,
 	globalShortcut,
 	Notification,
-	IpcMainEvent,
-	IpcMainInvokeEvent,
+	type IpcMainEvent,
+	type IpcMainInvokeEvent,
 } from "electron";
 import type { OpenDialogReturnValue } from "electron";
-import { parse, join, resolve } from "path";
+import { parse, join, resolve } from "node:path";
 import { version } from "../../package.json";
 import { autoUpdater } from "electron-updater";
-import { readFileSync } from "fs";
+import { readFileSync } from "node:fs";
 import log from "electron-log";
 import yargs from "yargs";
 import Store from "electron-store";
 import {
 	nightpdf_schema,
-	NightPDFSettings,
-	Keybinds,
+	type NightPDFSettings,
+	type Keybinds,
 	nightpdf_default_settings,
 	KeybindsHelper,
 } from "../helpers/settings";
@@ -184,6 +183,19 @@ function createWindow(
 
 	win.webContents.removeAllListeners("did-finish-load");
 	win.webContents.once("did-finish-load", () => {
+		const date = new Date();
+		const currentYear = date.getFullYear();
+		const startDate = new Date(currentYear, 10, 13);
+		const endDate = new Date(currentYear, 10, 19);
+
+		if (date >= startDate && date <= endDate) {
+			console.log(NOTIFICATION_BODY);
+			new Notification({
+				title: NOTIFICATION_TITLE,
+				body: NOTIFICATION_BODY,
+			}).show();
+		}
+
 		// avoid race condition
 		if (DEBUG) {
 			win.webContents.openDevTools();

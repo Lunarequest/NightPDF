@@ -23,7 +23,7 @@ import {
 	ModifierKeys,
 	modifierToString,
 	KeybindsHelper,
-	KeybindHelper,
+	type KeybindHelper,
 } from "../helpers/settings";
 
 async function nightPDFSettings() {

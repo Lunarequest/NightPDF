@@ -1,7 +1,7 @@
 import * as esbuild from "esbuild";
 import { globPlugin } from "esbuild-plugin-glob";
 import fs from "node:fs/promises";
-import postcss, { Processor } from "postcss";
+import postcss, { type Processor } from "postcss";
 import cssnano from "cssnano";
 import copy from "copy";
 import * as sass from "sass";

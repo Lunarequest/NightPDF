@@ -1,4 +1,4 @@
-import { TabGroup, Tab } from "electron-tabs";
+import type { TabGroup, Tab } from "electron-tabs";
 import { setupSliders, setupTab } from "./private";
 
 async function openFile(

@@ -9,7 +9,5 @@
 		"strict": true /* Enable all strict type-checking options. */,
 		"skipLibCheck": true
 	},
-	"exclude": [
-		"app/libs",
-	]
+	"exclude": ["app/libs"]
 }

@@ -19,12 +19,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //trans rights
 
 import "electron-tabs";
-import { Tab, TabGroup } from "electron-tabs";
-import { API } from "nouislider";
+import type { Tab, TabGroup } from "electron-tabs";
+import type { API } from "nouislider";
 import { handlePresetChange } from "../helpers/sliders";
 import { hideDarkConfigurator, toggleDarkConfigurator } from "../helpers/css";
 import { openFile } from "../helpers/file";
-import { Keybinds, NightPDFSettings } from "../helpers/settings";
+import type { Keybinds, NightPDFSettings } from "../helpers/settings";
 
 declare global {
 	interface Window {
